@@ -1,0 +1,44 @@
+name: Deploy to Oracle Cloud
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: SSH Deploy to OCI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Oracle Cloud via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ubuntu
+          key: ${{ secrets.OCI_SSH_KEY }}
+          port: 22
+          script: |
+            set -e
+
+            WEBROOT="/var/www/cy-com.com"
+            REPO="https://github.com/eng9myan/Cybercom-Website.git"
+
+            echo "▶ Pulling latest code..."
+            if [ -d "$WEBROOT/.git" ]; then
+              git -C "$WEBROOT" pull origin main
+            else
+              sudo git clone "$REPO" "$WEBROOT"
+            fi
+
+            sudo chown -R www-data:www-data "$WEBROOT"
+            sudo chmod -R 755 "$WEBROOT"
+
+            sudo nginx -t && sudo systemctl reload nginx
+            echo "✅ Deployed successfully at $(date)"
+
+      - name: Notify success
+        if: success()
+        run: echo "🚀 cy-com.com deployed successfully!"
