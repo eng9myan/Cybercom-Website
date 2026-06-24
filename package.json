@@ -1,0 +1,24 @@
+{
+  "name": "cybercom-website",
+  "version": "1.0.0",
+  "description": "CyberCom Revolution — Marketing website with CyberCom Platform API integration",
+  "private": true,
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "build:watch": "tsc --project tsconfig.json --watch",
+    "bundle": "esbuild src/lib/index.ts --bundle --outfile=dist/cybercom-api.js --platform=browser --target=es2020 --minify",
+    "bundle:dev": "esbuild src/lib/index.ts --bundle --outfile=dist/cybercom-api.js --platform=browser --target=es2020 --sourcemap",
+    "bundle:portals": "esbuild src/portals/portal.ts src/portals/health.ts src/portals/provider.ts --bundle --outdir=dist/portals --platform=browser --target=es2020 --minify",
+    "build:all": "npm run build && npm run bundle && npm run bundle:portals",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "esbuild": "^0.21.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
