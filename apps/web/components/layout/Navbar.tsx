@@ -1,0 +1,215 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { type Locale } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import { Menu, X, ChevronDown, Globe } from "lucide-react";
+
+interface NavbarProps {
+  locale: Locale;
+}
+
+const PRODUCTS_MEGA_MENU = [
+  {
+    category: "Healthcare",
+    items: [
+      { name: "CyMed Clinic", slug: "cymed-clinic", desc: "Outpatient clinical management" },
+      { name: "CyMed Hospital", slug: "cymed-hospital", desc: "Complete hospital operations" },
+      { name: "CyMed Laboratory", slug: "cymed-laboratory", desc: "LIS with auto-verification" },
+      { name: "CyMed Imaging", slug: "cymed-imaging", desc: "RIS/DICOM PACS integration" },
+      { name: "CyMed Pharmacy", slug: "cymed-pharmacy", desc: "Clinical pharmacy management" },
+    ],
+  },
+  {
+    category: "Enterprise",
+    items: [
+      { name: "CyCom ERP", slug: "cycom", desc: "Unified enterprise resource planning" },
+      { name: "CyGov", slug: "cygov", desc: "Government digital transformation" },
+      { name: "CyAI", slug: "cyai", desc: "AI & intelligence platform" },
+      { name: "CyData", slug: "cydata", desc: "Data lakehouse & analytics" },
+    ],
+  },
+  {
+    category: "Platform",
+    items: [
+      { name: "CyIdentity", slug: "cyidentity", desc: "OAuth 2.1, OIDC, Zero Trust" },
+      { name: "CyIntegrationHub", slug: "cyintegrationhub", desc: "FHIR, HL7, REST integration" },
+      { name: "CyConnect", slug: "cyconnect", desc: "Unified communications" },
+      { name: "CyCitizen", slug: "cycitizen", desc: "Citizen experience platform" },
+    ],
+  },
+];
+
+export function Navbar({ locale }: NavbarProps) {
+  const t = useTranslations("nav");
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const isRtl = locale === "ar";
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  const altLocale = locale === "en" ? "ar" : "en";
+
+  return (
+    <header
+      className={cn(
+        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
+        scrolled
+          ? "bg-cy-black/90 backdrop-blur-xl border-b border-cy-glass-border shadow-glass"
+          : "bg-transparent"
+      )}
+      role="banner"
+    >
+      <nav
+        className="section-container flex items-center justify-between h-16"
+        aria-label="Main navigation"
+      >
+        {/* Logo */}
+        <Link
+          href={`/${locale}`}
+          className="flex items-center gap-2.5 focus-visible:ring-2 focus-visible:ring-cy-orange rounded-lg"
+          aria-label="CyberCom Revolution — Home"
+        >
+          <div className="w-8 h-8 rounded-lg bg-gradient-cy flex items-center justify-center">
+            <span className="text-white font-heading font-bold text-sm">Cy</span>
+          </div>
+          <span className="font-heading font-semibold text-white text-base hidden sm:block">
+            CyberCom
+          </span>
+        </Link>
+
+        {/* Desktop Nav */}
+        <div className="hidden lg:flex items-center gap-1">
+          {/* Products mega menu */}
+          <div className="relative">
+            <button
+              className="btn-ghost flex items-center gap-1"
+              onMouseEnter={() => setProductsOpen(true)}
+              onMouseLeave={() => setProductsOpen(false)}
+              onClick={() => setProductsOpen((v) => !v)}
+              aria-expanded={productsOpen}
+              aria-haspopup="true"
+            >
+              {t("products")}
+              <ChevronDown
+                className={cn("w-3.5 h-3.5 transition-transform duration-200", productsOpen && "rotate-180")}
+                aria-hidden="true"
+              />
+            </button>
+
+            {productsOpen && (
+              <div
+                className="absolute top-full mt-1 left-0 w-[680px] p-6 glass-card rounded-2xl grid grid-cols-3 gap-6"
+                onMouseEnter={() => setProductsOpen(true)}
+                onMouseLeave={() => setProductsOpen(false)}
+                role="menu"
+              >
+                {PRODUCTS_MEGA_MENU.map((group) => (
+                  <div key={group.category}>
+                    <p className="text-2xs font-medium text-cy-gray-400 uppercase tracking-wider mb-3">
+                      {group.category}
+                    </p>
+                    <ul className="space-y-1">
+                      {group.items.map((item) => (
+                        <li key={item.slug}>
+                          <Link
+                            href={`/${locale}/products/${item.slug}`}
+                            className="block px-2 py-1.5 rounded-lg text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors duration-150 focus-visible:ring-1 focus-visible:ring-cy-orange"
+                            role="menuitem"
+                          >
+                            <span className="font-medium block">{item.name}</span>
+                            <span className="text-2xs text-cy-gray-400">{item.desc}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link href={`/${locale}/industries`} className="btn-ghost">{t("industries")}</Link>
+          <Link href={`/${locale}/partners`} className="btn-ghost">{t("partners")}</Link>
+          <a href={`https://docs.cy-com.com`} className="btn-ghost" target="_blank" rel="noreferrer">{t("docs")}</a>
+          <Link href={`/${locale}/about`} className="btn-ghost">{t("about")}</Link>
+        </div>
+
+        {/* Actions */}
+        <div className="hidden lg:flex items-center gap-2">
+          {/* Locale switcher */}
+          <Link
+            href={`/${altLocale}`}
+            className="btn-ghost text-xs flex items-center gap-1.5"
+            aria-label={`Switch to ${altLocale === "en" ? "English" : "العربية"}`}
+          >
+            <Globe className="w-3.5 h-3.5" aria-hidden="true" />
+            {altLocale === "en" ? "EN" : "AR"}
+          </Link>
+
+          <a
+            href={process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}
+            className="btn-secondary text-sm py-2 px-4"
+          >
+            {t("portal")}
+          </a>
+
+          <Link href={`/${locale}/demo`} className="btn-primary text-sm py-2 px-4">
+            {t("requestDemo")}
+          </Link>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="lg:hidden btn-ghost p-2"
+          onClick={() => setMobileOpen((v) => !v)}
+          aria-expanded={mobileOpen}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileOpen ? (
+            <X className="w-5 h-5" aria-hidden="true" />
+          ) : (
+            <Menu className="w-5 h-5" aria-hidden="true" />
+          )}
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="lg:hidden bg-cy-dark/95 backdrop-blur-xl border-b border-cy-glass-border">
+          <nav className="section-container py-4 space-y-1" aria-label="Mobile navigation">
+            {PRODUCTS_MEGA_MENU.flatMap((g) =>
+              g.items.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/${locale}/products/${item.slug}`}
+                  className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))
+            )}
+            <div className="h-px bg-cy-glass-border my-3" />
+            <Link href={`/${locale}/industries`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("industries")}</Link>
+            <Link href={`/${locale}/partners`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("partners")}</Link>
+            <Link href={`/${locale}/about`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("about")}</Link>
+            <div className="h-px bg-cy-glass-border my-3" />
+            <Link href={`/${locale}/demo`} className="btn-primary w-full justify-center" onClick={() => setMobileOpen(false)}>{t("requestDemo")}</Link>
+            <Link href={`/${altLocale}`} className="btn-secondary w-full justify-center mt-2" onClick={() => setMobileOpen(false)}>
+              <Globe className="w-4 h-4" aria-hidden="true" />
+              {altLocale === "en" ? "English" : "العربية"}
+            </Link>
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+}
