@@ -27,3 +27,6 @@ export type { MarketplaceListing, MarketplaceInstallation } from "./marketplace"
 
 export { portalApi } from "./portal";
 export type { CustomerPortalAccess, SupportTicket, WhiteLabelConfig, CommercialMetricsSnapshot } from "./portal";
+
+export { partnerApi } from "./partner";
+export type { PartnerProfile, PartnerOpportunity, RevenueShare, PartnerAsset, DealRegistration } from "./partner";

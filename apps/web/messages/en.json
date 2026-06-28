@@ -13,7 +13,9 @@
     "investors": "Investors",
     "requestDemo": "Request Demo",
     "login": "Login",
-    "portal": "Customer Portal"
+    "portal": "Customer Portal",
+    "marketplace": "Marketplace",
+    "partnerPortal": "Partner Portal"
   },
   "hero": {
     "tagline": "CyberCom Revolution",
