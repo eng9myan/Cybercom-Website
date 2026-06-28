@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface PricingPageProps {
 
 export async function generateMetadata({ params }: PricingPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "Pricing — CyberCom Platform",
     description:
@@ -143,6 +145,7 @@ const FAQ = [
 
 export default async function PricingPage({ params }: PricingPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

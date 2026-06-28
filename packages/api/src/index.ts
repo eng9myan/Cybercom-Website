@@ -1,29 +1,29 @@
-export { CyberComApiClient, apiClient } from "./client.js";
-export type { ApiClientConfig, ApiResponse, ApiError } from "./client.js";
+export { CyberComApiClient, apiClient } from "./client";
+export type { ApiClientConfig, ApiResponse, ApiError } from "./client";
 
-export { productsApi } from "./products.js";
-export type { Product, ProductCategory, ProductListParams, Edition } from "./products.js";
+export { productsApi } from "./products";
+export type { Product, ProductCategory, ProductListParams, Edition } from "./products";
 
-export { industriesApi } from "./industries.js";
-export type { Industry } from "./industries.js";
+export { industriesApi } from "./industries";
+export type { Industry } from "./industries";
 
-export { demoApi } from "./demo.js";
-export type { DemoRequestPayload, DemoRequestResponse } from "./demo.js";
+export { demoApi } from "./demo";
+export type { DemoRequestPayload, DemoRequestResponse } from "./demo";
 
-export { contactApi } from "./contact.js";
-export type { ContactPayload, ContactResponse, NewsletterPayload, NewsletterResponse, Department } from "./contact.js";
+export { contactApi } from "./contact";
+export type { ContactPayload, ContactResponse, NewsletterPayload, NewsletterResponse, Department } from "./contact";
 
-export { partnersApi } from "./partners.js";
-export type { Partner, PartnerType, PartnerApplicationPayload, PartnerApplicationResponse } from "./partners.js";
+export { partnersApi } from "./partners";
+export type { Partner, PartnerType, PartnerApplicationPayload, PartnerApplicationResponse } from "./partners";
 
-export { docsApi } from "./docs.js";
-export type { DocSection, DocItem, DocSearchResult, DocContentType } from "./docs.js";
+export { docsApi } from "./docs";
+export type { DocSection, DocItem, DocSearchResult, DocContentType } from "./docs";
 
-export { licensingApi } from "./licensing.js";
-export type { License, Subscription } from "./licensing.js";
+export { licensingApi } from "./licensing";
+export type { License, Subscription } from "./licensing";
 
-export { marketplaceApi } from "./marketplace.js";
-export type { MarketplaceListing, MarketplaceInstallation } from "./marketplace.js";
+export { marketplaceApi } from "./marketplace";
+export type { MarketplaceListing, MarketplaceInstallation } from "./marketplace";
 
-export { portalApi } from "./portal.js";
-export type { CustomerPortalAccess, SupportTicket, WhiteLabelConfig, CommercialMetricsSnapshot } from "./portal.js";
+export { portalApi } from "./portal";
+export type { CustomerPortalAccess, SupportTicket, WhiteLabelConfig, CommercialMetricsSnapshot } from "./portal";

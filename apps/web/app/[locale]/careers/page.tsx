@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface CareersPageProps {
 
 export async function generateMetadata({ params }: CareersPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "Careers — Join CyberCom Revolution",
     description:
@@ -102,6 +104,7 @@ const PERKS = [
 
 export default async function CareersPage({ params }: CareersPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

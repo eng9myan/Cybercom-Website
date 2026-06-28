@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface AboutPageProps {
 
 export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "About CyberCom Revolution",
     description: "CyberCom Revolution builds the world's most integrated intelligent platforms for healthcare, government, and enterprise — unifying 9 domains in one connected ecosystem.",
@@ -57,6 +59,7 @@ const PRODUCTS_BRIEF = [
 
 export default async function AboutPage({ params }: AboutPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

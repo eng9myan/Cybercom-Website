@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
@@ -15,6 +16,7 @@ interface HomePageProps {
 
 export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   const isAr = locale === "ar";
 
   const metadata = buildMetadata({
@@ -42,6 +44,7 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

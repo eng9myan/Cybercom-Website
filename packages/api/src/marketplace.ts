@@ -1,5 +1,5 @@
-import { apiClient } from "./client.js";
-import type { ApiResponse } from "./client.js";
+import { apiClient } from "./client";
+import type { ApiResponse } from "./client";
 
 export interface MarketplaceListing {
   id: string;

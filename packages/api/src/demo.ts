@@ -1,4 +1,4 @@
-import { apiClient } from "./client.js";
+import { apiClient } from "./client";
 
 export interface DemoRequestPayload {
   full_name: string;

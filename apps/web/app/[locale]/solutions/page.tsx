@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -24,6 +25,7 @@ interface SolutionsPageProps {
 
 export async function generateMetadata({ params }: SolutionsPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "Solutions — Healthcare, Government & Enterprise",
     description:
@@ -149,6 +151,7 @@ const CROSS_CUTTING = [
 
 export default async function SolutionsPage({ params }: SolutionsPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

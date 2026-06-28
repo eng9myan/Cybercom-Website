@@ -10,11 +10,13 @@ export const localeMetadata: Record<Locale, { name: string; dir: "ltr" | "rtl"; 
   ar: { name: "العربية", dir: "rtl", hreflang: "ar" },
 };
 
-export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as Locale)) notFound();
+export default getRequestConfig(async ({ requestLocale }) => {
+  const locale = await requestLocale;
+  if (!locale || !locales.includes(locale as Locale)) notFound();
 
   const messages = await import(`../messages/${locale}.json`);
   return {
+    locale,
     messages: messages.default,
     timeZone: "Asia/Riyadh",
     now: new Date(),

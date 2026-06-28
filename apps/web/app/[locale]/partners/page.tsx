@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface PartnersPageProps {
 
 export async function generateMetadata({ params }: PartnersPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "Partner Program — CyberCom Revolution",
     description: "Join the CyberCom Partner Program. Become an authorized implementation, reseller, or technology partner and access training, support, and co-selling resources.",
@@ -66,6 +68,7 @@ const BENEFITS = [
 
 export default async function PartnersPage({ params }: PartnersPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

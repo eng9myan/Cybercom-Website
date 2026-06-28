@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
@@ -20,6 +21,7 @@ export async function generateMetadata({
   params,
 }: LocaleLayoutProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "nav" });
   return {
     title: {
@@ -35,6 +37,7 @@ export async function generateMetadata({
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
 
   if (!locales.includes(locale as Locale)) {
     notFound();

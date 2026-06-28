@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -345,6 +346,19 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["SaaS Cloud", "On-Premise", "Hybrid"],
     color: "blue",
     accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+    subProducts: [
+      { name: "CyCom Finance", slug: "cycom-finance", desc: "General ledger, budgeting, cash flow management" },
+      { name: "CyCom Accounting", slug: "cycom-accounting", desc: "Accounts payable, accounts receivable, tax compliance" },
+      { name: "CyCom Procurement", slug: "cycom-procurement", desc: "Supplier management, purchase requisitions, purchasing cycles" },
+      { name: "CyCom Inventory", slug: "cycom-inventory", desc: "Multi-warehouse tracking, stock movements, serial/batch control" },
+      { name: "CyCom HR", slug: "cycom-hr", desc: "Employee records, performance tracking, recruitment" },
+      { name: "CyCom Payroll", slug: "cycom-payroll", desc: "Bilingual salary processing, local labor compliance" },
+      { name: "CyCom CRM", slug: "cycom-crm", desc: "Lead pipeline, client relationships, support portals" },
+      { name: "CyCom Assets", slug: "cycom-assets", desc: "Fixed assets register, automated depreciation schedules" },
+      { name: "CyCom Manufacturing", slug: "cycom-manufacturing", desc: "Bill of materials (BOM), production scheduling" },
+      { name: "CyCom Retail", slug: "cycom-retail", desc: "Point of Sale (POS), checkout, loyalty rewards" },
+      { name: "CyCom BI", slug: "cycom-bi", desc: "Drag-and-drop analytics dashboards, business reporting" },
+    ],
   },
   "cygov": {
     name: "CyGov",
@@ -542,6 +556,259 @@ const PRODUCT_DATA: Record<string, {
     color: "indigo",
     accentClass: "text-indigo-400 border-indigo-500/20 bg-indigo-500/5",
   },
+  "cycom-finance": {
+    name: "CyCom Finance",
+    tagline: "Unified Financial Management & Budgeting",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "CyCom Finance provides unified general ledger control, cash flow monitoring, multi-currency processing, and budgeting capabilities across enterprise divisions, fully compliant with IFRS standards.",
+    features: [
+      "Bilingual general ledger control",
+      "Real-time cash flow monitoring",
+      "Multi-currency conversion engine",
+      "Dynamic budgeting & forecasting",
+      "Auditable journals & ledger entries",
+      "IFRS/GAAP financial statements",
+    ],
+    compliance: ["IFRS", "GAAP", "SOC 1 & SOC 2 Ready"],
+    editions: [
+      { name: "Finance Starter", desc: "Core ledger & budgeting", features: ["General ledger", "Basic budgeting", "Standard reporting"] },
+      { name: "Finance Enterprise", desc: "Advanced cash flow & multi-currency", features: ["All Starter features", "Multi-currency processing", "Automated reconciliation", "Consolidated statements"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud", "On-Premise"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-accounting": {
+    name: "CyCom Accounting",
+    tagline: "Accounts Payable, Receivable & Tax Compliance",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Manage accounts payable, receivable, and automatic tax calculations. Complete support for local VAT/tax reporting requirements and billing reconciliation.",
+    features: [
+      "Accounts Payable (AP) matching",
+      "Accounts Receivable (AR) invoicing",
+      "Automatic VAT & sales tax calculation",
+      "Local tax compliance export utilities",
+      "Bank statement auto-reconciliation",
+      "Aging schedules and collections control",
+    ],
+    compliance: ["VAT compliant", "Tax authority integration guidelines"],
+    editions: [
+      { name: "Accounting Core", desc: "AP, AR, and basic tax filing", features: ["AP ledger", "AR invoicing", "Standard tax calculation"] },
+      { name: "Accounting Advanced", desc: "Enterprise invoicing and local integration", features: ["All Core features", "E-invoicing integration", "Auto-reconciliation", "Multi-tax-entity support"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud", "On-Premise"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-procurement": {
+    name: "CyCom Procurement",
+    tagline: "Sourcing & Supplier Relationship Management",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Streamline procurement from purchase requisitions to purchase orders (PO), vendor bidding, and three-way invoice matching.",
+    features: [
+      "Purchase requisition workflows",
+      "Supplier bidding & quotation management",
+      "Automated Purchase Order (PO) creation",
+      "Three-way invoice matching checks",
+      "Supplier scorecards & performance",
+      "Contract term monitoring",
+    ],
+    compliance: ["ISO 9001 quality guidelines", "Anti-bribery audit tracing"],
+    editions: [
+      { name: "Procurement Starter", desc: "Purchase requests & orders", features: ["Requisition workflow", "PO creation", "Basic vendor listing"] },
+      { name: "Procurement Enterprise", desc: "Full bidding & contract management", features: ["All Starter features", "Vendor portal access", "Bidding engine", "SLA tracking", "Contract renewals"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud", "On-Premise"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-inventory": {
+    name: "CyCom Inventory",
+    tagline: "Multi-Warehouse Tracking & Inventory Control",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Manage stock across multiple warehouses. Features batch/serial number tracking, FIFO/FEFO costing methods, and auto-replenishment notifications.",
+    features: [
+      "Multi-warehouse inventory tracking",
+      "Batch & serial number verification",
+      "FIFO & FEFO costing calculations",
+      "Barcode scanning integration",
+      "Auto-replenishment threshold alerts",
+      "Stock transfer tracking",
+    ],
+    compliance: ["GS1 Barcoding standards", "FDA CFR Title 21 compliant tracking"],
+    editions: [
+      { name: "Inventory Standard", desc: "Single warehouse, batch tracking", features: ["Core stock tracking", "Batch tracking", "Barcode scanning"] },
+      { name: "Inventory Enterprise", desc: "Multi-warehouse, cost valuation", features: ["All Standard features", "Multi-warehouse mapping", "FEFO auto-allocation", "Reorder algorithms"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud", "On-Premise"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-hr": {
+    name: "CyCom HR",
+    tagline: "Strategic Human Resource & Talent Management",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Core HR operations including employee records management, performance tracking, dynamic organizational hierarchy mapping, and onboarding workflows.",
+    features: [
+      "Secure employee records database",
+      "Org chart & hierarchy mapping",
+      "Performance evaluation templates",
+      "Onboarding & offboarding workflows",
+      "Time and attendance tracking",
+      "Employee self-service (ESS) portal",
+    ],
+    compliance: ["GDPR data privacy standards", "Local labor law record keeping"],
+    editions: [
+      { name: "HR Core", desc: "Employee database & records", features: ["Employee database", "ESS portal", "Attendance tracking"] },
+      { name: "HR Strategic", desc: "Recruiting & performance management", features: ["All Core features", "Performance management", "Onboarding checklists", "Custom org charts"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-payroll": {
+    name: "CyCom Payroll",
+    tagline: "Bilingual Salary Processing & Compliance",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Bilingual payroll processing system supporting salary calculations, local labor compliance checks (such as WPS in the GCC), benefit tracking, and tax withholding.",
+    features: [
+      "Bilingual payroll generation (AR/EN)",
+      "Wage Protection System (WPS) export",
+      "Social security & pension calculations",
+      "Overtime & allowance formulas",
+      "End of Service (EOS) calculation",
+      "Pay slip delivery via ESS portal",
+    ],
+    compliance: ["WPS compliant (GCC)", "Social security tax withholding codes"],
+    editions: [
+      { name: "Payroll Core", desc: "Monthly run & standard allowances", features: ["Payroll generation", "Pay slip delivery", "Standard tax withholding"] },
+      { name: "Payroll Enterprise", desc: "Multi-country & local compliance integrations", features: ["All Core features", "WPS integration", "Social security automation", "Custom allowances formulas"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud", "On-Premise"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-crm": {
+    name: "CyCom CRM",
+    tagline: "Lead Pipeline & Customer Relationship Management",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Track leads, manage sales pipelines, customer interactions, service support tickets, and client portals.",
+    features: [
+      "Interactive sales pipeline dashboard",
+      "Contact & lead profile management",
+      "Customer interaction history log",
+      "Support ticket queue management",
+      "Contract renewal reminder engine",
+      "Customer portal integration",
+    ],
+    compliance: ["GDPR consent management", "SOC 2 security parameters"],
+    editions: [
+      { name: "CRM Starter", desc: "Lead and contact management", features: ["Contact directory", "Pipeline dashboard", "Task reminders"] },
+      { name: "CRM Enterprise", desc: "Customer ticketing and portal mapping", features: ["All Starter features", "Ticketing system", "Customer portal integration", "Automated marketing rules"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-assets": {
+    name: "CyCom Assets",
+    tagline: "Fixed Asset Registry & Depreciation Scheduling",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Fixed assets register. Automatic depreciation calculations (straight-line, double-declining), maintenance scheduling, and location tracking.",
+    features: [
+      "Fixed asset registry database",
+      "Straight-line & declining depreciation",
+      "Asset maintenance scheduling alerts",
+      "Barcoded asset location mapping",
+      "Asset disposal & retirement records",
+      "Automated financial journal postings",
+    ],
+    compliance: ["IFRS 16 lease standards", "IAS 16 property, plant, and equipment"],
+    editions: [
+      { name: "Assets Core", desc: "Asset registry & depreciation", features: ["Registry database", "Standard depreciation", "Journal posting"] },
+      { name: "Assets Advanced", desc: "Maintenance management & location audits", features: ["All Core features", "Maintenance alerts", "GPS/Barcode tracking", "IFRS 16 compliant leases"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud", "On-Premise"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-manufacturing": {
+    name: "CyCom Manufacturing",
+    tagline: "Production Scheduling & Bill of Materials",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Optimize production lines. Features Bill of Materials (BOM) management, material requirements planning (MRP), and factory scheduling tools.",
+    features: [
+      "Multi-level Bill of Materials (BOM)",
+      "Material Requirements Planning (MRP)",
+      "Production order status tracking",
+      "Shop floor scheduling dashboards",
+      "Quality assurance inspection checksheets",
+      "Machine capacity planning logs",
+    ],
+    compliance: ["ISO 9001 quality audits", "GMP compliance readiness"],
+    editions: [
+      { name: "Manufacturing Standard", desc: "BOM management & production tracking", features: ["BOM database", "Production orders", "Quality checklists"] },
+      { name: "Manufacturing Advanced", desc: "Full MRP and capacity scheduling", features: ["All Standard features", "MRP calculator", "Capacity planning", "Factory IoT interfaces"] },
+    ],
+    deployment: ["Private Cloud", "On-Premise", "Hybrid"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-retail": {
+    name: "CyCom Retail",
+    tagline: "Point of Sale (POS) & Checkout Operations",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Manage retail checkouts. Secure POS interfaces, offline transactional capabilities, loyalty programs, and inventory synchronization.",
+    features: [
+      "Secure POS checkout screen",
+      "Offline transactional resilience",
+      "Real-time inventory synchronization",
+      "Loyalty rewards & customer history",
+      "Multi-payment terminal interfaces",
+      "Shift reconciliation reporting",
+    ],
+    compliance: ["PCI DSS payment standards", "VAT e-invoicing compliance"],
+    editions: [
+      { name: "Retail Core", desc: "Single terminal POS operations", features: ["POS screen", "Shift reconciliation", "VAT invoicing"] },
+      { name: "Retail Enterprise", desc: "Multi-store and loyalty management", features: ["All Core features", "Multi-store dashboard", "Loyalty engine", "Offline sync server"] },
+    ],
+    deployment: ["SaaS Cloud", "Hybrid Local POS Server"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
+  "cycom-bi": {
+    name: "CyCom BI",
+    tagline: "Business Intelligence & Drag-and-Drop Dashboards",
+    category: "erp",
+    categoryLabel: "CyCom Enterprise",
+    description: "Create visual reports using drag-and-drop dashboard tools. Access cross-module business intelligence and share metrics.",
+    features: [
+      "Drag-and-drop dashboard editor",
+      "Cross-module ERP data access",
+      "Prebuilt financial KPI widgets",
+      "Scheduled report delivery engine",
+      "Role-based visualization control",
+      "Excel/CSV data export engines",
+    ],
+    compliance: ["ISO 27001 info security guidelines", "GDPR privacy scopes"],
+    editions: [
+      { name: "BI Standard", desc: "View dashboards & export reports", features: ["Prebuilt dashboards", "Export tools", "Scheduled delivery"] },
+      { name: "BI Creator", desc: "Custom dashboards & data sources", features: ["All Standard features", "Drag-and-drop editor", "Custom SQL/CyData connections", "Embeddable analytics"] },
+    ],
+    deployment: ["SaaS Cloud", "Private Cloud"],
+    color: "blue",
+    accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+  },
 };
 
 const WORKFLOW_DATA: Record<string, { step: number; title: string; desc: string }[]> = {
@@ -671,6 +938,83 @@ const WORKFLOW_DATA: Record<string, { step: number; title: string; desc: string 
     { step: 4, title: "Submit & Track Request", desc: "Request submitted with supporting documents. Citizen receives reference number and real-time status updates." },
     { step: 5, title: "Receive Digital Documents", desc: "Approved documents delivered to citizen's digital wallet. QR code verification available for physical presentation." },
   ],
+  "cycom-finance": [
+    { step: 1, title: "Chart of Accounts Setup", desc: "Define fiscal entities, cost centers, general ledger accounts, and reporting currency per standard IFRS." },
+    { step: 2, title: "Budget Planning", desc: "Create annual budgets and expense thresholds for each corporate department or project registry." },
+    { step: 3, title: "Transaction Posting", desc: "Post financial journal entries. Verify and adjust cash flow, accounts payable, and accounts receivable ledgers." },
+    { step: 4, title: "Reconciliation", desc: "Run automatic bank statement matching to verify treasury holdings and highlight discrepancies." },
+    { step: 5, title: "Reporting & Auditing", desc: "Generate audited financial balance sheets, income statements, and IFRS-compliant annual filings." },
+  ],
+  "cycom-accounting": [
+    { step: 1, title: "Verify Accounts Payable", desc: "Review and approve incoming vendor invoices, matching purchase orders and receiving slips." },
+    { step: 2, title: "Process Billing", desc: "Generate outgoing customer invoices, configure payment terms, and deliver billing statements electronically." },
+    { step: 3, title: "Tax Computation", desc: "Automatically compute local VAT, withholding taxes, and sales tax adjustments per national rules." },
+    { step: 4, title: "Cash Allocation", desc: "Map incoming bank deposits to outstanding accounts receivable invoices to reconcile cash accounts." },
+    { step: 5, title: "Tax Filing", desc: "Compile and export VAT declarations and local tax filing reports for submission to national authorities." },
+  ],
+  "cycom-procurement": [
+    { step: 1, title: "Purchase Requisition", desc: "Department requests items. Requisition automatically routed through organizational approval levels." },
+    { step: 2, title: "RFQ & Bidding", desc: "Invite vendor quotes and track bids on the supplier portal. Compare pricing and terms." },
+    { step: 3, title: "PO Issuance", desc: "Generate Purchase Order (PO) with final pricing, terms, and shipping addresses. Auto-deliver to vendor." },
+    { step: 4, title: "Three-Way Match", desc: "Match invoice, receiving voucher, and PO. Flag price mismatches or quantity variances." },
+    { step: 5, title: "Supplier Evaluation", desc: "Log vendor delivery times, quality scores, and pricing accuracy to guide future sourcing cycles." },
+  ],
+  "cycom-inventory": [
+    { step: 1, title: "Warehouse Mapping", desc: "Configure warehouses, virtual zones, shelves, and bin addresses for optimized physical picking." },
+    { step: 2, title: "Barcode Ingestion", desc: "Scan barcode labels during stock arrival. Record batch numbers, lot codes, and expiration parameters." },
+    { step: 3, title: "Stock Allocation", desc: "Track serialized inventory and allocate items based on FIFO/FEFO costing rules." },
+    { step: 4, title: "Internal Movement", desc: "Manage stock transfers, cycle counts, and adjustments with digital verification." },
+    { step: 5, title: "Replenishment", desc: "Generate auto-reorder suggestions when stock falls below defined thresholds." },
+  ],
+  "cycom-hr": [
+    { step: 1, title: "Onboarding Flow", desc: "Employee profile setup: personal details, contracts, org hierarchy mapping, and IT provisioning." },
+    { step: 2, title: "Record Management", desc: "Maintain central repository of employee credentials, emergency contacts, and job change history." },
+    { step: 3, title: "Time Tracking", desc: "Capture work hours via biometric integration, mobile check-ins, or web-based timesheets." },
+    { step: 4, title: "Performance Evaluation", desc: "Initiate evaluation cycles, configure peer reviews, and track goals." },
+    { step: 5, title: "Self-Service Requests", desc: "Employees submit leave requests, expense reimbursements, and document inquiries via the ESS portal." },
+  ],
+  "cycom-payroll": [
+    { step: 1, title: "Formula Setup", desc: "Configure base salaries, overtime multipliers, and recurring allowances in the calculations engine." },
+    { step: 2, title: "Timesheet Integration", desc: "Sync approved employee timecards, shifts, leaves, and unpaid absences into the payroll run." },
+    { step: 3, title: "Deductions & Benefits", desc: "Calculate social security, healthcare contributions, pension withholdings, and end-of-service accruals." },
+    { step: 4, title: "WPS Export", desc: "Generate Wage Protection System (WPS) bank transfer files compliant with local regulatory formats." },
+    { step: 5, title: "Slip Delivery", desc: "Deliver secure, detailed pay slips to employee portals and post journal entries to general ledger accounts." },
+  ],
+  "cycom-crm": [
+    { step: 1, title: "Lead Ingestion", desc: "Capture prospective leads from website forms, partner portals, and marketing events." },
+    { step: 2, title: "Pipeline Tracking", desc: "Manage deals through visual pipeline stages. Track email history and schedule calls." },
+    { step: 3, title: "Quotation Drafting", desc: "Generate commercial proposals and pricing quotes, pulling items directly from the catalog." },
+    { step: 4, title: "Contract Management", desc: "Track active customer contracts, SLA agreements, and set automatic renewal notifications." },
+    { step: 5, title: "Customer Ticketing", desc: "Route helpdesk inquiries. Track response times, support statuses, and resolve service issues." },
+  ],
+  "cycom-assets": [
+    { step: 1, title: "Asset Registry", desc: "Register property, plant, equipment, and IT hardware. Assign barcodes and locations." },
+    { step: 2, title: "Depreciation Run", desc: "Run straight-line, declining-balance, or custom depreciation cycles. Automatically update asset book value." },
+    { step: 3, title: "Maintenance Alerts", desc: "Schedule preventive maintenance tasks, assign technicians, and track maintenance histories." },
+    { step: 4, title: "Asset Audit", desc: "Perform physical asset audits using mobile barcode and RFID scans." },
+    { step: 5, title: "Disposal & Postings", desc: "Log asset write-offs, retirements, or sales, and automatically post financial adjustments." },
+  ],
+  "cycom-manufacturing": [
+    { step: 1, title: "Bill of Materials (BOM)", desc: "Build multi-level product recipes, compiling raw materials, intermediate assemblies, and labor costs." },
+    { step: 2, title: "MRP Calculation", desc: "Run Material Requirements Planning (MRP) to calculate purchasing needs based on demand forecast." },
+    { step: 3, title: "Work Order Release", desc: "Release production work orders to the shop floor. Assign work centers and schedule operations." },
+    { step: 4, title: "Assembly Tracking", desc: "Monitor raw material consumption, machine running times, and assembly milestones." },
+    { step: 5, title: "QA Inspection", desc: "Conduct quality checksheets at production stages, logging compliance before inventory storage." },
+  ],
+  "cycom-retail": [
+    { step: 1, title: "Register Boot", desc: "Cashier logs into terminal, validates cash register contents, and opens checkout shift." },
+    { step: 2, title: "Item Checkout", desc: "Scan product barcodes, retrieve real-time prices, apply loyalty discounts, and calculate VAT." },
+    { step: 3, title: "Payment Settlement", desc: "Accept cards, digital wallets, cash, or credit. Secure integration with payment terminals." },
+    { step: 4, title: "Offline Sync", desc: "If offline, POS stores transactions locally, syncs to cloud database once connection is restored." },
+    { step: 5, title: "Shift Closing", desc: "Perform cash reconciliation audits, print closing reports, and post POS totals to general ledger accounts." },
+  ],
+  "cycom-bi": [
+    { step: 1, title: "Data Source Mapping", desc: "Map analytical data views from EMR, ERP, and IAM modules via secure lakehouse endpoints." },
+    { step: 2, title: "Dashboard Building", desc: "Select visual widgets — bar charts, line graphs, KPI tiles, and geographical maps." },
+    { step: 3, title: "Dynamic Querying", desc: "Query data tables in natural language or SQL. Filter and slice dashboards in real time." },
+    { step: 4, title: "Delivery Scheduling", desc: "Schedule automated PDF dashboard deliveries to emails of key stakeholders." },
+    { step: 5, title: "Data Exporting", desc: "Export dataset tables to Excel, CSV, or Parquet formats for external financial or clinical research." },
+  ],
 };
 
 const LAUNCH_URLS: Record<string, string> = {
@@ -692,6 +1036,17 @@ const LAUNCH_URLS: Record<string, string> = {
   "cydata": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/data`,
   "cyconnect": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/connect`,
   "cycitizen": process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com",
+  "cycom-finance": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/finance`,
+  "cycom-accounting": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/accounting`,
+  "cycom-procurement": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/procurement`,
+  "cycom-inventory": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/inventory`,
+  "cycom-hr": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/hr`,
+  "cycom-payroll": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/payroll`,
+  "cycom-crm": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/crm`,
+  "cycom-assets": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/assets`,
+  "cycom-manufacturing": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/manufacturing`,
+  "cycom-retail": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/retail`,
+  "cycom-bi": `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/bi`,
 };
 
 export async function generateStaticParams() {
@@ -700,6 +1055,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
+  setRequestLocale(locale);
   const product = PRODUCT_DATA[slug];
   if (!product) return {};
 
@@ -770,6 +1126,7 @@ const COLOR_MAP: Record<string, { badge: string; btn: string; icon: string; grad
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { locale, slug } = await params;
+  setRequestLocale(locale);
   const product = PRODUCT_DATA[slug];
 
   if (!product) notFound();

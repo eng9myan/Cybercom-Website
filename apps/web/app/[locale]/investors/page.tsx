@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface InvestorsPageProps {
 
 export async function generateMetadata({ params }: InvestorsPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "Investors — CyberCom Revolution",
     description:
@@ -86,6 +88,7 @@ const PLATFORM_PRODUCTS = [
 
 export default async function InvestorsPage({ params }: InvestorsPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

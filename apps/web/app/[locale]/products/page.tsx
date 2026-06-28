@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface ProductsPageProps {
 
 export async function generateMetadata({ params }: ProductsPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "All Products — CyberCom Platform Suite",
     description: "Explore all 9 CyberCom platforms: CyMed healthcare, CyCom ERP, CyGov government, CyAI, CyIdentity, CyIntegrationHub, CyData, CyConnect, CyCitizen.",
@@ -45,6 +47,17 @@ const PLATFORM_CATEGORIES = [
     borderColor: "border-blue-500/20",
     products: [
       { name: "CyCom ERP", slug: "cycom", desc: "Unified enterprise ERP" },
+      { name: "CyCom Finance", slug: "cycom-finance", desc: "Financial management & budgeting" },
+      { name: "CyCom Accounting", slug: "cycom-accounting", desc: "AP, AR, & tax compliance" },
+      { name: "CyCom Procurement", slug: "cycom-procurement", desc: "Sourcing & supplier relations" },
+      { name: "CyCom Inventory", slug: "cycom-inventory", desc: "Multi-warehouse stock control" },
+      { name: "CyCom HR", slug: "cycom-hr", desc: "Human resource & talent" },
+      { name: "CyCom Payroll", slug: "cycom-payroll", desc: "Bilingual salary & WPS processing" },
+      { name: "CyCom CRM", slug: "cycom-crm", desc: "Lead pipeline & customer management" },
+      { name: "CyCom Assets", slug: "cycom-assets", desc: "Fixed asset & depreciation registry" },
+      { name: "CyCom Manufacturing", slug: "cycom-manufacturing", desc: "Production & Bill of Materials" },
+      { name: "CyCom Retail", slug: "cycom-retail", desc: "Point of Sale & checkout retail" },
+      { name: "CyCom BI", slug: "cycom-bi", desc: "Drag-and-drop dashboards & BI" },
       { name: "CyGov", slug: "cygov", desc: "Digital government platform" },
       { name: "CyCitizen", slug: "cycitizen", desc: "Citizen experience" },
     ],
@@ -76,6 +89,7 @@ const PLATFORM_CATEGORIES = [
 
 export default async function ProductsPage({ params }: ProductsPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

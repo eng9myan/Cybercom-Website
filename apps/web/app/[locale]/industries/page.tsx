@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/metadata";
@@ -10,6 +11,7 @@ interface IndustriesPageProps {
 
 export async function generateMetadata({ params }: IndustriesPageProps): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   return buildMetadata({
     title: "Industries — Healthcare, Government, Enterprise Solutions",
     description: "CyberCom delivers specialized digital platforms for Healthcare, Government, Retail, Manufacturing, Education, Financial Services, Insurance, and Telecommunications.",
@@ -114,6 +116,7 @@ const COLOR_VARIANTS: Record<string, string> = {
 
 export default async function IndustriesPage({ params }: IndustriesPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const l = locale as Locale;
 
   return (

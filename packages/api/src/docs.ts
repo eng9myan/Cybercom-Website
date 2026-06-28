@@ -1,4 +1,4 @@
-import { apiClient, type ApiResponse } from "./client.js";
+import { apiClient, type ApiResponse } from "./client";
 
 export type DocContentType =
   | "guide"
