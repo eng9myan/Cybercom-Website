@@ -136,7 +136,9 @@ export function Navbar({ locale }: NavbarProps) {
             )}
           </div>
 
+          <Link href={`/${locale}/solutions`} className="btn-ghost">{t("solutions")}</Link>
           <Link href={`/${locale}/industries`} className="btn-ghost">{t("industries")}</Link>
+          <Link href={`/${locale}/pricing`} className="btn-ghost">{t("pricing")}</Link>
           <Link href={`/${locale}/partners`} className="btn-ghost">{t("partners")}</Link>
           <a href={`https://docs.cy-com.com`} className="btn-ghost" target="_blank" rel="noreferrer">{t("docs")}</a>
           <Link href={`/${locale}/about`} className="btn-ghost">{t("about")}</Link>
@@ -198,7 +200,9 @@ export function Navbar({ locale }: NavbarProps) {
               ))
             )}
             <div className="h-px bg-cy-glass-border my-3" />
+            <Link href={`/${locale}/solutions`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("solutions")}</Link>
             <Link href={`/${locale}/industries`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("industries")}</Link>
+            <Link href={`/${locale}/pricing`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("pricing")}</Link>
             <Link href={`/${locale}/partners`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("partners")}</Link>
             <Link href={`/${locale}/about`} className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors" onClick={() => setMobileOpen(false)}>{t("about")}</Link>
             <div className="h-px bg-cy-glass-border my-3" />

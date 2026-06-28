@@ -25,6 +25,11 @@ const PRODUCTS = [
 
 const COMPANY_LINKS = [
   { key: "about", href: "/about" },
+  { key: "solutions", href: "/solutions" },
+  { key: "pricing", href: "/pricing" },
+  { key: "blog", href: "/blog" },
+  { key: "careers", href: "/careers" },
+  { key: "investors", href: "/investors" },
   { key: "partners", href: "/partners" },
   { key: "contact", href: "/contact" },
 ];
