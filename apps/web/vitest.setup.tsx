@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
 // Mock next-intl
-jest.mock("next-intl", () => ({
+vi.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
   useLocale: () => "en",
 }));
 
 // Mock framer-motion to avoid animation issues in tests
-jest.mock("framer-motion", () => ({
+vi.mock("framer-motion", () => ({
   motion: {
     div: ({ children, ...props }: React.HTMLProps<HTMLDivElement>) => <div {...props}>{children}</div>,
     h1: ({ children, ...props }: React.HTMLProps<HTMLHeadingElement>) => <h1 {...props}>{children}</h1>,
@@ -20,16 +21,16 @@ jest.mock("framer-motion", () => ({
 }));
 
 // Mock @cybercom/api
-jest.mock("@cybercom/api", () => ({
+vi.mock("@cybercom/api", () => ({
   demoApi: {
-    submit: jest.fn().mockResolvedValue({ id: "1", reference_number: "CYB-123456", status: "pending", created_at: new Date().toISOString() }),
+    submit: vi.fn().mockResolvedValue({ id: "1", reference_number: "CYB-123456", status: "pending", created_at: new Date().toISOString() }),
   },
   contactApi: {
-    send: jest.fn().mockResolvedValue({ id: "1", ticket_number: "TKT-001", status: "open", created_at: new Date().toISOString() }),
-    subscribeNewsletter: jest.fn().mockResolvedValue({ id: "1", status: "subscribed", created_at: new Date().toISOString() }),
+    send: vi.fn().mockResolvedValue({ id: "1", ticket_number: "TKT-001", status: "open", created_at: new Date().toISOString() }),
+    subscribeNewsletter: vi.fn().mockResolvedValue({ id: "1", status: "subscribed", created_at: new Date().toISOString() }),
   },
   productsApi: {
-    list: jest.fn().mockResolvedValue({ data: [], count: 0 }),
-    featured: jest.fn().mockResolvedValue({ data: [], count: 0 }),
+    list: vi.fn().mockResolvedValue({ data: [], count: 0 }),
+    featured: vi.fn().mockResolvedValue({ data: [], count: 0 }),
   },
 }));

@@ -774,7 +774,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   if (!product) notFound();
 
-  const colors = COLOR_MAP[product.color] ?? COLOR_MAP.emerald;
+  const colors = (COLOR_MAP[product.color] ?? COLOR_MAP.emerald) as { badge: string; btn: string; icon: string; gradient: string };
   const l = locale as Locale;
   const workflows = WORKFLOW_DATA[slug] ?? [];
   const launchUrl = LAUNCH_URLS[slug] ?? (process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com");
@@ -949,7 +949,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="w-44 border-r border-cy-glass-border p-3 space-y-1.5 hidden md:block" aria-hidden="true">
                 {product.features.slice(0, 6).map((_, i) => (
                   <div key={i} className={`h-7 rounded-lg px-2.5 flex items-center ${i === 0 ? `${colors.icon} border` : ""}`}>
-                    <div className={`h-2 rounded-full ${i === 0 ? colors.badge.split(" ")[0].replace("text-", "bg-") : "bg-cy-glass-border"}`} style={{ width: `${40 + i * 9}%` }} />
+                    <div className={`h-2 rounded-full ${i === 0 ? (colors.badge.split(" ")[0] ?? "").replace("text-", "bg-") : "bg-cy-glass-border"}`} style={{ width: `${40 + i * 9}%` }} />
                   </div>
                 ))}
               </div>
@@ -958,7 +958,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {[...Array(3)].map((_, i) => (
                     <div key={i} className="glass-card rounded-xl p-3">
                       <div className="h-2 w-16 rounded bg-cy-glass-border mb-2" />
-                      <div className={`h-5 w-10 rounded ${colors.badge.split(" ")[0].replace("text-", "bg-")} opacity-60`} />
+                      <div className={`h-5 w-10 rounded ${(colors.badge.split(" ")[0] ?? "").replace("text-", "bg-")} opacity-60`} />
                     </div>
                   ))}
                 </div>

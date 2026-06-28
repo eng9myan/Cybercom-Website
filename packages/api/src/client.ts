@@ -37,8 +37,9 @@ export class CyberComApiClient {
     return headers;
   }
 
-  async get<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
-    const url = new URL(`${this.baseUrl}/api/v1/public${path}`);
+  async get<T>(path: string, params?: Record<string, string | number | boolean | undefined>, isPublic = true): Promise<T> {
+    const prefix = isPublic ? "/api/v1/public" : "/api/v1";
+    const url = new URL(`${this.baseUrl}${prefix}${path}`);
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         if (v !== undefined && v !== null && v !== "") {
@@ -48,7 +49,7 @@ export class CyberComApiClient {
     }
     const res = await fetch(url.toString(), {
       headers: this.buildHeaders(),
-      next: { revalidate: 300 },
+      next: { revalidate: isPublic ? 300 : 0 },
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
@@ -57,8 +58,9 @@ export class CyberComApiClient {
     return res.json() as Promise<T>;
   }
 
-  async post<T>(path: string, body: unknown): Promise<T> {
-    const res = await fetch(`${this.baseUrl}/api/v1/public${path}`, {
+  async post<T>(path: string, body: unknown, isPublic = true): Promise<T> {
+    const prefix = isPublic ? "/api/v1/public" : "/api/v1";
+    const res = await fetch(`${this.baseUrl}${prefix}${path}`, {
       method: "POST",
       headers: this.buildHeaders(),
       body: JSON.stringify(body),
@@ -69,6 +71,34 @@ export class CyberComApiClient {
       throw { status: res.status, errors: errBody.errors ?? {} } as ApiError;
     }
     return res.json() as Promise<T>;
+  }
+
+  async put<T>(path: string, body: unknown, isPublic = false): Promise<T> {
+    const prefix = isPublic ? "/api/v1/public" : "/api/v1";
+    const res = await fetch(`${this.baseUrl}${prefix}${path}`, {
+      method: "PUT",
+      headers: this.buildHeaders(),
+      body: JSON.stringify(body),
+      credentials: "include",
+    });
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw { status: res.status, errors: errBody.errors ?? {} } as ApiError;
+    }
+    return res.json() as Promise<T>;
+  }
+
+  async delete<T>(path: string, isPublic = false): Promise<T> {
+    const prefix = isPublic ? "/api/v1/public" : "/api/v1";
+    const res = await fetch(`${this.baseUrl}${prefix}${path}`, {
+      method: "DELETE",
+      headers: this.buildHeaders(),
+    });
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw { status: res.status, errors: errBody.errors ?? {} } as ApiError;
+    }
+    return res.json().catch(() => ({})) as Promise<T>;
   }
 }
 

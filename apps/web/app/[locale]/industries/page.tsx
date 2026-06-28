@@ -139,7 +139,7 @@ export default async function IndustriesPage({ params }: IndustriesPageProps) {
       <div className="section-container pb-24">
         <div className="grid md:grid-cols-2 gap-6">
           {INDUSTRIES.map((industry) => {
-            const colorClass = COLOR_VARIANTS[industry.color] ?? COLOR_VARIANTS.cyan;
+            const colorClass = (COLOR_VARIANTS[industry.color] ?? COLOR_VARIANTS.cyan) as string;
             return (
               <Link
                 key={industry.slug}

@@ -18,3 +18,12 @@ export type { Partner, PartnerType, PartnerApplicationPayload, PartnerApplicatio
 
 export { docsApi } from "./docs.js";
 export type { DocSection, DocItem, DocSearchResult, DocContentType } from "./docs.js";
+
+export { licensingApi } from "./licensing.js";
+export type { License, Subscription } from "./licensing.js";
+
+export { marketplaceApi } from "./marketplace.js";
+export type { MarketplaceListing, MarketplaceInstallation } from "./marketplace.js";
+
+export { portalApi } from "./portal.js";
+export type { CustomerPortalAccess, SupportTicket, WhiteLabelConfig, CommercialMetricsSnapshot } from "./portal.js";
