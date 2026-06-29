@@ -1,12 +1,14 @@
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
-// Mock IntersectionObserver (not in JSDOM)
-vi.stubGlobal("IntersectionObserver", vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-})));
+// Mock IntersectionObserver (not in JSDOM) — must be a real constructor, not arrow fn
+class MockIntersectionObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  constructor(_cb: IntersectionObserverCallback, _opts?: IntersectionObserverInit) {}
+}
+vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 
 // Mock next-intl
 const translations: Record<string, string> = {
