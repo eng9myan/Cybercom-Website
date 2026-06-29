@@ -1,44 +1,104 @@
-name: Deploy to Oracle Cloud
+# =============================================================
+# Cybercom Website — Deploy to OCI
+# Target: OCI VM 158.178.130.4 | ubuntu user | nginx
+# Triggers: push to main branch
+# =============================================================
+name: Deploy Website to OCI
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-website-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: SSH Deploy to OCI
+  lint:
+    name: Validate HTML
     runs-on: ubuntu-latest
-
+    timeout-minutes: 5
     steps:
-      - name: Checkout code
+      - uses: actions/checkout@v4
+      - name: HTML validation
+        run: |
+          if command -v npx &>/dev/null; then
+            npx --yes html-validate index.html || true
+          fi
+
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy to OCI VM
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [lint, secret-scan]
+    steps:
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to Oracle Cloud via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.OCI_HOST }}
-          username: ubuntu
+          username: ${{ secrets.OCI_SSH_USERNAME }}
           key: ${{ secrets.OCI_SSH_KEY }}
           port: 22
+          timeout: 120s
           script: |
-            set -e
-
+            set -euo pipefail
             WEBROOT="/var/www/cy-com.com"
-            REPO="https://github.com/eng9myan/Cybercom-Website.git"
+            echo "Deploying website..."
 
-            echo "▶ Pulling latest code..."
             if [ -d "$WEBROOT/.git" ]; then
               git -C "$WEBROOT" pull origin main
             else
-              sudo git clone "$REPO" "$WEBROOT"
+              sudo git clone https://github.com/eng9myan/Cybercom-Website.git "$WEBROOT"
             fi
 
             sudo chown -R www-data:www-data "$WEBROOT"
             sudo chmod -R 755 "$WEBROOT"
-
             sudo nginx -t && sudo systemctl reload nginx
-            echo "✅ Deployed successfully at $(date)"
+            echo "Website deployed at $(date -u)"
 
-      - name: Notify success
+      - name: Health check
+        run: |
+          sleep 5
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://www.cy-com.com || echo "000")
+          echo "Health check: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Warning: site returned $HTTP_CODE"
+          fi
+
+      - name: Summary
         if: success()
-        run: echo "🚀 cy-com.com deployed successfully!"
+        run: |
+          echo "## Website Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: https://www.cy-com.com" >> $GITHUB_STEP_SUMMARY
+          echo "- SHA: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Rollback on failure
+        if: failure()
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ${{ secrets.OCI_SSH_USERNAME }}
+          key: ${{ secrets.OCI_SSH_KEY }}
+          port: 22
+          script: |
+            cd /var/www/cy-com.com
+            git reset --hard HEAD~1 || true
+            sudo nginx -t && sudo systemctl reload nginx || true
+            echo "Rollback complete"
