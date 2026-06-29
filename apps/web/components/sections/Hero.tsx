@@ -285,7 +285,7 @@ export function Hero({ locale }: HeroProps) {
             boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.45)",
           }}
           role="list"
-          aria-label="Platform metrics"
+          aria-label="Platform highlights"
         >
           {STATS.map((s, i) => (
             <div key={s.label} role="listitem">
