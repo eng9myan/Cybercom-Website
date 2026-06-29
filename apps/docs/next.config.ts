@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
+  outputFileTracingRoot: path.join(process.cwd(), "../.."),
   transpilePackages: ["@cybercom/api", "@cybercom/config"],
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   images: {
