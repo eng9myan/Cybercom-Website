@@ -1,147 +1,231 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Play, ChevronRight } from "lucide-react";
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { type Locale } from "@/lib/i18n";
+import { useState, useEffect, useRef } from "react";
 
 interface HeroProps {
   locale: Locale;
 }
 
-const COMPLIANCE_BADGES = [
-  { label: "FHIR R4", color: "text-cy-cyan border-cy-cyan/20 bg-cy-cyan/5" },
-  { label: "ICD-11", color: "text-cy-orange border-cy-orange/20 bg-cy-orange/5" },
-  { label: "SNOMED CT", color: "text-violet-400 border-violet-400/20 bg-violet-400/5" },
-  { label: "OIDC", color: "text-emerald-400 border-emerald-400/20 bg-emerald-400/5" },
-  { label: "HIPAA Ready", color: "text-sky-400 border-sky-400/20 bg-sky-400/5" },
+const CYCLING_WORDS = [
+  { text: "Healthcare", accent: "#34d399", slug: "CyMed" },
+  { text: "Retail",     accent: "#ed6c00", slug: "CyShop" },
+  { text: "Enterprise", accent: "#60a5fa", slug: "CyCom ERP" },
+] as const;
+
+const BADGES = [
+  "FHIR R4", "ICD-11", "SNOMED CT", "OIDC", "HIPAA Ready",
+  "HL7 v2", "DICOM", "ISO 27001", "SOC 2 Type II", "GDPR",
+  "OAuth 2.1", "Zero Trust", "PCI-DSS", "ZATCA", "WPS",
+  "UAE FTA VAT", "Jordan SSC", "IFRS", "GAAP",
 ];
 
 const STATS = [
-  { value: "9", label: "Integrated Platforms", sub: "One unified ecosystem" },
-  { value: "FHIR", label: "Native Standard", sub: "R4 & R5 compliant" },
-  { value: "OAuth 2.1", label: "Security Standard", sub: "Zero Trust architecture" },
+  { end: 3,    suffix: "",   label: "Enterprise Platforms", color: "#ed6c00" },
+  { end: 14,   suffix: "+",  label: "ERP Modules",          color: "#60a5fa" },
+  { end: 9,    suffix: "",   label: "Clinical Solutions",   color: "#34d399" },
+  { end: 99.9, suffix: "%",  label: "Uptime SLA",           color: "#a78bfa" },
+] as const;
+
+const HIGHLIGHTS = [
+  { label: "FHIR-native EHR",        color: "#34d399" },
+  { label: "AI-powered forecasting",  color: "#a78bfa" },
+  { label: "Real-time inventory",     color: "#ed6c00" },
+  { label: "Zero Trust security",     color: "#60a5fa" },
 ];
 
-export function Hero({ locale }: HeroProps) {
-  const t = useTranslations("hero");
-  const shouldReduce = useReducedMotion();
+function useCountUp(end: number, duration: number, delay: number, started: boolean) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!started) return;
+    const t = setTimeout(() => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min((now - t0) / duration, 1);
+        setVal(end * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
+    return () => clearTimeout(t);
+  }, [started, end, duration, delay]);
+  return val;
+}
 
-  const fadeUp = {
-    hidden: { opacity: 0, y: shouldReduce ? 0 : 24 },
-    visible: (delay: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] },
-    }),
-  };
+function StatItem({ stat, delay, started }: { stat: typeof STATS[number]; delay: number; started: boolean }) {
+  const v = useCountUp(stat.end, 1400, delay, started);
+  const display = stat.end % 1 === 0 ? Math.round(v).toString() : v.toFixed(1);
+  return (
+    <div className="bg-white/[0.04] backdrop-blur-sm p-6 text-center hover:bg-white/[0.07] transition-colors duration-300">
+      <div className="font-heading font-bold text-3xl lg:text-4xl mb-1 tabular-nums" style={{ color: stat.color }}>
+        {display}{stat.suffix}
+      </div>
+      <div className="text-xs text-white/40 font-medium tracking-wide mt-0.5">{stat.label}</div>
+    </div>
+  );
+}
+
+export function Hero({ locale }: HeroProps) {
+  const shouldReduce = useReducedMotion();
+  const [wordIdx, setWordIdx] = useState(0);
+  const [statsStarted, setStatsStarted] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (shouldReduce) return;
+    const id = setInterval(() => setWordIdx(i => (i + 1) % CYCLING_WORDS.length), 2800);
+    return () => clearInterval(id);
+  }, [shouldReduce]);
+
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => { if (entries[0]?.isIntersecting) { setStatsStarted(true); obs.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const word = CYCLING_WORDS[wordIdx] ?? CYCLING_WORDS[0];
+  const doubled = [...BADGES, ...BADGES];
+
+  const fade = (delay: number) => ({
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 28 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const } },
+  });
 
   return (
     <section
       className="relative min-h-dvh flex flex-col items-center justify-center pt-16 overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Background glow effects */}
+      {/* ── Aurora background ──────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="glow-orb w-[800px] h-[800px] -top-64 left-1/2 -translate-x-1/2 bg-cy-orange/8 animate-glow-pulse" />
-        <div className="glow-orb w-[600px] h-[600px] top-1/3 -left-64 bg-cy-cyan/6" />
-        <div className="glow-orb w-[400px] h-[400px] bottom-0 right-0 bg-violet-500/5" />
-        {/* Grid pattern */}
+        {/* Primary blob — orange */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[110vw] h-[75vh] rounded-full"
           style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
-            `,
-            backgroundSize: "64px 64px",
+            background: "radial-gradient(ellipse, rgba(237,108,0,0.14) 0%, rgba(237,108,0,0.04) 45%, transparent 70%)",
+            filter: "blur(80px)",
+            animation: "aurora1 18s ease-in-out infinite",
           }}
         />
+        {/* Cyan blob — left */}
+        <div
+          className="absolute top-[15%] -left-[15%] w-[55vw] h-[55vh] rounded-full"
+          style={{
+            background: "radial-gradient(ellipse, rgba(89,195,225,0.1) 0%, rgba(89,195,225,0.03) 50%, transparent 70%)",
+            filter: "blur(90px)",
+            animation: "aurora2 22s ease-in-out infinite",
+          }}
+        />
+        {/* Violet blob — bottom-right */}
+        <div
+          className="absolute bottom-[5%] right-[0%] w-[45vw] h-[45vh] rounded-full"
+          style={{
+            background: "radial-gradient(ellipse, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.02) 50%, transparent 70%)",
+            filter: "blur(70px)",
+            animation: "aurora3 26s ease-in-out infinite",
+          }}
+        />
+
+        {/* Dot grid */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+            opacity: 0.032,
+          }}
+        />
+
+        {/* Vignettes */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-cy-black to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-cy-black to-transparent" />
       </div>
 
       <div className="section-container relative z-10 text-center">
-        {/* Eyebrow */}
+
+        {/* ── Eyebrow pill ───────────────────────────────── */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cy-orange/20 bg-cy-orange/5 mb-8"
+          variants={fade(0)} initial="hidden" animate="visible"
+          className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/[0.09] bg-white/[0.04] backdrop-blur-md mb-10"
+          style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.35)" }}
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-cy-orange animate-pulse" aria-hidden="true" />
-          <span className="text-xs font-medium text-cy-orange tracking-wider uppercase">
-            {t("tagline")}
+          <span className="relative flex h-2 w-2 flex-shrink-0" aria-hidden="true">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cy-orange opacity-55" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-cy-orange" />
+          </span>
+          <span className="text-xs font-medium text-white/55 tracking-widest uppercase">
+            Enterprise Platform Suite — Three Products, One Ecosystem
           </span>
         </motion.div>
 
-        {/* Main headline */}
+        {/* ── Headline ───────────────────────────────────── */}
         <motion.h1
           id="hero-heading"
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.1}
-          className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-heading font-semibold text-white leading-[1.05] tracking-tight max-w-5xl mx-auto"
+          variants={fade(0.08)} initial="hidden" animate="visible"
+          className="font-heading font-semibold leading-[1.05] tracking-tight max-w-5xl mx-auto"
+          style={{ fontSize: "clamp(2.6rem, 7vw, 5.5rem)" }}
         >
-          <span className="block">{t("headline1")}</span>
-          <span className="block">{t("headline2")}</span>
-          <span className="block text-gradient">{t("headline3")}</span>
+          <span className="block text-white/88">Intelligent Software for</span>
+
+          {/* Cycling word */}
+          <span
+            className="relative block overflow-hidden"
+            style={{ height: "1.12em", marginTop: "0.05em" }}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={wordIdx}
+                initial={{ y: shouldReduce ? 0 : "110%", opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: shouldReduce ? 0 : "-110%", opacity: 0 }}
+                transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0 flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(130deg, ${word.accent} 0%, ${word.accent}aa 100%)`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {word.text}
+              </motion.span>
+            </AnimatePresence>
+          </span>
         </motion.h1>
 
-        {/* Description */}
+        {/* ── Description ────────────────────────────────── */}
         <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.2}
-          className="mt-6 text-lg sm:text-xl text-cy-gray-400 max-w-2xl mx-auto leading-relaxed"
+          variants={fade(0.16)} initial="hidden" animate="visible"
+          className="mt-7 text-lg sm:text-xl text-white/42 max-w-2xl mx-auto leading-relaxed font-light"
         >
-          {t("description")}
+          CyMed · CyShop · CyCom ERP — built on one identity layer, one API gateway,
+          one audit trail. Deploy as SaaS, on-premise, or hybrid.
         </motion.p>
 
-        {/* Compliance badges */}
+        {/* ── CTAs ───────────────────────────────────────── */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.3}
-          className="flex flex-wrap items-center justify-center gap-2 mt-8"
-          aria-label="Compliance and standards certifications"
-        >
-          {COMPLIANCE_BADGES.map((badge) => (
-            <span
-              key={badge.label}
-              className={`product-badge text-xs ${badge.color}`}
-            >
-              {badge.label}
-            </span>
-          ))}
-        </motion.div>
-
-        {/* CTAs */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.4}
+          variants={fade(0.24)} initial="hidden" animate="visible"
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
         >
-          <Link
-            href={`/${locale}/demo`}
-            className="btn-primary text-base px-8 py-3.5 group"
-          >
-            {t("cta.demo")}
+          <Link href={`/${locale}/demo`} className="btn-primary-glow text-base px-8 py-3.5 group">
+            Request a Demo
             <ArrowRight
               className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180"
               aria-hidden="true"
             />
           </Link>
-          <Link
-            href={`/${locale}/products`}
-            className="btn-secondary text-base px-8 py-3.5 group"
-          >
-            {t("cta.explore")}
+          <Link href={`/${locale}/products`} className="btn-secondary text-base px-8 py-3.5 group">
+            Explore Products
             <ChevronRight
               className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180"
               aria-hidden="true"
@@ -149,40 +233,80 @@ export function Hero({ locale }: HeroProps) {
           </Link>
         </motion.div>
 
-        {/* Stats row */}
+        {/* ── Feature dots ───────────────────────────────── */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.5}
-          className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-px bg-cy-glass-border max-w-3xl mx-auto rounded-2xl overflow-hidden border border-cy-glass-border"
-          role="list"
-          aria-label="Platform highlights"
+          variants={fade(0.3)} initial="hidden" animate="visible"
+          className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-2"
+          aria-hidden="true"
         >
-          {STATS.map((stat, i) => (
-            <div
-              key={i}
-              className="bg-cy-dark/80 backdrop-blur-sm p-6 text-center"
-              role="listitem"
-            >
-              <div className="font-heading font-bold text-3xl text-white mb-1">{stat.value}</div>
-              <div className="text-sm font-medium text-cy-gray-200">{stat.label}</div>
-              <div className="text-xs text-cy-gray-400 mt-0.5">{stat.sub}</div>
+          {HIGHLIGHTS.map(h => (
+            <span key={h.label} className="flex items-center gap-2 text-sm text-white/45">
+              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: h.color }} />
+              {h.label}
+            </span>
+          ))}
+        </motion.div>
+
+        {/* ── Compliance marquee ─────────────────────────── */}
+        <motion.div
+          variants={fade(0.36)} initial="hidden" animate="visible"
+          className="mt-12 relative overflow-hidden"
+          aria-label="Compliance certifications and standards"
+        >
+          {/* Edge fades */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to right, #0a0a0f, transparent)" }}
+          />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to left, #0a0a0f, transparent)" }}
+          />
+          <div className="marquee-track" aria-hidden="true">
+            {doubled.map((b, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center px-3 py-1.5 rounded-full border border-white/[0.07] bg-white/[0.03] text-xs font-medium text-white/45 flex-shrink-0"
+              >
+                {b}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── Stats ──────────────────────────────────────── */}
+        <motion.div
+          ref={statsRef}
+          variants={fade(0.44)} initial="hidden" animate="visible"
+          className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-px max-w-3xl mx-auto rounded-3xl overflow-hidden"
+          style={{
+            background: "rgba(255,255,255,0.055)",
+            border: "1px solid rgba(255,255,255,0.07)",
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.45)",
+          }}
+          role="list"
+          aria-label="Platform metrics"
+        >
+          {STATS.map((s, i) => (
+            <div key={s.label} role="listitem">
+              <StatItem stat={s} delay={i * 130} started={statsStarted} />
             </div>
           ))}
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll cue ─────────────────────────────────── */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.8 }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         aria-hidden="true"
       >
-        <div className="w-px h-12 bg-gradient-to-b from-transparent via-cy-glass-border to-transparent animate-pulse" />
-        <span className="text-2xs text-cy-gray-600 uppercase tracking-widest">Scroll</span>
+        <div
+          className="w-px h-12"
+          style={{ background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.18), transparent)" }}
+        />
+        <span className="text-[0.6rem] text-white/22 uppercase tracking-[0.25em]">Scroll</span>
       </motion.div>
     </section>
   );

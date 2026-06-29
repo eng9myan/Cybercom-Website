@@ -1,281 +1,316 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { type Locale } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Zap, Shield, Globe, Database, Cpu, Users, ShoppingCart, Activity } from "lucide-react";
 
 interface ProductEcosystemProps {
   locale: Locale;
 }
 
-const PRODUCTS = [
+const PRIMARY_PRODUCTS = [
   {
     id: "cymed",
     name: "CyMed",
     slug: "cymed-clinic",
-    tagline: "Healthcare Platform",
-    color: "from-emerald-500 to-teal-500",
-    border: "border-emerald-500/20 hover:border-emerald-500/40",
-    glow: "bg-emerald-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-emerald-400">
-        <path d="M9 12h6m-3-3v6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
-      </svg>
-    ),
-    capabilities: ["ICD-11 Native", "FHIR R4/R5", "AI Clinical", "Multi-Tenant"],
-    products: ["Clinic", "Hospital", "Laboratory", "Imaging", "Pharmacy"],
+    category: "Healthcare",
+    tagline: "FHIR-native clinical platform for hospitals, clinics, labs, and pharmacies",
+    accent: "#34d399",
+    accentBg: "rgba(52,211,153,0.08)",
+    accentBorder: "rgba(52,211,153,0.2)",
+    icon: Activity,
+    stats: [
+      { value: "9", label: "Clinical Modules" },
+      { value: "FHIR R4", label: "Native Standard" },
+      { value: "ICD-11", label: "Coding" },
+    ],
+    products: ["Hospital", "Clinic", "Laboratory", "Imaging", "Pharmacy", "Patient Portal", "Provider Portal", "Revenue Cycle", "Population Health"],
+    badge: "Most Popular",
+    size: "large",
+  },
+  {
+    id: "cyshop",
+    name: "CyShop",
+    slug: "cyshop",
+    category: "Retail & Commerce",
+    tagline: "Omnichannel POS and commerce platform for restaurants, retail, grocery, and F&B",
+    accent: "#ed6c00",
+    accentBg: "rgba(237,108,0,0.08)",
+    accentBorder: "rgba(237,108,0,0.2)",
+    icon: ShoppingCart,
+    stats: [
+      { value: "8", label: "Business Types" },
+      { value: "AI", label: "Forecasting" },
+      { value: "PCI-DSS", label: "Compliance" },
+    ],
+    products: ["Retail POS", "Restaurant", "Bakery", "Coffee Shop", "Fast Food", "Grocery", "Supermarket", "Convenience"],
+    size: "medium",
   },
   {
     id: "cycom",
-    name: "CyCom",
+    name: "CyCom ERP",
     slug: "cycom",
-    tagline: "ERP Platform",
-    color: "from-blue-500 to-indigo-500",
-    border: "border-blue-500/20 hover:border-blue-500/40",
-    glow: "bg-blue-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-blue-400">
-        <path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z" />
-      </svg>
-    ),
-    capabilities: ["Finance", "HR & Payroll", "Procurement", "Manufacturing"],
-    products: ["Finance", "HR", "CRM", "Inventory", "Manufacturing"],
+    category: "Enterprise ERP",
+    tagline: "Complete ERP with finance, HR, procurement, manufacturing, and BI — built for the Arab world",
+    accent: "#60a5fa",
+    accentBg: "rgba(96,165,250,0.08)",
+    accentBorder: "rgba(96,165,250,0.2)",
+    icon: Database,
+    stats: [
+      { value: "14+", label: "ERP Modules" },
+      { value: "IFRS", label: "+ GAAP + WPS" },
+      { value: "ZATCA", label: "e-Invoice" },
+    ],
+    products: ["Finance", "Accounting", "Procurement", "Inventory", "HR", "Payroll", "CRM", "Manufacturing", "Assets", "POS", "BI", "Projects"],
+    size: "medium",
   },
-  {
-    id: "cygov",
-    name: "CyGov",
-    slug: "cygov",
-    tagline: "Government Platform",
-    color: "from-amber-500 to-orange-500",
-    border: "border-amber-500/20 hover:border-amber-500/40",
-    glow: "bg-amber-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-amber-400">
-        <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21V13h6v8" />
-      </svg>
-    ),
-    capabilities: ["Citizen Services", "National Registries", "Digital ID", "E-Permits"],
-    products: ["Services", "Licensing", "Registries", "Workflows"],
-  },
+] as const;
+
+const PLATFORM_PRODUCTS = [
   {
     id: "cyidentity",
     name: "CyIdentity",
     slug: "cyidentity",
-    tagline: "Identity Platform",
-    color: "from-violet-500 to-purple-500",
-    border: "border-violet-500/20 hover:border-violet-500/40",
-    glow: "bg-violet-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-violet-400">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-    capabilities: ["OAuth 2.1", "OIDC", "Passkeys", "Zero Trust"],
-    products: ["SSO", "RBAC", "ABAC", "MFA"],
-  },
-  {
-    id: "cyintegrationhub",
-    name: "CyIntegrationHub",
-    slug: "cyintegrationhub",
-    tagline: "Integration Platform",
-    color: "from-cyan-500 to-sky-500",
-    border: "border-cyan-500/20 hover:border-cyan-500/40",
-    glow: "bg-cyan-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-cyan-400">
-        <circle cx="12" cy="12" r="3" /><path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
-      </svg>
-    ),
-    capabilities: ["FHIR", "HL7 v2/v3", "DICOM", "Kafka"],
-    products: ["REST", "SOAP", "LDAP", "EDI", "SFTP"],
+    tagline: "Zero Trust SSO · OAuth 2.1 · Passkeys · RBAC",
+    accent: "#a78bfa",
+    icon: Shield,
   },
   {
     id: "cyai",
     name: "CyAI",
     slug: "cyai",
-    tagline: "AI Platform",
-    color: "from-pink-500 to-rose-500",
-    border: "border-pink-500/20 hover:border-pink-500/40",
-    glow: "bg-pink-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-pink-400">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 12c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-      </svg>
-    ),
-    capabilities: ["Clinical AI", "Predictive", "NLP", "Computer Vision"],
-    products: ["Clinical", "Government", "Enterprise", "Analytics"],
+    tagline: "Clinical AI · NLP · Predictive Analytics · Computer Vision",
+    accent: "#f472b6",
+    icon: Cpu,
+  },
+  {
+    id: "cyintegrationhub",
+    name: "CyIntegrationHub",
+    slug: "cyintegrationhub",
+    tagline: "FHIR · HL7 v2/v3 · DICOM · REST · SOAP · Kafka",
+    accent: "#59c3e1",
+    icon: Zap,
   },
   {
     id: "cydata",
     name: "CyData",
     slug: "cydata",
-    tagline: "Data Platform",
-    color: "from-teal-500 to-green-500",
-    border: "border-teal-500/20 hover:border-teal-500/40",
-    glow: "bg-teal-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-teal-400">
-        <path d="M21 5c0 1.657-4.03 3-9 3S3 6.657 3 5m18 0c0-1.657-4.03-3-9-3S3 3.343 3 5m18 0v7M3 5v7m18 0c0 1.657-4.03 3-9 3s-9-1.343-9-3m18 0v7c0 1.657-4.03 3-9 3s-9-1.343-9-3v-7" />
-      </svg>
-    ),
-    capabilities: ["Lakehouse", "BI Analytics", "Data Gov", "Population Health"],
-    products: ["Lakehouse", "Analytics", "BI", "Governance"],
+    tagline: "Lakehouse · BI Dashboards · Population Health · Data Governance",
+    accent: "#34d399",
+    icon: Database,
   },
   {
-    id: "cyconnect",
-    name: "CyConnect",
-    slug: "cyconnect",
-    tagline: "Communications Platform",
-    color: "from-orange-500 to-yellow-500",
-    border: "border-orange-500/20 hover:border-orange-500/40",
-    glow: "bg-orange-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-orange-400">
-        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" />
-      </svg>
-    ),
-    capabilities: ["Messaging", "Notifications", "Video", "Collaboration"],
-    products: ["Messaging", "Alerts", "Video", "Chat"],
+    id: "cygov",
+    name: "CyGov",
+    slug: "cygov",
+    tagline: "Citizen Services · National Registries · E-Permits · Digital ID",
+    accent: "#fbbf24",
+    icon: Globe,
   },
   {
     id: "cycitizen",
     name: "CyCitizen",
     slug: "cycitizen",
-    tagline: "Citizen Platform",
-    color: "from-indigo-500 to-blue-500",
-    border: "border-indigo-500/20 hover:border-indigo-500/40",
-    glow: "bg-indigo-500/5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-indigo-400">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-      </svg>
-    ),
-    capabilities: ["Citizen Portal", "Digital Wallet", "National ID", "Gov Services"],
-    products: ["Portal", "Wallet", "Identity", "Services"],
+    tagline: "Citizen Portal · Digital Wallet · National Identity · Gov Services",
+    accent: "#818cf8",
+    icon: Users,
   },
 ];
 
 export function ProductEcosystem({ locale }: ProductEcosystemProps) {
-  const t = useTranslations("products");
   const shouldReduce = useReducedMotion();
-  const [activeProduct, setActiveProduct] = useState<string | null>(null);
+
+  const fadeUp = (delay: number) => ({
+    initial: { opacity: 0, y: shouldReduce ? 0 : 32 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
+  });
 
   return (
     <section className="py-32 relative" aria-labelledby="ecosystem-heading">
-      {/* Background */}
+      {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="glow-orb w-[600px] h-[600px] top-0 right-0 bg-cy-cyan/4" />
+        <div
+          className="absolute top-0 right-0 w-[50vw] h-[60vh] rounded-full"
+          style={{
+            background: "radial-gradient(ellipse, rgba(89,195,225,0.05) 0%, transparent 70%)",
+            filter: "blur(80px)",
+          }}
+        />
+        <div
+          className="absolute bottom-0 left-0 w-[40vw] h-[50vh] rounded-full"
+          style={{
+            background: "radial-gradient(ellipse, rgba(237,108,0,0.04) 0%, transparent 70%)",
+            filter: "blur(80px)",
+          }}
+        />
       </div>
 
       <div className="section-container relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-sm font-medium text-cy-orange mb-3 uppercase tracking-wider">Platform Suite</p>
-            <h2 id="ecosystem-heading" className="text-4xl lg:text-5xl font-heading font-semibold text-white mb-4">
-              {t("title")}
-            </h2>
-            <p className="text-lg text-cy-gray-400 max-w-2xl mx-auto">
-              {t("subtitle")}
-            </p>
-          </motion.div>
-        </div>
 
-        {/* Product grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PRODUCTS.map((product, i) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: shouldReduce ? 0 : 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Link
-                href={`/${locale}/products/${product.slug}`}
-                className={cn(
-                  "glass-card block p-6 rounded-2xl border transition-all duration-300 group cursor-pointer",
-                  product.border
-                )}
-                onMouseEnter={() => setActiveProduct(product.id)}
-                onMouseLeave={() => setActiveProduct(null)}
-                aria-label={`${product.name} — ${product.tagline}`}
+        {/* ── Section header ── */}
+        <motion.div {...fadeUp(0)} className="text-center mb-16">
+          <p className="text-sm font-semibold text-cy-orange mb-3 uppercase tracking-widest">Platform Suite</p>
+          <h2 id="ecosystem-heading" className="text-4xl lg:text-5xl font-heading font-semibold text-white mb-5">
+            Three Platforms.<br />
+            <span className="text-gradient-aurora">One Ecosystem.</span>
+          </h2>
+          <p className="text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
+            CyMed, CyShop, and CyCom ERP share one identity layer, one integration hub,
+            and one audit trail — with purpose-built AI for every vertical.
+          </p>
+        </motion.div>
+
+        {/* ── Primary bento grid ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+
+          {/* CyMed — large card */}
+          {PRIMARY_PRODUCTS.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <motion.div
+                key={p.id}
+                {...fadeUp(i * 0.1)}
+                className={p.size === "large" ? "lg:col-span-1 lg:row-span-1" : ""}
               >
-                {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center", product.glow, "border border-current/10")}>
-                    {product.icon}
+                <Link
+                  href={p.slug === "cyshop" ? `/${locale}/cyshop` : p.slug === "cycom" ? `/${locale}/erp` : `/${locale}/products/${p.slug}`}
+                  className="bento-card block p-8 h-full group"
+                  style={{ borderColor: p.accentBorder }}
+                  aria-label={`${p.name} — ${p.category}`}
+                >
+                  {/* Top row */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: p.accentBg, border: `1px solid ${p.accentBorder}` }}
+                    >
+                      <Icon className="w-7 h-7" style={{ color: p.accent }} aria-hidden="true" />
+                    </div>
+                    {"badge" in p && (
+                      <span
+                        className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                        style={{ color: p.accent, background: p.accentBg, border: `1px solid ${p.accentBorder}` }}
+                      >
+                        {p.badge}
+                      </span>
+                    )}
                   </div>
-                  <ArrowRight
-                    className="w-4 h-4 text-cy-gray-600 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-200 rtl:rotate-180"
-                    aria-hidden="true"
-                  />
-                </div>
 
-                {/* Name */}
-                <div className={cn("text-lg font-heading font-semibold bg-gradient-to-r bg-clip-text text-transparent mb-0.5", product.color)}>
-                  {product.name}
-                </div>
-                <div className="text-xs text-cy-gray-400 mb-3 font-medium">{product.tagline}</div>
+                  {/* Category label */}
+                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: p.accent }}>
+                    {p.category}
+                  </p>
 
-                {/* Capabilities */}
-                <div className="flex flex-wrap gap-1.5">
-                  {product.capabilities.map((cap) => (
-                    <span
-                      key={cap}
-                      className="text-2xs px-2 py-0.5 rounded-md bg-cy-glass-bg border border-cy-glass-border text-cy-gray-400"
-                    >
-                      {cap}
-                    </span>
-                  ))}
-                </div>
+                  {/* Name */}
+                  <h3 className="text-2xl font-heading font-bold text-white mb-3">
+                    {p.name}
+                  </h3>
 
-                {/* Products list — shown on hover */}
-                <AnimatePresence>
-                  {activeProduct === product.id && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-3 pt-3 border-t border-cy-glass-border">
-                        <div className="flex flex-wrap gap-1">
-                          {product.products.map((p) => (
-                            <span key={p} className="text-2xs text-cy-gray-400 px-1.5 py-0.5 rounded bg-cy-glass-bg">
-                              {p}
-                            </span>
-                          ))}
-                        </div>
+                  {/* Tagline */}
+                  <p className="text-sm text-white/50 leading-relaxed mb-6">
+                    {p.tagline}
+                  </p>
+
+                  {/* Stats row */}
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    {p.stats.map(s => (
+                      <div
+                        key={s.label}
+                        className="rounded-xl p-2.5 text-center"
+                        style={{ background: p.accentBg, border: `1px solid ${p.accentBorder}` }}
+                      >
+                        <div className="font-heading font-bold text-sm" style={{ color: p.accent }}>{s.value}</div>
+                        <div className="text-[10px] text-white/40 mt-0.5">{s.label}</div>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Link>
-            </motion.div>
-          ))}
+                    ))}
+                  </div>
+
+                  {/* Module pills */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.products.slice(0, 6).map(mod => (
+                      <span
+                        key={mod}
+                        className="text-xs px-2.5 py-1 rounded-lg text-white/50"
+                        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                      >
+                        {mod}
+                      </span>
+                    ))}
+                    {p.products.length > 6 && (
+                      <span className="text-xs px-2.5 py-1 rounded-lg text-white/30" style={{ background: "rgba(255,255,255,0.02)" }}>
+                        +{p.products.length - 6} more
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Explore CTA */}
+                  <div className="flex items-center gap-2 mt-6 pt-5 border-t border-white/[0.07]">
+                    <span className="text-sm font-medium" style={{ color: p.accent }}>Explore {p.name}</span>
+                    <ArrowRight
+                      className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 rtl:rotate-180"
+                      style={{ color: p.accent }}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
-        >
+        {/* ── Section divider with label ── */}
+        <motion.div {...fadeUp(0.4)} className="relative my-12 flex items-center gap-6">
+          <div className="section-divider flex-1" />
+          <span className="text-xs font-semibold uppercase tracking-widest text-white/30 flex-shrink-0">
+            Platform Infrastructure
+          </span>
+          <div className="section-divider flex-1" />
+        </motion.div>
+
+        {/* ── Platform grid ── */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {PLATFORM_PRODUCTS.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <motion.div key={p.id} {...fadeUp(0.45 + i * 0.05)}>
+                <Link
+                  href={`/${locale}/products/${p.slug}`}
+                  className="group block rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1"
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = `${p.accent}33`;
+                    (e.currentTarget as HTMLElement).style.boxShadow = `0 0 24px ${p.accent}10`;
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                  }}
+                  aria-label={`${p.name} — ${p.tagline}`}
+                >
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
+                    style={{ background: `${p.accent}15` }}
+                  >
+                    <Icon className="w-4 h-4" style={{ color: p.accent }} aria-hidden="true" />
+                  </div>
+                  <div className="text-sm font-semibold text-white mb-1.5">{p.name}</div>
+                  <p className="text-[11px] text-white/35 leading-relaxed">{p.tagline.split(" · ")[0]}</p>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* ── Bottom CTA ── */}
+        <motion.div {...fadeUp(0.7)} className="text-center mt-14">
           <Link href={`/${locale}/products`} className="btn-secondary px-8 py-3">
-            {t("viewAll")}
+            View all Products
             <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden="true" />
           </Link>
         </motion.div>

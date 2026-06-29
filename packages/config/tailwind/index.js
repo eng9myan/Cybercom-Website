@@ -109,6 +109,16 @@ const config = {
         "flow": "flow 8s linear infinite",
         "float": "float 6s ease-in-out infinite",
         "gradient-shift": "gradientShift 6s ease infinite",
+        "aurora-1": "aurora1 18s ease-in-out infinite",
+        "aurora-2": "aurora2 22s ease-in-out infinite",
+        "aurora-3": "aurora3 26s ease-in-out infinite",
+        "marquee": "marquee 32s linear infinite",
+        "marquee-reverse": "marqueeReverse 32s linear infinite",
+        "shimmer": "shimmer 2.4s linear infinite",
+        "border-spin": "borderSpin 4s linear infinite",
+        "count-up": "countUp 0.01ms linear forwards",
+        "scale-in": "scaleIn 0.4s ease-out forwards",
+        "slide-up": "slideUp 0.5s ease-out forwards",
       },
       keyframes: {
         fadeIn: {
@@ -123,9 +133,17 @@ const config = {
           from: { opacity: "0", transform: "translateX(-16px)" },
           to: { opacity: "1", transform: "translateX(0)" },
         },
+        slideUp: {
+          from: { opacity: "0", transform: "translateY(100%)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        scaleIn: {
+          from: { opacity: "0", transform: "scale(0.92)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
         glowPulse: {
           "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "0.8" },
+          "50%": { opacity: "0.9" },
         },
         flow: {
           "0%": { strokeDashoffset: "100" },
@@ -138,6 +156,43 @@ const config = {
         gradientShift: {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
+        },
+        aurora1: {
+          "0%":   { transform: "translate(0%, 0%) scale(1)" },
+          "33%":  { transform: "translate(8%, -12%) scale(1.15)" },
+          "66%":  { transform: "translate(-6%, 8%) scale(0.9)" },
+          "100%": { transform: "translate(0%, 0%) scale(1)" },
+        },
+        aurora2: {
+          "0%":   { transform: "translate(0%, 0%) scale(1)" },
+          "40%":  { transform: "translate(-10%, 6%) scale(1.1)" },
+          "80%":  { transform: "translate(12%, -8%) scale(0.92)" },
+          "100%": { transform: "translate(0%, 0%) scale(1)" },
+        },
+        aurora3: {
+          "0%":   { transform: "translate(0%, 0%) scale(1)" },
+          "50%":  { transform: "translate(6%, 10%) scale(1.08)" },
+          "100%": { transform: "translate(0%, 0%) scale(1)" },
+        },
+        marquee: {
+          from: { transform: "translateX(0%)" },
+          to:   { transform: "translateX(-50%)" },
+        },
+        marqueeReverse: {
+          from: { transform: "translateX(-50%)" },
+          to:   { transform: "translateX(0%)" },
+        },
+        shimmer: {
+          "0%":   { backgroundPosition: "-200% center" },
+          "100%": { backgroundPosition: "200% center" },
+        },
+        borderSpin: {
+          "0%":   { "--border-angle": "0deg" },
+          "100%": { "--border-angle": "360deg" },
+        },
+        countUp: {
+          from: { opacity: "0" },
+          to:   { opacity: "1" },
         },
       },
       boxShadow: {

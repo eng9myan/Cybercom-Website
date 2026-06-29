@@ -96,18 +96,57 @@
 }
 
 @layer components {
-  /* Glass card */
+  /* ── Glass cards ──────────────────────────────────── */
   .glass-card {
     @apply bg-cy-glass-bg border border-cy-glass-border backdrop-blur-md rounded-2xl;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4);
-    transition: box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
   }
   .glass-card:hover {
-    @apply bg-cy-glass-bg-hover border-white/[0.12];
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 16px 48px rgba(0,0,0,0.5);
+    @apply bg-cy-glass-bg-hover border-white/[0.14];
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 20px 60px rgba(0,0,0,0.55);
+    transform: translateY(-2px);
   }
 
-  /* Gradient text */
+  /* Premium card — animated gradient border */
+  .glass-card-premium {
+    position: relative;
+    @apply rounded-2xl;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
+  .glass-card-premium::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 50%, rgba(237,108,0,0.2) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .glass-card-premium:hover::before {
+    background: linear-gradient(135deg, rgba(237,108,0,0.4) 0%, rgba(89,195,225,0.2) 60%, rgba(255,255,255,0.1) 100%);
+    transition: background 0.4s ease;
+  }
+
+  /* Bento card */
+  .bento-card {
+    @apply relative rounded-3xl overflow-hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .bento-card:hover {
+    border-color: rgba(237,108,0,0.25);
+    box-shadow: 0 0 40px rgba(237,108,0,0.08), 0 20px 60px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+  }
+
+  /* ── Gradient text ────────────────────────────────── */
   .text-gradient {
     @apply bg-gradient-cy bg-clip-text text-transparent;
   }
@@ -115,46 +154,105 @@
     background: linear-gradient(135deg, #ed6c00 0%, #f59332 100%);
     @apply bg-clip-text text-transparent;
   }
+  .text-gradient-aurora {
+    background: linear-gradient(135deg, #f59332 0%, #ed6c00 40%, #59c3e1 100%);
+    @apply bg-clip-text text-transparent;
+  }
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+    @apply bg-clip-text text-transparent;
+  }
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    @apply bg-clip-text text-transparent;
+  }
 
-  /* Product badge */
+  /* ── Shimmer ──────────────────────────────────────── */
+  .shimmer-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.07) 50%, transparent 60%);
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+    pointer-events: none;
+  }
+
+  /* ── Marquee ──────────────────────────────────────── */
+  .marquee-track {
+    display: flex;
+    gap: 0.75rem;
+    white-space: nowrap;
+    animation: marquee 32s linear infinite;
+    width: max-content;
+  }
+
+  /* ── Product badge ────────────────────────────────── */
   .product-badge {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border;
   }
 
-  /* Section container */
+  /* ── Section container ────────────────────────────── */
   .section-container {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
-  /* Glow orb */
+  /* ── Glow orb ─────────────────────────────────────── */
   .glow-orb {
     @apply absolute rounded-full blur-3xl pointer-events-none;
   }
 
-  /* Animated flow line */
+  /* ── Animated flow line ───────────────────────────── */
   .flow-line {
     stroke-dasharray: 8 4;
     animation: flow 2s linear infinite;
   }
 
-  /* Button variants */
+  /* ── Section divider ──────────────────────────────── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 30%, rgba(237,108,0,0.15) 50%, rgba(255,255,255,0.08) 70%, transparent);
+  }
+
+  /* ── Buttons ──────────────────────────────────────── */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cy-orange text-white font-medium text-sm transition-all duration-200 cursor-pointer;
     @apply hover:bg-cy-orange-light hover:shadow-orange-glow;
     @apply focus-visible:ring-2 focus-visible:ring-cy-orange focus-visible:ring-offset-2 focus-visible:ring-offset-cy-black;
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
   }
+
+  .btn-primary-glow {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm cursor-pointer relative overflow-hidden;
+    @apply focus-visible:ring-2 focus-visible:ring-cy-orange focus-visible:ring-offset-2 focus-visible:ring-offset-cy-black;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    background: linear-gradient(135deg, #ed6c00 0%, #f07b1a 100%);
+    box-shadow: 0 0 0 1px rgba(237,108,0,0.4), 0 4px 20px rgba(237,108,0,0.3);
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+  }
+  .btn-primary-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+  }
+  .btn-primary-glow:hover {
+    box-shadow: 0 0 0 1px rgba(237,108,0,0.6), 0 8px 32px rgba(237,108,0,0.5);
+    transform: translateY(-1px);
+  }
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-cy-glass-border bg-cy-glass-bg text-white font-medium text-sm transition-all duration-200 cursor-pointer backdrop-blur-sm;
-    @apply hover:bg-cy-glass-bg-hover hover:border-white/[0.15];
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/[0.12] bg-white/[0.05] text-white font-medium text-sm transition-all duration-200 cursor-pointer backdrop-blur-sm;
+    @apply hover:bg-white/[0.09] hover:border-white/[0.22];
     @apply focus-visible:ring-2 focus-visible:ring-cy-orange focus-visible:ring-offset-2 focus-visible:ring-offset-cy-black;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-cy-gray-400 font-medium text-sm transition-all duration-200 cursor-pointer;
-    @apply hover:text-white hover:bg-cy-glass-bg;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white/50 font-medium text-sm transition-all duration-200 cursor-pointer;
+    @apply hover:text-white hover:bg-white/[0.06];
   }
 
-  /* Form input */
+  /* ── Form inputs ──────────────────────────────────── */
   .form-input {
     @apply w-full px-4 py-3 rounded-xl bg-cy-glass-bg border border-cy-glass-border text-white placeholder:text-cy-gray-600 text-sm transition-all duration-200;
     @apply focus:outline-none focus:border-cy-orange/50 focus:ring-1 focus:ring-cy-orange/30;
