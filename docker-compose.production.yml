@@ -1,3 +1,5 @@
+name: cybercom-website
+
 services:
   web:
     image: cybercom-website:${CYBERCOM_RELEASE:-latest}
