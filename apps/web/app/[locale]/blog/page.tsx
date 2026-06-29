@@ -213,7 +213,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 <div className="hidden lg:block relative h-64 rounded-2xl bg-cy-dark/40 border border-cy-glass-border overflow-hidden">
                   <div className="absolute inset-0 flex flex-col gap-2 p-6 opacity-40">
                     {[...Array(8)].map((_, i) => (
-                      <div key={i} className="h-2.5 rounded-full bg-cy-gray-600" style={{ width: `${60 + Math.random() * 35}%` }} />
+                      <div key={i} className="h-2.5 rounded-full bg-cy-gray-600" style={{ width: `${60 + ((i * 17) % 35)}%` }} />
                     ))}
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">

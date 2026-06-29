@@ -2,8 +2,25 @@ import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
 // Mock next-intl
+const translations: Record<string, string> = {
+  "form.fullName": "Full Name",
+  "form.email": "Work Email",
+  "form.jobTitle": "Job Title",
+  "form.company": "Company Name",
+  "form.country": "Country",
+  "form.companySize": "Company Size",
+  "form.phone": "Phone",
+  "form.productInterests": "Product Interests",
+  "form.message": "Message",
+  "form.gdprConsent": "I agree to the privacy policy",
+  "form.submitting": "Submitting",
+  "form.submit": "Request Demo",
+  "form.success": "Request received",
+  "form.reference": "Reference number",
+};
+
 vi.mock("next-intl", () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => (key: string) => translations[key] ?? key,
   useLocale: () => "en",
 }));
 
