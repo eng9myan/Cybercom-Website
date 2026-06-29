@@ -10,7 +10,7 @@ Domains: `www.cy-com.com`, `cy-com.com`
 
 **BLOCKED**
 
-The production Next.js website builds and runs locally as a standalone server. DNS already points both website hostnames to the existing Oracle VM. The deployment workflow, Docker runtime, Nginx reverse proxy, health endpoint, SEO routes, and rollback scripts are prepared. Final production acceptance is blocked because `api.cy-com.com` has expired TLS and no CyberCom API virtual host or backend listener was found on the VM. Activation also requires the repository secrets to be present and the existing `www.cy-com.com` certificate to be expanded to include `cy-com.com`.
+The production Next.js website is live on the existing Oracle VM with a healthy Docker container, Nginx reverse proxy, canonical apex redirect, and valid combined TLS certificate. The GitHub Actions deployment is repeatable and all six repository secrets are configured. Final production acceptance remains blocked because `api.cy-com.com` has expired TLS and no CyberCom API virtual host or backend listener was found on the VM.
 
 ## Repository assessment
 
@@ -96,7 +96,7 @@ No DNS change is required for the website go-live unless the records are later m
 
 ## SSL setup
 
-Nginx and Certbot manage TLS on the VM. The current certificate named `www.cy-com.com` is valid through 2026-09-15 but contains only `www.cy-com.com`. Expand it once to include both hostnames:
+Nginx and Certbot manage TLS on the VM. The certificate named `www.cy-com.com` was expanded successfully and now contains both `www.cy-com.com` and `cy-com.com`. It is valid through 2026-09-26 and renews automatically. The one-time command used was:
 
 ```bash
 sudo certbot --nginx \
@@ -150,10 +150,10 @@ The rollback script verifies that both the target release files and Docker image
 ## Validation results
 
 - `npm ci`: passed.
-- Website ESLint: passed with zero errors; 21 pre-existing warnings remain.
+- Website ESLint: passed with zero errors; 19 pre-existing warnings remain.
 - Monorepo TypeScript check: passed.
 - Website tests: 16 passed.
-- Website production standalone build: passed; 118 static pages generated.
+- Website production standalone build: passed; 121 static pages generated.
 - Local standalone start: passed.
 - `/api/health`: HTTP 200.
 - `/robots.txt`: HTTP 200.
@@ -186,16 +186,15 @@ The rollback script verifies that both the target release files and Docker image
 - [x] Sitemap, robots, and metadata verified.
 - [x] Rollback procedure implemented.
 - [x] No committed secret or private key detected.
-- [ ] Confirm all six required GitHub secrets exist.
-- [ ] Push the Conventional Commit to `develop`.
-- [ ] Complete the first Docker deployment.
-- [ ] Expand the certificate to include `cy-com.com`.
-- [ ] Verify public redirects, certificate SANs, pages, API calls, and logs after deployment.
+- [x] All six required GitHub secrets configured and name-verified without exposing values.
+- [x] Conventional Commits pushed to `develop`.
+- [x] GitHub Actions validation and first Docker deployment completed successfully.
+- [x] Certificate expanded to include `cy-com.com`.
+- [x] Public redirects, certificate SANs, main pages, product pages, health endpoint, and startup logs verified.
+- [ ] Restore and verify production API calls.
 - [ ] Provide or restore the real production CyberCom API endpoint and valid TLS certificate.
 
 ## Remaining blockers
 
-1. GitHub CLI is not installed locally, so repository secret names could not be queried. Secret values must never be printed.
-2. Docker Desktop is not running locally; the standalone Node artifact and Compose model were validated locally, while the final image must be built on the existing ARM64 Oracle Docker host.
-3. The combined apex/`www` certificate must be issued during activation.
-4. `api.cy-com.com` resolves to `158.178.130.4`, but that VM has no `api.cy-com.com` Nginx site and no CyberCom API backend on the expected local ports. The existing services on ports 13000/18000 belong to CyShop and must not be reused by assumption. The correct production API backend or upstream URL is required.
+1. `api.cy-com.com` resolves to `158.178.130.4`, but that VM has no `api.cy-com.com` Nginx site and no CyberCom API backend on the expected local ports. The existing services on ports 13000/18000 belong to CyShop and must not be reused by assumption. The correct production API backend or upstream URL is required.
+2. The latest stable Next.js package retains two moderate PostCSS audit findings with no safe stable upgrade currently offered. There are no high or critical findings.

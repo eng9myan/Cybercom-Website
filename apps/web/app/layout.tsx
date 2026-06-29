@@ -10,11 +10,9 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: "/icon.svg",
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.webmanifest",
   openGraph: {
     siteName: siteConfig.name,
     type: "website",

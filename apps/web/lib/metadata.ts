@@ -8,7 +8,7 @@ export const siteConfig = {
   description:
     "Transforming Healthcare, Government and Enterprise through intelligent platforms — CyMed, CyCom, CyGov, CyAI, CyIdentity, CyIntegrationHub, CyData, CyConnect, CyCitizen.",
   twitterHandle: "@CyberComRev",
-  ogImage: `${siteUrl}/images/og-default.png`,
+  ogImage: `${siteUrl}/opengraph-image`,
 };
 
 export function buildMetadata({
@@ -30,7 +30,7 @@ export function buildMetadata({
   const canonical = `${siteUrl}/${locale}${path}`;
 
   return {
-    title: fullTitle,
+    title,
     description,
     metadataBase: new URL(siteUrl),
     alternates: {
