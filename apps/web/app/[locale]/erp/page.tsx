@@ -10,8 +10,6 @@ import {
   Globe, Star
 } from "lucide-react";
 
-const ERP_URL = process.env.NEXT_PUBLIC_CYCOM_URL ?? "https://portal.cy-com.com/erp";
-
 const MODULES = [
   {
     icon: DollarSign,
@@ -157,6 +155,7 @@ export default function ErpPage() {
   const params = useParams();
   const locale = (params?.locale as string) ?? "en";
   const l = locale;
+  const ERP_URL = process.env.NEXT_PUBLIC_CYCOM_URL ?? `https://www.cy-com.com/${locale}/demo?product=cycom`;
   const shouldReduce = useReducedMotion();
 
   const fadeUp = {
@@ -212,7 +211,7 @@ export default function ErpPage() {
       <section className="py-20 bg-cy-dark/30" aria-labelledby="modules-heading">
         <div className="section-container">
           <div className="text-center mb-14">
-            <h2 id="modules-heading" className="text-3xl font-heading font-semibold text-white mb-4">14 Integrated Modules</h2>
+            <h2 id="modules-heading" className="text-3xl font-heading font-semibold text-white mb-4">12 Integrated Modules</h2>
             <p className="text-cy-gray-400 max-w-2xl mx-auto">Every module shares the same database, chart of accounts, and user management. No integrations. No data silos. No duplicate entry.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

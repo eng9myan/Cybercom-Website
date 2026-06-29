@@ -1347,47 +1347,45 @@ const WORKFLOW_DATA: Record<string, { step: number; title: string; desc: string 
   ],
 };
 
-const PORTAL = process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com";
-
-const LAUNCH_URLS: Record<string, string> = {
-  "cymed":                    process.env.NEXT_PUBLIC_CYMED_URL                       ?? PORTAL,
-  "cymed-hospital":           process.env.NEXT_PUBLIC_CYMED_HOSPITAL_URL              ?? PORTAL,
-  "cymed-clinic":             process.env.NEXT_PUBLIC_CYMED_CLINIC_URL                ?? PORTAL,
-  "cymed-laboratory":         process.env.NEXT_PUBLIC_CYMED_LAB_URL                   ?? PORTAL,
-  "cymed-imaging":            process.env.NEXT_PUBLIC_CYMED_IMAGING_URL               ?? PORTAL,
-  "cymed-pharmacy":           process.env.NEXT_PUBLIC_CYMED_PHARMACY_URL              ?? PORTAL,
-  "cymed-patient-portal":     process.env.NEXT_PUBLIC_CYMED_PATIENT_PORTAL_URL        ?? PORTAL,
-  "cymed-provider-portal":    process.env.NEXT_PUBLIC_CYMED_PROVIDER_PORTAL_URL       ?? PORTAL,
-  "cymed-revenue-cycle":      process.env.NEXT_PUBLIC_CYMED_RCM_URL                   ?? PORTAL,
-  "cymed-population-health":  process.env.NEXT_PUBLIC_CYMED_POPULATION_HEALTH_URL     ?? PORTAL,
-  "cycom":                    process.env.NEXT_PUBLIC_CYCOM_URL                       ?? PORTAL,
-  "cygov":                    process.env.NEXT_PUBLIC_CYGOV_URL                       ?? PORTAL,
-  "cyidentity":               process.env.NEXT_PUBLIC_CYIDENTITY_URL                  ?? PORTAL,
-  "cyintegrationhub":         process.env.NEXT_PUBLIC_CYINTEGRATIONHUB_URL            ?? PORTAL,
-  "cyai":                     process.env.NEXT_PUBLIC_CYAI_URL                        ?? PORTAL,
-  "cydata":                   process.env.NEXT_PUBLIC_CYDATA_URL                      ?? PORTAL,
-  "cyconnect":                process.env.NEXT_PUBLIC_CYCONNECT_URL                   ?? PORTAL,
-  "cycitizen":                process.env.NEXT_PUBLIC_CYCITIZEN_URL                   ?? PORTAL,
-  "cycom-finance":            process.env.NEXT_PUBLIC_CYCOM_FINANCE_URL               ?? PORTAL,
-  "cycom-accounting":         process.env.NEXT_PUBLIC_CYCOM_ACCOUNTING_URL            ?? PORTAL,
-  "cycom-procurement":        process.env.NEXT_PUBLIC_CYCOM_PROCUREMENT_URL           ?? PORTAL,
-  "cycom-inventory":          process.env.NEXT_PUBLIC_CYCOM_INVENTORY_URL             ?? PORTAL,
-  "cycom-hr":                 process.env.NEXT_PUBLIC_CYCOM_HR_URL                    ?? PORTAL,
-  "cycom-payroll":            process.env.NEXT_PUBLIC_CYCOM_PAYROLL_URL               ?? PORTAL,
-  "cycom-crm":                process.env.NEXT_PUBLIC_CYCOM_CRM_URL                   ?? PORTAL,
-  "cycom-assets":             process.env.NEXT_PUBLIC_CYCOM_ASSETS_URL                ?? PORTAL,
-  "cycom-manufacturing":      process.env.NEXT_PUBLIC_CYCOM_MANUFACTURING_URL         ?? PORTAL,
-  "cycom-retail":             process.env.NEXT_PUBLIC_CYCOM_RETAIL_URL                ?? PORTAL,
-  "cycom-bi":                 process.env.NEXT_PUBLIC_CYCOM_BI_URL                    ?? PORTAL,
-  "cyshop":                   process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-retail":            process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-restaurant":        process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-bakery":            process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-coffee":            process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-fastfood":          process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-grocery":           process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-supermarket":       process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
-  "cyshop-convenience":       process.env.NEXT_PUBLIC_CYSHOP_URL                      ?? PORTAL,
+const LAUNCH_URLS: Record<string, string | undefined> = {
+  "cymed":                    process.env.NEXT_PUBLIC_CYMED_URL,
+  "cymed-hospital":           process.env.NEXT_PUBLIC_CYMED_HOSPITAL_URL,
+  "cymed-clinic":             process.env.NEXT_PUBLIC_CYMED_CLINIC_URL,
+  "cymed-laboratory":         process.env.NEXT_PUBLIC_CYMED_LAB_URL,
+  "cymed-imaging":            process.env.NEXT_PUBLIC_CYMED_IMAGING_URL,
+  "cymed-pharmacy":           process.env.NEXT_PUBLIC_CYMED_PHARMACY_URL,
+  "cymed-patient-portal":     process.env.NEXT_PUBLIC_CYMED_PATIENT_PORTAL_URL,
+  "cymed-provider-portal":    process.env.NEXT_PUBLIC_CYMED_PROVIDER_PORTAL_URL,
+  "cymed-revenue-cycle":      process.env.NEXT_PUBLIC_CYMED_RCM_URL,
+  "cymed-population-health":  process.env.NEXT_PUBLIC_CYMED_POPULATION_HEALTH_URL,
+  "cycom":                    process.env.NEXT_PUBLIC_CYCOM_URL,
+  "cygov":                    process.env.NEXT_PUBLIC_CYGOV_URL,
+  "cyidentity":               process.env.NEXT_PUBLIC_CYIDENTITY_URL,
+  "cyintegrationhub":         process.env.NEXT_PUBLIC_CYINTEGRATIONHUB_URL,
+  "cyai":                     process.env.NEXT_PUBLIC_CYAI_URL,
+  "cydata":                   process.env.NEXT_PUBLIC_CYDATA_URL,
+  "cyconnect":                process.env.NEXT_PUBLIC_CYCONNECT_URL,
+  "cycitizen":                process.env.NEXT_PUBLIC_CYCITIZEN_URL,
+  "cycom-finance":            process.env.NEXT_PUBLIC_CYCOM_FINANCE_URL,
+  "cycom-accounting":         process.env.NEXT_PUBLIC_CYCOM_ACCOUNTING_URL,
+  "cycom-procurement":        process.env.NEXT_PUBLIC_CYCOM_PROCUREMENT_URL,
+  "cycom-inventory":          process.env.NEXT_PUBLIC_CYCOM_INVENTORY_URL,
+  "cycom-hr":                 process.env.NEXT_PUBLIC_CYCOM_HR_URL,
+  "cycom-payroll":            process.env.NEXT_PUBLIC_CYCOM_PAYROLL_URL,
+  "cycom-crm":                process.env.NEXT_PUBLIC_CYCOM_CRM_URL,
+  "cycom-assets":             process.env.NEXT_PUBLIC_CYCOM_ASSETS_URL,
+  "cycom-manufacturing":      process.env.NEXT_PUBLIC_CYCOM_MANUFACTURING_URL,
+  "cycom-retail":             process.env.NEXT_PUBLIC_CYCOM_RETAIL_URL,
+  "cycom-bi":                 process.env.NEXT_PUBLIC_CYCOM_BI_URL,
+  "cyshop":                   process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-retail":            process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-restaurant":        process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-bakery":            process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-coffee":            process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-fastfood":          process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-grocery":           process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-supermarket":       process.env.NEXT_PUBLIC_CYSHOP_URL,
+  "cyshop-convenience":       process.env.NEXT_PUBLIC_CYSHOP_URL,
 };
 
 export async function generateStaticParams() {
@@ -1475,7 +1473,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const colors = (COLOR_MAP[product.color] ?? COLOR_MAP.emerald) as { badge: string; btn: string; icon: string; gradient: string };
   const l = locale as Locale;
   const workflows = WORKFLOW_DATA[slug] ?? [];
-  const launchUrl = LAUNCH_URLS[slug] ?? (process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com");
+  const launchUrl = LAUNCH_URLS[slug] ?? `https://www.cy-com.com/${locale}/demo?product=${slug}`;
   const docsUrl = process.env.NEXT_PUBLIC_DOCS_URL ?? "https://docs.cy-com.com";
 
   return (
