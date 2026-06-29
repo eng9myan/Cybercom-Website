@@ -41,6 +41,12 @@ rollback_on_error() {
 }
 trap rollback_on_error ERR
 
+existing_project="$(docker inspect --format '{{ index .Config.Labels "com.docker.compose.project" }}' cybercom-website 2>/dev/null || true)"
+if [[ -n "$existing_project" && "$existing_project" != "cybercom-website" ]]; then
+  echo "Migrating container from legacy Compose project $existing_project"
+  docker rm --force cybercom-website
+fi
+
 CYBERCOM_RELEASE="$release" docker compose -f "$compose_file" up -d --no-build
 
 for attempt in {1..30}; do
