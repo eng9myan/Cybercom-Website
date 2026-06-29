@@ -13,7 +13,7 @@ interface NavbarProps {
 
 const PRODUCTS_MEGA_MENU = [
   {
-    category: "Healthcare",
+    category: "Healthcare · CyMed",
     items: [
       { name: "CyMed Clinic", slug: "cymed-clinic", desc: "Outpatient clinical management" },
       { name: "CyMed Hospital", slug: "cymed-hospital", desc: "Complete hospital operations" },
@@ -23,7 +23,15 @@ const PRODUCTS_MEGA_MENU = [
     ],
   },
   {
-    category: "Enterprise",
+    category: "Retail · CyShop",
+    items: [
+      { name: "CyShop", slug: "cyshop", desc: "Complete retail & commerce platform" },
+      { name: "Restaurant & F&B", slug: "cyshop", desc: "Dine-in, takeaway, delivery POS" },
+      { name: "Grocery & Supermarket", slug: "cyshop", desc: "Weighted items, loyalty, self-checkout" },
+    ],
+  },
+  {
+    category: "Enterprise · CyCom ERP",
     items: [
       { name: "CyCom ERP", slug: "cycom", desc: "Unified enterprise resource planning" },
       { name: "CyGov", slug: "cygov", desc: "Government digital transformation" },

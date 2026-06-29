@@ -528,6 +528,47 @@ const PRODUCT_DATA: Record<string, {
     color: "orange",
     accentClass: "text-orange-400 border-orange-500/20 bg-orange-500/5",
   },
+  "cyshop": {
+    name: "CyShop",
+    tagline: "Intelligent Retail & Commerce Platform for Every Business",
+    category: "retail",
+    categoryLabel: "CyShop Retail",
+    description:
+      "CyShop is a complete cloud-native retail and commerce platform built for restaurants, cafés, bakeries, grocery stores, supermarkets, and convenience stores. With AI-powered analytics, omnichannel POS, inventory management, and CyberCom Platform integration, CyShop unifies every point of sale under one intelligent system.",
+    features: [
+      "Omnichannel POS (cloud + offline mode)",
+      "AI sales forecasting & demand prediction",
+      "Real-time inventory management",
+      "Multi-location & multi-branch support",
+      "Customer loyalty & rewards engine",
+      "Recipe & ingredient costing (F&B)",
+      "Order management (dine-in, takeaway, delivery)",
+      "Integrated payment gateway (card, wallet, cash)",
+      "Staff management & shift scheduling",
+      "Business intelligence dashboards",
+      "CyberCom Platform SSO via CyIdentity",
+      "Arabic & English bilingual interface (RTL/LTR)",
+    ],
+    compliance: ["PCI-DSS Ready", "VAT Compliant", "GS1 Barcoding", "GDPR Ready"],
+    editions: [
+      { name: "CyShop Starter", desc: "Single location, up to 3 terminals", features: ["Core POS", "Basic inventory", "Sales reports", "Customer accounts"] },
+      { name: "CyShop Business", desc: "Multi-location, advanced features", features: ["All Starter", "Multi-branch", "Loyalty program", "Staff management", "Advanced analytics"] },
+      { name: "CyShop Enterprise", desc: "Franchise & chain operations", features: ["All Business", "Franchise management", "Central kitchen", "AI forecasting", "API access", "24/7 SLA"] },
+    ],
+    deployment: ["SaaS Cloud", "On-Premise", "Hybrid"],
+    color: "orange",
+    accentClass: "text-cy-orange border-cy-orange/20 bg-cy-orange/5",
+    subProducts: [
+      { name: "Retail", slug: "cyshop-retail", desc: "General retail, fashion, electronics, household" },
+      { name: "Restaurant", slug: "cyshop-restaurant", desc: "Full-service restaurant & dine-in management" },
+      { name: "Bakery & Café", slug: "cyshop-bakery", desc: "Recipe management, fresh production scheduling" },
+      { name: "Coffee Shop", slug: "cyshop-coffee", desc: "Menu customization, loyalty cards, barista workflow" },
+      { name: "Fast Food", slug: "cyshop-fastfood", desc: "Queue management, kitchen display, drive-through" },
+      { name: "Grocery", slug: "cyshop-grocery", desc: "Weighted items, bulk pricing, supplier orders" },
+      { name: "Supermarket", slug: "cyshop-supermarket", desc: "Self-checkout, multi-department, loyalty program" },
+      { name: "Convenience Store", slug: "cyshop-convenience", desc: "Quick checkout, fuel management, kiosk mode" },
+    ],
+  },
   "cycitizen": {
     name: "CyCitizen",
     tagline: "Citizen Digital Experience Platform",
@@ -1008,6 +1049,13 @@ const WORKFLOW_DATA: Record<string, { step: number; title: string; desc: string 
     { step: 4, title: "Offline Sync", desc: "If offline, POS stores transactions locally, syncs to cloud database once connection is restored." },
     { step: 5, title: "Shift Closing", desc: "Perform cash reconciliation audits, print closing reports, and post POS totals to general ledger accounts." },
   ],
+  "cyshop": [
+    { step: 1, title: "Setup & Configure", desc: "Configure your business type (retail, restaurant, grocery), add locations, set up the menu or product catalog, and configure payment terminals." },
+    { step: 2, title: "Staff & Permissions", desc: "Add staff accounts via CyIdentity SSO. Assign roles (cashier, manager, admin). Set shift schedules and access permissions per role." },
+    { step: 3, title: "Go Live with POS", desc: "Launch POS on tablet, touchscreen, or desktop. Scan barcodes, take orders, and accept all payment methods including card, cash, and digital wallets." },
+    { step: 4, title: "Manage Inventory", desc: "Track stock in real time. Auto-replenishment alerts when items run low. Receive supplier deliveries and update inventory via barcode scanning." },
+    { step: 5, title: "Analyze & Grow", desc: "View AI-powered sales forecasts, bestseller reports, and peak-hour analytics. Use CyShop BI dashboards to make data-driven decisions." },
+  ],
   "cycom-bi": [
     { step: 1, title: "Data Source Mapping", desc: "Map analytical data views from EMR, ERP, and IAM modules via secure lakehouse endpoints." },
     { step: 2, title: "Dashboard Building", desc: "Select visual widgets — bar charts, line graphs, KPI tiles, and geographical maps." },
@@ -1047,6 +1095,10 @@ const LAUNCH_URLS: Record<string, string> = {
   "cycom-manufacturing": process.env.NEXT_PUBLIC_CYCOM_MANUFACTURING_URL ?? `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/manufacturing`,
   "cycom-retail": process.env.NEXT_PUBLIC_CYCOM_RETAIL_URL ?? `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/retail`,
   "cycom-bi": process.env.NEXT_PUBLIC_CYCOM_BI_URL ?? `${process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}/erp/bi`,
+  "cyshop": process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com",
+  "cyshop-retail": process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com",
+  "cyshop-restaurant": process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com",
+  "cyshop-grocery": process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com",
 };
 
 export async function generateStaticParams() {
