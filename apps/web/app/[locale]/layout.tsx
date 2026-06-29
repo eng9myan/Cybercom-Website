@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations } from "next-intl/server";
+import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locales, localeMetadata, type Locale } from "@/lib/i18n";
 import { Navbar } from "@/components/layout/Navbar";
@@ -22,12 +22,7 @@ export async function generateMetadata({
 }: LocaleLayoutProps): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "nav" });
   return {
-    title: {
-      default: "CyberCom Revolution",
-      template: `%s | CyberCom Revolution`,
-    },
     description: locale === "ar"
       ? "تحويل الرعاية الصحية والحكومة والمؤسسات عبر المنصات الذكية."
       : "Transforming Healthcare, Government and Enterprise through intelligent platforms.",

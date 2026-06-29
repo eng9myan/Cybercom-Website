@@ -330,7 +330,7 @@ export default async function SolutionsPage({ params }: SolutionsPageProps) {
               Not sure which solution fits?
             </h2>
             <p className="text-cy-gray-400 mb-8 leading-relaxed">
-              Our specialists will map your organization's needs to the right CyberCom products,
+              Our specialists will map your organization&apos;s needs to the right CyberCom products,
               deployment model, and implementation path — at no cost.
             </p>
             <div className="flex flex-wrap justify-center gap-4">

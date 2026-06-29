@@ -1,104 +1,106 @@
-# =============================================================
-# Cybercom Website — Deploy to OCI
-# Target: OCI VM 158.178.130.4 | ubuntu user | nginx
-# Triggers: push to main branch
-# =============================================================
-name: Deploy Website to OCI
+name: Validate and deploy website to Oracle Cloud
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
-  group: deploy-website-${{ github.ref }}
+  group: cybercom-website-production
   cancel-in-progress: false
 
 jobs:
-  lint:
-    name: Validate HTML
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.cy-com.com' }}
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://www.cy-com.com' }}
     steps:
-      - uses: actions/checkout@v4
-      - name: HTML validation
-        run: |
-          if command -v npx &>/dev/null; then
-            npx --yes html-validate index.html || true
-          fi
+      - uses: actions/checkout@v5
 
-  secret-scan:
-    name: Secret Scan
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v5
         with:
-          fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint --workspace=@cybercom/web
+      - run: npm run typecheck
+      - run: npm test --workspace=@cybercom/web -- --run
+      - run: npm run build --workspace=@cybercom/web
 
   deploy:
-    name: Deploy to OCI VM
+    needs: validate
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [lint, secret-scan]
+    timeout-minutes: 35
+    environment: production
+    env:
+      OCI_HOST: ${{ secrets.OCI_HOST }}
+      OCI_SSH_USER: ${{ secrets.OCI_SSH_USER }}
+      OCI_SSH_PRIVATE_KEY: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+      PRODUCTION_ENV_FILE: ${{ secrets.PRODUCTION_ENV_FILE }}
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
+      - uses: actions/checkout@v5
         with:
-          host: ${{ secrets.OCI_HOST }}
-          username: ${{ secrets.OCI_SSH_USERNAME }}
-          key: ${{ secrets.OCI_SSH_KEY }}
-          port: 22
-          timeout: 120s
-          script: |
-            set -euo pipefail
-            WEBROOT="/var/www/cy-com.com"
-            echo "Deploying website..."
+          fetch-depth: 0
 
-            if [ -d "$WEBROOT/.git" ]; then
-              git -C "$WEBROOT" pull origin main
-            else
-              sudo git clone https://github.com/eng9myan/Cybercom-Website.git "$WEBROOT"
-            fi
-
-            sudo chown -R www-data:www-data "$WEBROOT"
-            sudo chmod -R 755 "$WEBROOT"
-            sudo nginx -t && sudo systemctl reload nginx
-            echo "Website deployed at $(date -u)"
-
-      - name: Health check
+      - name: Validate deployment secrets
+        shell: bash
         run: |
-          sleep 5
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://www.cy-com.com || echo "000")
-          echo "Health check: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Warning: site returned $HTTP_CODE"
-          fi
+          set -euo pipefail
+          : "${OCI_HOST:?Missing OCI_HOST}"
+          : "${OCI_SSH_USER:?Missing OCI_SSH_USER}"
+          : "${OCI_SSH_PRIVATE_KEY:?Missing OCI_SSH_PRIVATE_KEY}"
+          : "${PRODUCTION_ENV_FILE:?Missing PRODUCTION_ENV_FILE}"
+          : "${NEXT_PUBLIC_API_URL:?Missing NEXT_PUBLIC_API_URL}"
+          : "${NEXT_PUBLIC_SITE_URL:?Missing NEXT_PUBLIC_SITE_URL}"
 
-      - name: Summary
-        if: success()
+      - name: Prepare release bundle and SSH
+        shell: bash
         run: |
-          echo "## Website Deployed" >> $GITHUB_STEP_SUMMARY
-          echo "- URL: https://www.cy-com.com" >> $GITHUB_STEP_SUMMARY
-          echo "- SHA: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Time: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          set -euo pipefail
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$OCI_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          chmod 600 "$HOME/.ssh/id_ed25519"
+          ssh-keyscan -H "$OCI_HOST" >> "$HOME/.ssh/known_hosts"
 
-      - name: Rollback on failure
-        if: failure()
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.OCI_HOST }}
-          username: ${{ secrets.OCI_SSH_USERNAME }}
-          key: ${{ secrets.OCI_SSH_KEY }}
-          port: 22
-          script: |
-            cd /var/www/cy-com.com
-            git reset --hard HEAD~1 || true
-            sudo nginx -t && sudo systemctl reload nginx || true
-            echo "Rollback complete"
+          git archive --format=tar.gz --output="$RUNNER_TEMP/cybercom-${GITHUB_SHA}.tar.gz" "$GITHUB_SHA"
+          printf '%s\n' "$PRODUCTION_ENV_FILE" > "$RUNNER_TEMP/production.env"
+          printf '\nNEXT_PUBLIC_API_URL=%s\nNEXT_PUBLIC_SITE_URL=%s\n' \
+            "$NEXT_PUBLIC_API_URL" "$NEXT_PUBLIC_SITE_URL" >> "$RUNNER_TEMP/production.env"
+          chmod 600 "$RUNNER_TEMP/production.env"
+
+      - name: Transfer release to Oracle VM
+        shell: bash
+        run: |
+          set -euo pipefail
+          scp "$RUNNER_TEMP/cybercom-${GITHUB_SHA}.tar.gz" \
+            "${OCI_SSH_USER}@${OCI_HOST}:/tmp/cybercom-${GITHUB_SHA}.tar.gz"
+          scp "$RUNNER_TEMP/production.env" \
+            "${OCI_SSH_USER}@${OCI_HOST}:/tmp/cybercom-${GITHUB_SHA}.env"
+
+      - name: Deploy release
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh "${OCI_SSH_USER}@${OCI_HOST}" "bash -s -- '${GITHUB_SHA}'" <<'REMOTE'
+          set -Eeuo pipefail
+          release="$1"
+          app_root=/opt/cybercom-website
+          release_dir="$app_root/releases/$release"
+
+          sudo install -d -o "$USER" -g "$USER" "$app_root" "$app_root/releases" "$app_root/shared"
+          install -d "$release_dir"
+          tar -xzf "/tmp/cybercom-${release}.tar.gz" -C "$release_dir"
+          install -m 600 "/tmp/cybercom-${release}.env" "$app_root/shared/.env.production"
+          rm -f "/tmp/cybercom-${release}.tar.gz" "/tmp/cybercom-${release}.env"
+
+          chmod +x "$release_dir/scripts/"*.sh
+          "$release_dir/scripts/deploy-production.sh" "$release"
+          REMOTE

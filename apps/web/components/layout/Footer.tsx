@@ -113,14 +113,14 @@ export function Footer({ locale }: FooterProps) {
                 </li>
               ))}
               <li>
-                <a href="https://docs.cy-com.com" target="_blank" rel="noreferrer" className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
+                <Link href={`/${locale}/contact`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
                   Documentation
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://partners.cy-com.com" target="_blank" rel="noreferrer" className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
+                <Link href={`/${locale}/partners`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
                   Partner Portal
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

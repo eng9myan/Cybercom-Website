@@ -40,6 +40,16 @@ const PLATFORM_CATEGORIES = [
     ],
   },
   {
+    name: "Retail",
+    desc: "Intelligent retail & commerce platform",
+    color: "text-cy-orange",
+    bgColor: "bg-cy-orange/5",
+    borderColor: "border-cy-orange/20",
+    products: [
+      { name: "CyShop", slug: "cyshop", desc: "Complete retail & commerce platform" },
+    ],
+  },
+  {
     name: "Enterprise",
     desc: "ERP, government, and citizen platforms",
     color: "text-blue-400",
@@ -105,8 +115,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
             The CyberCom Ecosystem
           </h1>
           <p className="text-xl text-cy-gray-400 max-w-2xl mx-auto">
-            Nine integrated platforms built on open standards, delivering intelligent operations
-            for healthcare, government, and enterprise.
+            Three enterprise platforms — CyMed, CyShop, and CyCom ERP — built on open standards, sharing one identity layer, one audit trail, and one integration hub.
           </p>
         </div>
       </div>
