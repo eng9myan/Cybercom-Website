@@ -88,13 +88,13 @@ export default async function PartnersPage({ params }: PartnersPageProps) {
             delivering digital transformation across the Middle East and beyond.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="https://partners.cy-com.com/apply" className="btn-primary px-8 py-3">
+            <Link href={`/${locale}/contact`} className="btn-primary px-8 py-3">
               Apply to Become a Partner
               <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden="true" />
-            </a>
-            <a href="https://partners.cy-com.com" className="btn-secondary px-8 py-3">
+            </Link>
+            <Link href={`/${locale}/demo`} className="btn-secondary px-8 py-3">
               Partner Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -173,12 +173,12 @@ export default async function PartnersPage({ params }: PartnersPageProps) {
               <p className="text-sm text-cy-gray-400 mb-6">
                 Complete our partner application form. Our team reviews all applications within 5 business days.
               </p>
-              <a href="https://partners.cy-com.com/apply" className="btn-primary w-full justify-center py-3.5">
+              <Link href={`/${locale}/contact`} className="btn-primary w-full justify-center py-3.5">
                 Apply Now
                 <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden="true" />
-              </a>
+              </Link>
               <p className="text-2xs text-cy-gray-600 text-center mt-4">
-                Already a partner? <a href="https://partners.cy-com.com" className="text-cy-orange hover:underline">Log in to the Partner Portal</a>
+                Already a partner? <Link href={`/${locale}/demo`} className="text-cy-orange hover:underline">Contact us to access Partner Portal</Link>
               </p>
             </div>
           </div>

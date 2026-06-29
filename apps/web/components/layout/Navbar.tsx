@@ -149,7 +149,7 @@ export function Navbar({ locale }: NavbarProps) {
           <Link href={`/${locale}/pricing`} className="btn-ghost">{t("pricing")}</Link>
           <Link href={`/${locale}/partners`} className="btn-ghost">{t("partners")}</Link>
           <Link href={`/${locale}/marketplace`} className="btn-ghost">{t("marketplace")}</Link>
-          <a href={`https://docs.cy-com.com`} className="btn-ghost" target="_blank" rel="noreferrer">{t("docs")}</a>
+          <Link href={`/${locale}/contact`} className="btn-ghost">{t("docs")}</Link>
           <Link href={`/${locale}/about`} className="btn-ghost">{t("about")}</Link>
         </div>
 
@@ -165,12 +165,12 @@ export function Navbar({ locale }: NavbarProps) {
             {altLocale === "en" ? "EN" : "AR"}
           </Link>
 
-          <a
-            href={process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com"}
+          <Link
+            href={process.env.NEXT_PUBLIC_PORTAL_URL ?? `/${locale}/demo`}
             className="btn-secondary text-sm py-2 px-4"
           >
             {t("portal")}
-          </a>
+          </Link>
 
           <Link href={`/${locale}/demo`} className="btn-primary text-sm py-2 px-4">
             {t("requestDemo")}
