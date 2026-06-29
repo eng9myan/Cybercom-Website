@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import path from "node:path";
 
 const withNextIntl = createNextIntlPlugin("./lib/i18n.ts");
 
 const nextConfig: NextConfig = {
+  output: "standalone",
+  outputFileTracingRoot: path.join(process.cwd(), "../.."),
   transpilePackages: ["@cybercom/ui", "@cybercom/api", "@cybercom/config"],
   images: {
     remotePatterns: [
@@ -11,9 +14,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "cdn.cy-com.com" },
     ],
     formats: ["image/avif", "image/webp"],
-  },
-  experimental: {
-    turbo: {},
   },
   async headers() {
     return [

@@ -9,9 +9,6 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
   },
-  experimental: {
-    optimizeCss: true,
-  },
   async headers() {
     return [
       {

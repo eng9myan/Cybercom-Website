@@ -224,7 +224,7 @@ export default async function PortalPage({ params }: PortalPageProps) {
                 Enterprise-grade security
               </h2>
               <p className="text-cy-gray-400 leading-relaxed mb-6">
-                The portal is protected by CyIdentity — CyberCom's Zero Trust identity platform.
+                The portal is protected by CyIdentity — CyberCom&apos;s Zero Trust identity platform.
                 All sessions are MFA-enforced, audit-logged, and scoped to your tenant.
               </p>
               <div className="flex flex-wrap gap-4">
