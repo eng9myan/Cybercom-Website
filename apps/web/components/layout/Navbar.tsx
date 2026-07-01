@@ -20,14 +20,19 @@ const PRODUCTS_MEGA_MENU = [
       { name: "CyMed Laboratory", slug: "cymed-laboratory", desc: "LIS with auto-verification" },
       { name: "CyMed Imaging", slug: "cymed-imaging", desc: "RIS/DICOM PACS integration" },
       { name: "CyMed Pharmacy", slug: "cymed-pharmacy", desc: "Clinical pharmacy management" },
+      { name: "CyMed Patient Portal", slug: "cymed-patient-portal", desc: "Patient self-service & records" },
+      { name: "CyMed Provider Portal", slug: "cymed-provider-portal", desc: "Provider tools & scheduling" },
+      { name: "CyMed Revenue Cycle", slug: "cymed-revenue-cycle", desc: "Billing, coding, collections" },
+      { name: "CyMed Population Health", slug: "cymed-population-health", desc: "Analytics & care programs" },
     ],
   },
   {
     category: "Retail · CyShop",
     items: [
       { name: "CyShop", slug: "cyshop", desc: "Complete retail & commerce platform" },
-      { name: "Restaurant & F&B", slug: "cyshop", desc: "Dine-in, takeaway, delivery POS" },
-      { name: "Grocery & Supermarket", slug: "cyshop", desc: "Weighted items, loyalty, self-checkout" },
+      { name: "Restaurant & F&B", slug: "cyshop-restaurant", desc: "Dine-in, takeaway, delivery POS" },
+      { name: "Grocery & Supermarket", slug: "cyshop-supermarket", desc: "Weighted items, loyalty, self-checkout" },
+      { name: "Bakery & Coffee", slug: "cyshop-bakery", desc: "Recipe management, barista workflow" },
     ],
   },
   {
@@ -114,7 +119,7 @@ export function Navbar({ locale }: NavbarProps) {
 
             {productsOpen && (
               <div
-                className="absolute top-full mt-1 left-0 w-[680px] p-6 glass-card rounded-2xl grid grid-cols-3 gap-6"
+                className="absolute top-full mt-1 left-0 w-[900px] p-6 glass-card rounded-2xl grid grid-cols-4 gap-5"
                 onMouseEnter={() => setProductsOpen(true)}
                 onMouseLeave={() => setProductsOpen(false)}
                 role="menu"
@@ -128,7 +133,13 @@ export function Navbar({ locale }: NavbarProps) {
                       {group.items.map((item) => (
                         <li key={item.slug}>
                           <Link
-                            href={`/${locale}/products/${item.slug}`}
+                            href={
+                              item.slug === "cyshop" || item.slug.startsWith("cyshop-")
+                                ? `/${locale}/cyshop`
+                                : item.slug === "cycom"
+                                ? `/${locale}/erp`
+                                : `/${locale}/products/${item.slug}`
+                            }
                             className="block px-2 py-1.5 rounded-lg text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors duration-150 focus-visible:ring-1 focus-visible:ring-cy-orange"
                             role="menuitem"
                           >

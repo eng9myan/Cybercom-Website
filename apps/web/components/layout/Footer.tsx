@@ -13,7 +13,8 @@ interface FooterProps {
 
 const PRODUCTS = [
   { name: "CyMed", slug: "cymed-clinic" },
-  { name: "CyCom", slug: "cycom" },
+  { name: "CyShop", slug: "cyshop" },
+  { name: "CyCom ERP", slug: "cycom" },
   { name: "CyGov", slug: "cygov" },
   { name: "CyAI", slug: "cyai" },
   { name: "CyIdentity", slug: "cyidentity" },
@@ -88,7 +89,13 @@ export function Footer({ locale }: FooterProps) {
               {PRODUCTS.map((p) => (
                 <li key={p.slug}>
                   <Link
-                    href={`/${locale}/products/${p.slug}`}
+                    href={
+                      p.slug === "cyshop"
+                        ? `/${locale}/cyshop`
+                        : p.slug === "cycom"
+                        ? `/${locale}/erp`
+                        : `/${locale}/products/${p.slug}`
+                    }
                     className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150"
                   >
                     {p.name}
@@ -113,12 +120,12 @@ export function Footer({ locale }: FooterProps) {
                 </li>
               ))}
               <li>
-                <Link href={`/${locale}/contact`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
+                <Link href={`/${locale}/documentation`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
                   Documentation
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/partners`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
+                <Link href={`/${locale}/partner`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
                   Partner Portal
                 </Link>
               </li>

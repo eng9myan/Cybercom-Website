@@ -21,6 +21,7 @@ const PRODUCTS_LIST = [
   "CyMed Patient Portal",
   "CyMed Provider Portal",
   "CyMed Revenue Cycle",
+  "CyMed Population Health",
   "CyShop",
   "CyCom ERP",
   "CyGov",
@@ -123,10 +124,10 @@ export function DemoSection({ locale }: DemoSectionProps) {
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+            initial={{ opacity: 1, y: shouldReduce ? 0 : 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0 }}
+            transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
             <p className="text-sm font-medium text-cy-orange mb-3 uppercase tracking-wider">Request Demo</p>
@@ -154,10 +155,10 @@ export function DemoSection({ locale }: DemoSectionProps) {
             </motion.div>
           ) : (
             <motion.form
-              initial={{ opacity: 0, y: shouldReduce ? 0 : 24 }}
+              initial={{ opacity: 1, y: shouldReduce ? 0 : 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true, amount: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               onSubmit={handleSubmit}
               noValidate
               aria-label="Demo request form"
