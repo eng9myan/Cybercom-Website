@@ -149,7 +149,7 @@ export function Navbar({ locale }: NavbarProps) {
           <Link href={`/${locale}/pricing`} className="btn-ghost">{t("pricing")}</Link>
           <Link href={`/${locale}/partners`} className="btn-ghost">{t("partners")}</Link>
           <Link href={`/${locale}/marketplace`} className="btn-ghost">{t("marketplace")}</Link>
-          <Link href={`/${locale}/contact`} className="btn-ghost">{t("docs")}</Link>
+          <Link href={`/${locale}/documentation`} className="btn-ghost">{t("docs")}</Link>
           <Link href={`/${locale}/about`} className="btn-ghost">{t("about")}</Link>
         </div>
 
