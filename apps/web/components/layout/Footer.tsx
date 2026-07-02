@@ -12,7 +12,7 @@ interface FooterProps {
 }
 
 const PRODUCTS = [
-  { name: "CyMed", slug: "cymed-clinic" },
+  { name: "CyMed", slug: "cymed" },
   { name: "CyShop", slug: "cyshop" },
   { name: "CyCom ERP", slug: "cycom" },
   { name: "CyGov", slug: "cygov" },
@@ -125,7 +125,7 @@ export function Footer({ locale }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/partner`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
+                <Link href={`/${locale}/partners`} className="text-sm text-cy-gray-400 hover:text-white transition-colors duration-150">
                   Partner Portal
                 </Link>
               </li>

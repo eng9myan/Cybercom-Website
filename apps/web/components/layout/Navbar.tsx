@@ -177,7 +177,7 @@ export function Navbar({ locale }: NavbarProps) {
           </Link>
 
           <Link
-            href={process.env.NEXT_PUBLIC_PORTAL_URL ?? `/${locale}/demo`}
+            href={process.env.NEXT_PUBLIC_PORTAL_URL ?? `/${locale}/portal`}
             className="btn-secondary text-sm py-2 px-4"
           >
             {t("portal")}
@@ -211,7 +211,13 @@ export function Navbar({ locale }: NavbarProps) {
               g.items.map((item) => (
                 <Link
                   key={item.slug}
-                  href={`/${locale}/products/${item.slug}`}
+                  href={
+                    item.slug === "cyshop" || item.slug.startsWith("cyshop-")
+                      ? `/${locale}/cyshop`
+                      : item.slug === "cycom"
+                      ? `/${locale}/erp`
+                      : `/${locale}/products/${item.slug}`
+                  }
                   className="block px-3 py-2.5 rounded-xl text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
