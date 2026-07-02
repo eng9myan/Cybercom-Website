@@ -101,7 +101,7 @@ export function Hero({ locale }: HeroProps) {
     return () => obs.disconnect();
   }, []);
 
-  const word = CYCLING_WORDS[wordIdx] ?? CYCLING_WORDS[0];
+  const word = CYCLING_WORDS[wordIdx % CYCLING_WORDS.length]!;
   const doubled = [...BADGES, ...BADGES];
 
   const fade = (delay: number) => ({
