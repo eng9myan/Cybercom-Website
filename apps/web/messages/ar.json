@@ -18,19 +18,29 @@
     "partnerPortal": "بوابة الشركاء"
   },
   "hero": {
-    "tagline": "سايبر كوم ريفولوشن",
-    "headline1": "تحويل الرعاية الصحية،",
-    "headline2": "الحكومة والمؤسسات",
-    "headline3": "عبر المنصات الذكية.",
-    "description": "تسع منصات متكاملة. نظام بيئي موحد. مصمم خصيصاً لعصر الرعاية الصحية والحكومة والعمليات المؤسسية الحديثة.",
+    "eyebrow": "مجموعة منصات المؤسسات — ثلاثة منتجات، نظام بيئي واحد",
+    "headlinePrefix": "برنامج ذكي لـ",
+    "words": {
+      "healthcare": "الرعاية الصحية",
+      "retail": "التجزئة",
+      "enterprise": "المؤسسات"
+    },
+    "description": "CyMed · CyShop · CyCom ERP — على طبقة هوية واحدة، وبوابة API واحدة، وسجل تدقيق واحد. النشر كـ SaaS أو محلياً أو هجين.",
     "cta": {
       "demo": "طلب عرض توضيحي",
       "explore": "استكشف المنتجات"
     },
+    "highlights": {
+      "fhir": "نظام سجلات طبية FHIR",
+      "ai": "تنبؤ بالذكاء الاصطناعي",
+      "inventory": "مخزون في الوقت الفعلي",
+      "security": "أمن Zero Trust"
+    },
     "stats": {
-      "products": "9 منصات",
-      "standards": "FHIR • ICD-11 • OIDC",
-      "deployment": "سحابي ومحلي"
+      "platformsLabel": "منصات مؤسسية",
+      "erpLabel": "وحدات ERP",
+      "clinicalLabel": "حلول سريرية",
+      "uptimeLabel": "ضمان التوفر"
     }
   },
   "products": {

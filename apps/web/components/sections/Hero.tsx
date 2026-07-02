@@ -5,15 +5,16 @@ import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { type Locale } from "@/lib/i18n";
 import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 interface HeroProps {
   locale: Locale;
 }
 
-const CYCLING_WORDS = [
-  { text: "Healthcare", accent: "#34d399", slug: "CyMed" },
-  { text: "Retail",     accent: "#ed6c00", slug: "CyShop" },
-  { text: "Enterprise", accent: "#60a5fa", slug: "CyCom ERP" },
+const BADGE_ACCENTS = [
+  { accent: "#34d399", slug: "CyMed" },
+  { accent: "#ed6c00", slug: "CyShop" },
+  { accent: "#60a5fa", slug: "CyCom ERP" },
 ] as const;
 
 const BADGES = [
@@ -23,19 +24,7 @@ const BADGES = [
   "UAE FTA VAT", "Jordan SSC", "IFRS", "GAAP",
 ];
 
-const STATS = [
-  { end: 3,    suffix: "",   label: "Enterprise Platforms", color: "#ed6c00" },
-  { end: 14,   suffix: "+",  label: "ERP Modules",          color: "#60a5fa" },
-  { end: 9,    suffix: "",   label: "Clinical Solutions",   color: "#34d399" },
-  { end: 99.9, suffix: "%",  label: "Uptime SLA",           color: "#a78bfa" },
-] as const;
-
-const HIGHLIGHTS = [
-  { label: "FHIR-native EHR",        color: "#34d399" },
-  { label: "AI-powered forecasting",  color: "#a78bfa" },
-  { label: "Real-time inventory",     color: "#ed6c00" },
-  { label: "Zero Trust security",     color: "#60a5fa" },
-];
+interface StatData { end: number; suffix: string; label: string; color: string; }
 
 function useCountUp(end: number, duration: number, delay: number, started: boolean) {
   const [val, setVal] = useState(0);
@@ -55,7 +44,7 @@ function useCountUp(end: number, duration: number, delay: number, started: boole
   return val;
 }
 
-function StatItem({ stat, delay, started }: { stat: typeof STATS[number]; delay: number; started: boolean }) {
+function StatItem({ stat, delay, started }: { stat: StatData; delay: number; started: boolean }) {
   const v = useCountUp(stat.end, 1400, delay, started);
   const display = stat.end % 1 === 0 ? Math.round(v).toString() : v.toFixed(1);
   return (
@@ -69,10 +58,31 @@ function StatItem({ stat, delay, started }: { stat: typeof STATS[number]; delay:
 }
 
 export function Hero({ locale }: HeroProps) {
+  const t = useTranslations("hero");
   const shouldReduce = useReducedMotion();
   const [wordIdx, setWordIdx] = useState(0);
   const [statsStarted, setStatsStarted] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
+
+  const CYCLING_WORDS = [
+    { text: t("words.healthcare"), ...BADGE_ACCENTS[0] },
+    { text: t("words.retail"),     ...BADGE_ACCENTS[1] },
+    { text: t("words.enterprise"), ...BADGE_ACCENTS[2] },
+  ];
+
+  const HIGHLIGHTS = [
+    { label: t("highlights.fhir"),      color: "#34d399" },
+    { label: t("highlights.ai"),        color: "#a78bfa" },
+    { label: t("highlights.inventory"), color: "#ed6c00" },
+    { label: t("highlights.security"),  color: "#60a5fa" },
+  ];
+
+  const STATS: StatData[] = [
+    { end: 3,    suffix: "",   label: t("stats.platformsLabel"), color: "#ed6c00" },
+    { end: 14,   suffix: "+",  label: t("stats.erpLabel"),       color: "#60a5fa" },
+    { end: 9,    suffix: "",   label: t("stats.clinicalLabel"),  color: "#34d399" },
+    { end: 99.9, suffix: "%",  label: t("stats.uptimeLabel"),    color: "#a78bfa" },
+  ];
 
   useEffect(() => {
     if (shouldReduce) return;
@@ -162,7 +172,7 @@ export function Hero({ locale }: HeroProps) {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-cy-orange" />
           </span>
           <span className="text-xs font-medium text-white/55 tracking-widest uppercase">
-            Enterprise Platform Suite — Three Products, One Ecosystem
+            {t("eyebrow")}
           </span>
         </motion.div>
 
@@ -173,7 +183,7 @@ export function Hero({ locale }: HeroProps) {
           className="font-heading font-semibold leading-[1.05] tracking-tight max-w-5xl mx-auto"
           style={{ fontSize: "clamp(2.6rem, 7vw, 5.5rem)" }}
         >
-          <span className="block text-white/88">Intelligent Software for</span>
+          <span className="block text-white/88">{t("headlinePrefix")}</span>
 
           {/* Cycling word */}
           <span
@@ -208,8 +218,7 @@ export function Hero({ locale }: HeroProps) {
           variants={fade(0.16)} initial="hidden" animate="visible"
           className="mt-7 text-lg sm:text-xl text-white/42 max-w-2xl mx-auto leading-relaxed font-light"
         >
-          CyMed · CyShop · CyCom ERP — built on one identity layer, one API gateway,
-          one audit trail. Deploy as SaaS, on-premise, or hybrid.
+          {t("description")}
         </motion.p>
 
         {/* ── CTAs ───────────────────────────────────────── */}
@@ -218,14 +227,14 @@ export function Hero({ locale }: HeroProps) {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
         >
           <Link href={`/${locale}/demo`} className="btn-primary-glow text-base px-8 py-3.5 group">
-            Request a Demo
+            {t("cta.demo")}
             <ArrowRight
               className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180"
               aria-hidden="true"
             />
           </Link>
           <Link href={`/${locale}/products`} className="btn-secondary text-base px-8 py-3.5 group">
-            Explore Products
+            {t("cta.explore")}
             <ChevronRight
               className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180"
               aria-hidden="true"
