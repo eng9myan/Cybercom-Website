@@ -5,8 +5,8 @@ import Link from "next/link";
 import {
   Check, ChevronRight, Building2, ShoppingCart, BarChart3,
   FlaskConical, Scan, Pill, Stethoscope, ArrowRight, ArrowLeft,
-  Zap, Shield, Clock, CreditCard, Phone, Mail, Globe, Users,
-  Star, X, Info, CheckCircle2, Calendar,
+  Zap, Shield, Clock, CreditCard, Phone, Globe, Users,
+  Star, Info, CheckCircle2, Calendar,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────
@@ -199,7 +199,6 @@ export default function SubscribePage() {
 
   /* helpers */
   const isSelected = (id: string) => selections.some((s) => s.productId === id);
-  const getEditionIndex = (id: string) => selections.find((s) => s.productId === id)?.editionIndex ?? 0;
 
   function toggleProduct(id: string) {
     setSelections((prev) =>
@@ -683,7 +682,7 @@ export default function SubscribePage() {
             {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />)}
           </div>
           <p className="text-xs text-cy-gray-300 italic mb-3">
-            "CyberCom reduced our pharmacy dispensing errors by 94% in the first month. The FHIR integration with our EMR was seamless."
+            &ldquo;CyberCom reduced our pharmacy dispensing errors by 94% in the first month. The FHIR integration with our EMR was seamless.&rdquo;
           </p>
           <div className="text-xs text-cy-gray-500">— Clinical Director, 350-bed hospital, Jordan</div>
         </div>

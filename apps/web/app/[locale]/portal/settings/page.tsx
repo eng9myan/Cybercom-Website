@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Bell, Globe, Shield, Users, Building2, Check } from "lucide-react";
+import { Save, Bell, Shield, Users, Building2, Check } from "lucide-react";
 
 type Tab = "profile" | "organization" | "notifications" | "security" | "team";
 
