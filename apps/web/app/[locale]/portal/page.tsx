@@ -1,260 +1,247 @@
-import { setRequestLocale } from "next-intl/server";
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { buildMetadata } from "@/lib/metadata";
-import { type Locale } from "@/lib/i18n";
-import { ArrowRight, Key, CreditCard, Headphones, Download, BarChart2, Settings, Shield, CheckCircle } from "lucide-react";
+import {
+  Building2, BarChart3, Pill,
+  ArrowRight, TrendingUp,
+  AlertCircle, Download, CheckCircle2, Users, CreditCard,
+  Activity,
+} from "lucide-react";
 
-interface PortalPageProps {
-  params: Promise<{ locale: string }>;
-}
-
-export async function generateMetadata({ params }: PortalPageProps): Promise<Metadata> {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  return buildMetadata({
-    title: "Customer Portal",
-    description:
-      "Manage your CyberCom licenses, subscriptions, support tickets, and billing from one secure customer portal. Available 24/7 for all CyberCom customers.",
-    path: "/portal",
-    locale,
-  });
-}
-
-const CAPABILITIES = [
+/* ── demo data (replace with real API in production) ── */
+const SUBSCRIBED_PRODUCTS = [
   {
-    icon: Key,
-    title: "License Management",
-    desc: "Activate, deactivate, and renew your product licenses. Generate offline tokens for air-gapped deployments. View usage across facilities.",
+    id: "cymed-hospital",
+    name: "CyMed Hospital",
+    edition: "Hospital Advanced",
+    icon: Building2,
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+    border: "border-emerald-500/20",
+    status: "active",
+    renewalDate: "2027-07-01",
+    seats: 120,
+    usedSeats: 87,
+    demoUrl: "https://cymed.cy-com.com/hospital",
   },
   {
-    icon: CreditCard,
-    title: "Billing & Subscriptions",
-    desc: "View invoices, manage subscription billing cycles, update payment methods, and download tax receipts in multiple currencies.",
+    id: "cymed-pharmacy",
+    name: "CyMed Pharmacy",
+    edition: "Pharmacy Clinical",
+    icon: Pill,
+    color: "text-violet-400",
+    bg: "bg-violet-500/10",
+    border: "border-violet-500/20",
+    status: "active",
+    renewalDate: "2027-07-01",
+    seats: 20,
+    usedSeats: 14,
+    demoUrl: "https://cymed.cy-com.com/pharmacy",
   },
   {
-    icon: Headphones,
-    title: "Support Center",
-    desc: "Submit and track support tickets with SLA tracking. Attach screenshots and logs. Chat directly with assigned support engineers.",
-  },
-  {
-    icon: Download,
-    title: "Software Downloads",
-    desc: "Access certified installers, patches, hotfixes, and release notes. Download on-premise deployment packages and migration tools.",
-  },
-  {
-    icon: BarChart2,
-    title: "Usage Analytics",
-    desc: "Monitor active sessions, user counts, feature utilization, and compliance status across all your deployed products.",
-  },
-  {
-    icon: Settings,
-    title: "White Label Config",
-    desc: "Configure custom branding, logos, colors, and domain names for your CyberCom deployment. Manage email templates and login pages.",
+    id: "cycom-erp",
+    name: "CyCom ERP",
+    edition: "Enterprise",
+    icon: BarChart3,
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+    border: "border-blue-500/20",
+    status: "active",
+    renewalDate: "2027-07-01",
+    seats: 50,
+    usedSeats: 32,
+    demoUrl: "https://health.cy-com.com",
   },
 ];
 
-const ACCESS_LEVELS = [
-  {
-    level: "Viewer",
-    desc: "Read-only access to licenses, invoices, and system status",
-    features: ["View licenses", "View invoices", "System status", "Documentation"],
-  },
-  {
-    level: "Standard",
-    featured: true,
-    desc: "Full access for IT administrators and operations teams",
-    features: ["All Viewer features", "Submit support tickets", "Download software", "View analytics"],
-  },
-  {
-    level: "Admin",
-    desc: "Full control for account owners and technical leads",
-    features: ["All Standard features", "Manage licenses", "Manage billing", "Configure white label", "Manage portal users"],
-  },
+const INVOICES = [
+  { id: "INV-2026-006", date: "2026-07-01", amount: 7898, status: "paid" },
+  { id: "INV-2026-005", date: "2026-06-01", amount: 7898, status: "paid" },
+  { id: "INV-2026-004", date: "2026-05-01", amount: 7898, status: "paid" },
 ];
 
-const SUPPORT_SLAS = [
-  { priority: "Critical", response: "1 hour", resolution: "4 hours", badge: "bg-red-500/10 text-red-400 border-red-500/20" },
-  { priority: "High", response: "4 hours", resolution: "1 business day", badge: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
-  { priority: "Medium", response: "1 business day", resolution: "3 business days", badge: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
-  { priority: "Low", response: "2 business days", resolution: "5 business days", badge: "bg-cy-glass-bg text-cy-gray-400 border-cy-glass-border" },
+const TICKETS = [
+  { id: "TKT-1042", title: "Lab integration HL7 mapping question", status: "open", updated: "2h ago" },
+  { id: "TKT-1038", title: "Pharmacy auto-verification threshold", status: "resolved", updated: "3d ago" },
 ];
 
-export default async function PortalPage({ params }: PortalPageProps) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const l = locale as Locale;
-  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL ?? "https://portal.cy-com.com";
-
+export default function PortalDashboardPage() {
   return (
-    <div className="min-h-dvh pt-16">
-      {/* Hero */}
-      <div className="relative py-28 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="glow-orb w-[600px] h-[600px] -top-32 right-0 bg-cy-orange/5" />
+    <div>
+      {/* Header */}
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-heading font-semibold text-white mb-1">Welcome back</h1>
+          <p className="text-sm text-cy-gray-400">Your CyberCom subscription overview</p>
         </div>
-        <div className="section-container relative z-10">
-          <div className="max-w-3xl">
-            <span className="product-badge text-cy-orange border-cy-orange/20 bg-cy-orange/5 mb-6">
-              Customer Portal
-            </span>
-            <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-white mb-6 leading-tight">
-              Everything you need,{" "}
-              <span className="text-gradient">in one place</span>
-            </h1>
-            <p className="text-xl text-cy-gray-400 mb-10 leading-relaxed">
-              The CyberCom Customer Portal gives your team full control over licenses,
-              subscriptions, support, and software — available 24/7 from any device.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a
-                href={portalUrl}
-                className="btn-primary px-8 py-3"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Sign in to Portal
-                <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden="true" />
-              </a>
-              <Link href={`/${l}/demo`} className="btn-secondary px-8 py-3">
-                Request Access
-              </Link>
-            </div>
-          </div>
-        </div>
+        <Link
+          href="/en/subscribe"
+          className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-cy-orange hover:bg-cy-orange-light text-white transition-colors"
+        >
+          Add Product <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
 
-      {/* Capabilities */}
-      <section className="py-20 bg-cy-dark/30" aria-labelledby="capabilities-heading">
-        <div className="section-container">
-          <h2 id="capabilities-heading" className="text-3xl font-heading font-semibold text-white mb-4 text-center">
-            Portal capabilities
-          </h2>
-          <p className="text-cy-gray-400 text-center mb-12 max-w-2xl mx-auto">
-            One portal. Complete lifecycle management for every CyberCom product your organization runs.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CAPABILITIES.map((cap) => {
-              const Icon = cap.icon;
+      {/* Stats row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {[
+          { label: "Active Products", value: "3", icon: Activity, color: "text-emerald-400", bg: "bg-emerald-500/10" },
+          { label: "Total Users", value: "133", icon: Users, color: "text-blue-400", bg: "bg-blue-500/10" },
+          { label: "Monthly Spend", value: "$6,398", icon: CreditCard, color: "text-cy-orange", bg: "bg-cy-orange/10" },
+          { label: "Uptime (30d)", value: "99.97%", icon: TrendingUp, color: "text-violet-400", bg: "bg-violet-500/10" },
+        ].map(({ label, value, icon: Icon, color, bg }) => (
+          <div key={label} className="glass-card p-5 rounded-xl">
+            <div className={`w-8 h-8 ${bg} rounded-lg flex items-center justify-center mb-3`}>
+              <Icon className={`w-4 h-4 ${color}`} />
+            </div>
+            <div className="text-xl font-heading font-bold text-white">{value}</div>
+            <div className="text-xs text-cy-gray-400 mt-0.5">{label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Active products */}
+        <div className="lg:col-span-2">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-heading font-semibold text-white">Active Subscriptions</h2>
+            <Link href="/en/portal/subscriptions" className="text-xs text-cy-orange hover:text-cy-orange-light">Manage all →</Link>
+          </div>
+          <div className="space-y-3">
+            {SUBSCRIBED_PRODUCTS.map((p) => {
+              const Icon = p.icon;
+              const usagePct = Math.round((p.usedSeats / p.seats) * 100);
               return (
-                <div key={cap.title} className="glass-card p-6 rounded-2xl">
-                  <div className="w-10 h-10 rounded-xl bg-cy-glass-bg border border-cy-glass-border flex items-center justify-center mb-4">
-                    <Icon className="w-5 h-5 text-cy-orange" aria-hidden="true" />
+                <div key={p.id} className="glass-card p-5 rounded-xl">
+                  <div className="flex items-start gap-4">
+                    <div className={`w-10 h-10 rounded-lg ${p.bg} border ${p.border} flex items-center justify-center flex-shrink-0`}>
+                      <Icon className={`w-5 h-5 ${p.color}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="font-heading font-semibold text-sm text-white">{p.name}</span>
+                        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Active
+                        </span>
+                      </div>
+                      <div className="text-xs text-cy-gray-400 mb-3">
+                        {p.edition} · Renews{" "}
+                        {new Date(p.renewalDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1 h-1.5 bg-cy-glass-border rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${usagePct > 85 ? "bg-amber-400" : "bg-emerald-500"}`}
+                            style={{ width: `${usagePct}%` }}
+                          />
+                        </div>
+                        <span className="text-xs text-cy-gray-400 flex-shrink-0">{p.usedSeats}/{p.seats} seats</span>
+                      </div>
+                    </div>
+                    <a
+                      href={p.demoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`flex-shrink-0 text-xs ${p.color} hover:opacity-80 transition-opacity`}
+                    >
+                      Open →
+                    </a>
                   </div>
-                  <h3 className="text-base font-heading font-semibold text-white mb-2">{cap.title}</h3>
-                  <p className="text-sm text-cy-gray-400 leading-relaxed">{cap.desc}</p>
                 </div>
               );
             })}
           </div>
-        </div>
-      </section>
 
-      {/* Access levels */}
-      <section className="py-20" aria-labelledby="access-heading">
-        <div className="section-container">
-          <h2 id="access-heading" className="text-3xl font-heading font-semibold text-white mb-4 text-center">
-            Role-based access
-          </h2>
-          <p className="text-cy-gray-400 text-center mb-12 max-w-xl mx-auto">
-            Grant each team member the right level of access. Managed by your portal admin.
-          </p>
-          <div className="grid md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-            {ACCESS_LEVELS.map((al) => (
-              <div
-                key={al.level}
-                className={`glass-card p-6 rounded-2xl flex flex-col ${al.featured ? "border-cy-orange/40" : "border-cy-glass-border"}`}
-              >
-                {al.featured && (
-                  <span className="text-2xs font-semibold text-cy-orange mb-3">Recommended</span>
-                )}
-                <h3 className="text-lg font-heading font-semibold text-white mb-1">{al.level}</h3>
-                <p className="text-xs text-cy-gray-400 mb-5">{al.desc}</p>
-                <ul className="space-y-2 flex-1">
-                  {al.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-xs text-cy-gray-200">
-                      <CheckCircle className="w-3.5 h-3.5 text-cy-orange flex-shrink-0" aria-hidden="true" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Add product prompt */}
+          <div className="mt-3 p-4 rounded-xl border border-dashed border-cy-glass-border flex items-center justify-between">
+            <span className="text-sm text-cy-gray-400">Need another product?</span>
+            <Link href="/en/subscribe" className="text-sm text-cy-orange hover:text-cy-orange-light flex items-center gap-1.5">
+              Add product <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
-      </section>
 
-      {/* Support SLAs */}
-      <section className="py-20 bg-cy-dark/30" aria-labelledby="sla-heading">
-        <div className="section-container max-w-3xl">
-          <h2 id="sla-heading" className="text-3xl font-heading font-semibold text-white mb-4 text-center">
-            Support SLAs
-          </h2>
-          <p className="text-cy-gray-400 text-center mb-10">
-            All support tickets submitted via the portal are tracked with guaranteed response and resolution times.
-          </p>
-          <div className="space-y-3">
-            {SUPPORT_SLAS.map((sla) => (
-              <div key={sla.priority} className="glass-card p-5 rounded-xl flex items-center gap-5">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${sla.badge} min-w-[80px] text-center`}>
-                  {sla.priority}
-                </span>
-                <div className="flex-1 grid grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <span className="text-cy-gray-400 text-xs">First Response</span>
-                    <div className="text-white font-medium">{sla.response}</div>
-                  </div>
-                  <div>
-                    <span className="text-cy-gray-400 text-xs">Resolution Target</span>
-                    <div className="text-white font-medium">{sla.resolution}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Security */}
-      <section className="py-20" aria-labelledby="security-heading">
-        <div className="section-container">
-          <div className="glass-card p-10 lg:p-14 rounded-3xl grid lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <h2 id="security-heading" className="text-3xl font-heading font-semibold text-white mb-4">
-                Enterprise-grade security
-              </h2>
-              <p className="text-cy-gray-400 leading-relaxed mb-6">
-                The portal is protected by CyIdentity — CyberCom&apos;s Zero Trust identity platform.
-                All sessions are MFA-enforced, audit-logged, and scoped to your tenant.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a href={portalUrl} className="btn-primary px-8 py-3" target="_blank" rel="noreferrer">
-                  Access Portal
-                  <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden="true" />
-                </a>
-                <Link href={`/${l}/contact`} className="btn-secondary px-8 py-3">
-                  Contact Support
-                </Link>
-              </div>
+        {/* Right column */}
+        <div className="space-y-6">
+          {/* Recent invoices */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-heading font-semibold text-white">Recent Invoices</h2>
+              <Link href="/en/portal/billing" className="text-xs text-cy-orange hover:text-cy-orange-light">View all →</Link>
             </div>
-            <div className="space-y-4">
-              {[
-                "MFA-enforced login (TOTP, passkeys, WebAuthn)",
-                "SSO integration with corporate IdPs (SAML, OIDC)",
-                "All actions audit-logged with user + IP + timestamp",
-                "Session-scoped to your tenant — cross-tenant isolation",
-                "SOC 2 Type II compliant platform",
-                "GDPR and PDPL data protection controls",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 text-sm text-cy-gray-300">
-                  <Shield className="w-4 h-4 text-cy-orange flex-shrink-0" aria-hidden="true" />
-                  {item}
+            <div className="space-y-2">
+              {INVOICES.map((inv) => (
+                <div key={inv.id} className="glass-card px-4 py-3 rounded-xl flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-medium text-white">{inv.id}</div>
+                    <div className="text-xs text-cy-gray-400">
+                      {new Date(inv.date).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-white">${inv.amount.toLocaleString()}</span>
+                    <button className="p-1.5 rounded-lg hover:bg-cy-glass-border/50 text-cy-gray-400 hover:text-white transition-colors">
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Support tickets */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-heading font-semibold text-white">Support</h2>
+              <Link href="/en/portal/support" className="text-xs text-cy-orange hover:text-cy-orange-light">All tickets →</Link>
+            </div>
+            <div className="space-y-2">
+              {TICKETS.map((t) => (
+                <div key={t.id} className="glass-card px-4 py-3 rounded-xl">
+                  <div className="flex items-start gap-2">
+                    {t.status === "open"
+                      ? <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                      : <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />}
+                    <div>
+                      <div className="text-xs font-medium text-white mb-0.5">{t.title}</div>
+                      <div className="text-xs text-cy-gray-500">{t.id} · {t.updated}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <Link
+                href="/en/portal/support"
+                className="block text-center text-xs text-cy-orange hover:text-cy-orange-light py-2 border border-dashed border-cy-glass-border rounded-xl transition-colors"
+              >
+                + New support ticket
+              </Link>
+            </div>
+          </div>
+
+          {/* Quick links */}
+          <div className="glass-card p-4 rounded-xl space-y-2">
+            <div className="text-xs font-medium text-cy-gray-400 mb-3">Quick links</div>
+            {[
+              { label: "CyCom ERP", href: "https://health.cy-com.com", ext: true },
+              { label: "CyMed Hospital", href: "https://cymed.cy-com.com/hospital", ext: true },
+              { label: "Upgrade plan", href: "/en/portal/subscriptions" },
+              { label: "Download invoices", href: "/en/portal/billing" },
+            ].map(({ label, href, ext }) => (
+              <a
+                key={label}
+                href={href}
+                target={ext ? "_blank" : undefined}
+                rel={ext ? "noreferrer" : undefined}
+                className="flex items-center justify-between text-sm text-cy-gray-300 hover:text-white transition-colors py-1.5"
+              >
+                {label}
+                <ArrowRight className="w-3.5 h-3.5 text-cy-gray-500" />
+              </a>
+            ))}
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
