@@ -58,7 +58,7 @@ export default async function HomePage({ params }: HomePageProps) {
             "@type": "Organization",
             name: "CyberCom Revolution",
             url: "https://www.cy-com.com",
-            logo: "https://www.cy-com.com/images/logo.png",
+            logo: "https://www.cy-com.com/opengraph-image",
             description:
               "Enterprise software company delivering integrated healthcare, government, and ERP platforms.",
             sameAs: [

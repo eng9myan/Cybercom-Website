@@ -6,13 +6,18 @@ const STATIC_ROUTES = [
   "/about",
   "/blog",
   "/careers",
+  "/company",
   "/contact",
+  "/customers",
   "/cyshop",
   "/demo",
   "/documentation",
   "/erp",
   "/industries",
   "/investors",
+  "/legal/cookies",
+  "/legal/privacy",
+  "/legal/terms",
   "/marketplace",
   "/partners",
   "/partner",
@@ -20,6 +25,8 @@ const STATIC_ROUTES = [
   "/pricing",
   "/products",
   "/solutions",
+  "/tools/compare",
+  "/tools/roi",
 ];
 
 const PRODUCT_SLUGS = [
