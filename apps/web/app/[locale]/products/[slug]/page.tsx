@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/metadata";
 import { type Locale } from "@/lib/i18n";
-import { ArrowRight, Check, ExternalLink, Play, BookOpen, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ExternalLink, Play, BookOpen, ChevronRight, Brain, Layers, Phone } from "lucide-react";
 
 interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -24,6 +24,8 @@ const PRODUCT_DATA: Record<string, {
   accentClass: string;
   categoryLabel: string;
   subProducts?: { name: string; slug: string; desc: string }[];
+  aiFeatures?: { title: string; desc: string }[];
+  erpModules?: { module: string; desc: string }[];
 }> = {
   "cymed": {
     name: "CyMed",
@@ -93,6 +95,20 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["SaaS Cloud", "Private Cloud", "On-Premise", "Hybrid"],
     color: "emerald",
     accentClass: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
+    aiFeatures: [
+      { title: "No-Show Prediction", desc: "Predicts appointment no-shows 48 h in advance with 87% accuracy, enabling proactive rescheduling and waitlist fills." },
+      { title: "Chronic Disease Risk Stratification", desc: "Flags high-risk patients for care gap closure and proactive outreach before clinical deterioration." },
+      { title: "Clinical Documentation AI", desc: "Auto-generates SOAP notes from consultation templates — advisory only, physician reviews and confirms every entry." },
+      { title: "Drug Interaction Alerts", desc: "Real-time 5-type interaction checking (drug-drug, allergy, food, disease, age) at point of e-prescribing." },
+      { title: "ICD-11 Diagnosis Suggestions", desc: "CDS Hooks-powered ICD-11 suggestion engine surfaced to clinician — never autonomous, always advisory." },
+    ],
+    erpModules: [
+      { module: "Finance & Billing", desc: "GL integration, copay collection, insurance claim routing, and revenue reconciliation." },
+      { module: "HR & Staff Scheduling", desc: "Provider scheduling, attendance tracking, leave management, and shift planning." },
+      { module: "Patient CRM", desc: "Care follow-up campaigns, patient retention tracking, and engagement analytics." },
+      { module: "Clinical Supply Inventory", desc: "Consumable stock management, reorder automation, and expiry tracking." },
+      { module: "Payroll Integration", desc: "Provider compensation processing, WPS-ready salary run, and overtime calculation." },
+    ],
   },
   "cymed-hospital": {
     name: "CyMed Hospital",
@@ -122,6 +138,22 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["Private Cloud", "On-Premise", "Hybrid"],
     color: "emerald",
     accentClass: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
+    aiFeatures: [
+      { title: "Sepsis Early Warning", desc: "SOFA/NEWS2 scoring with 6-hour sepsis prediction — alerts nursing station and attending physician immediately." },
+      { title: "ICU Deterioration Prediction", desc: "Continuous vital sign trend analysis predicts deterioration events 2–4 hours before clinical signs appear." },
+      { title: "Bed Demand Forecasting", desc: "Predicts 24–72 h bed demand by ward type enabling proactive capacity planning and transfer coordination." },
+      { title: "Surgical Risk Scoring", desc: "Pre-operative AI risk scoring (ASA + custom model) surfaced in OR scheduling — advisory only, surgeon confirms." },
+      { title: "30-Day Readmission Risk", desc: "Discharge-time readmission risk flag with care plan recommendations for high-risk patients." },
+      { title: "Clinical Documentation AI", desc: "CPOE auto-suggestion, discharge summary drafting, and nursing handover notes — physician confirms all." },
+    ],
+    erpModules: [
+      { module: "Finance & Revenue Cycle", desc: "Insurance billing, claims submission, denial management, and collections integrated with hospital billing." },
+      { module: "HR & Workforce", desc: "Nursing rosters, clinical staff scheduling, shift planning, on-call management, and payroll." },
+      { module: "Medical Supply Inventory", desc: "Surgical supplies, ward medications, and consumables tracked in real time across all floors and stores." },
+      { module: "Procurement", desc: "Medical equipment RFQs, supplier management, purchase order workflow, and GRN processing." },
+      { module: "Fixed Asset Registry", desc: "Medical equipment lifecycle tracking, preventive maintenance schedules, and depreciation management." },
+      { module: "Payroll", desc: "Clinical and administrative staff compensation with on-call differentials and WPS compliance." },
+    ],
   },
   "cymed-laboratory": {
     name: "CyMed Laboratory",
@@ -150,6 +182,20 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["SaaS Cloud", "On-Premise"],
     color: "emerald",
     accentClass: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
+    aiFeatures: [
+      { title: "Auto-Verification Rules Engine", desc: "Configurable multi-rule auto-verification releases normal results instantly; exceptions flagged for tech review." },
+      { title: "Critical Value Intelligence", desc: "Context-aware critical value alerting with priority routing based on patient acuity and care setting." },
+      { title: "TAT Prediction", desc: "Predicts test turnaround time per analyzer load, enabling proactive patient and clinician communication." },
+      { title: "QC Anomaly Detection", desc: "Westgard rule monitoring with ML drift detection catches equipment calibration issues before patient results are affected." },
+      { title: "Reflex Testing AI", desc: "Auto-triggers reflex tests based on primary result patterns, configured per clinical protocol." },
+    ],
+    erpModules: [
+      { module: "Reagent & Consumables Inventory", desc: "Real-time stock levels, expiry tracking, FIFO dispensing, and automated reorder for all lab consumables." },
+      { module: "Lab Procurement", desc: "Reagent RFQs, supplier catalog management, and purchase cycle automation with lead-time tracking." },
+      { module: "Finance & Test Billing", desc: "Test tariff management, insurance billing, patient invoicing, and collection reconciliation." },
+      { module: "Analyzer Asset Registry", desc: "Equipment lifecycle tracking, preventive maintenance scheduling, warranty management, and depreciation." },
+      { module: "Staff & Shift Management", desc: "Phlebotomist and lab technician scheduling, shift rotation, overtime, and attendance." },
+    ],
   },
   "cymed-imaging": {
     name: "CyMed Imaging",
@@ -178,6 +224,20 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["On-Premise", "Private Cloud", "Hybrid"],
     color: "emerald",
     accentClass: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
+    aiFeatures: [
+      { title: "AI-Assisted Image Analysis", desc: "Advisory-only findings suggestions for chest X-ray, brain CT, and mammography — radiologist reviews and signs all reports." },
+      { title: "Study Urgency Scoring", desc: "Prioritizes radiologist worklist by clinical urgency, reducing critical finding turnaround time significantly." },
+      { title: "Structured Report AI", desc: "Pre-populates structured radiology report templates based on study type and modality findings pattern." },
+      { title: "Scheduling Optimization", desc: "Optimizes modality booking to minimize patient wait time and maximize expensive equipment utilization." },
+      { title: "DICOM Anomaly Flagging", desc: "Detects incomplete or corrupted DICOM datasets before radiologist reading, preventing missed or incomplete studies." },
+    ],
+    erpModules: [
+      { module: "Medical Equipment Asset Registry", desc: "MRI, CT, X-ray, and ultrasound equipment lifecycle tracking, scheduled maintenance, and depreciation." },
+      { module: "Contrast & Consumables Inventory", desc: "Contrast media, films, and radiology consumable stock management with expiry control." },
+      { module: "Procurement", desc: "Radiology supply RFQs, supplier management, and purchase order processing." },
+      { module: "Finance & Imaging Billing", desc: "Procedure-based billing, RVS/RUVS coding, and insurance claim routing for all imaging modalities." },
+      { module: "Staff Management", desc: "Radiologist and radiographer scheduling, performance tracking, and on-call management." },
+    ],
   },
   "cymed-pharmacy": {
     name: "CyMed Pharmacy",
@@ -206,6 +266,20 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["SaaS Cloud", "On-Premise"],
     color: "emerald",
     accentClass: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
+    aiFeatures: [
+      { title: "5-Type Drug Interaction Detection", desc: "Drug-drug, drug-allergy, drug-food, drug-disease, and drug-age interaction checking at point of dispensing." },
+      { title: "Adherence Prediction", desc: "Identifies patients at risk of non-adherence based on refill patterns and flags them for pharmacist counseling." },
+      { title: "Inventory Demand Forecasting", desc: "Predicts drug demand by consumption patterns, reducing stockouts and overstock simultaneously." },
+      { title: "Expiry & Wastage AI", desc: "Predicts near-expiry risk per SKU and suggests inter-location transfers to minimize wastage cost." },
+      { title: "Therapeutic Substitution AI", desc: "Recommends therapeutic equivalents during drug shortages, surfaced to clinical pharmacist for approval." },
+    ],
+    erpModules: [
+      { module: "Drug Inventory (FIFO/FEFO)", desc: "Real-time stock control, expiry management, batch tracking, and automated reorder for all medications." },
+      { module: "Pharmaceutical Procurement", desc: "Supplier catalog, purchase orders, goods receiving notes, and contract pricing management." },
+      { module: "Finance & Dispensing Revenue", desc: "Dispensing revenue tracking, insurance claims, patient billing, and reconciliation." },
+      { module: "Supplier Management", desc: "Vendor scorecards, lead-time tracking, preferred supplier lists, and tender management." },
+      { module: "Controlled Substance Tracking", desc: "Narcotic logs, regulatory reporting, and chain-of-custody audit trail for controlled medications." },
+    ],
   },
   "cymed-patient-portal": {
     name: "CyMed Patient Portal",
@@ -346,6 +420,28 @@ const PRODUCT_DATA: Record<string, {
     deployment: ["SaaS Cloud", "On-Premise", "Hybrid"],
     color: "blue",
     accentClass: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+    aiFeatures: [
+      { title: "Financial Forecasting", desc: "AI-driven cash flow, revenue, and expense forecasting with scenario modeling across all legal entities." },
+      { title: "Procurement Intelligence", desc: "Identifies cost-saving opportunities in procurement patterns and surfaces preferred supplier recommendations." },
+      { title: "HR Analytics", desc: "Workforce productivity analytics, attrition prediction, and headcount optimization across departments." },
+      { title: "Inventory Optimization", desc: "Demand-driven reorder point calculation that minimizes carrying cost while preventing stockouts." },
+      { title: "Financial Anomaly Detection", desc: "Real-time transaction anomaly detection flagging fraud, data-entry errors, and policy violations instantly." },
+      { title: "NL Query (BI)", desc: "Natural language interface to BI dashboards — ask questions in Arabic or English and get charts and tables." },
+    ],
+    erpModules: [
+      { module: "Finance & Accounting", desc: "GL, AP, AR, bank reconciliation, multi-currency, budgeting, and financial reporting." },
+      { module: "Procurement", desc: "Purchase requisitions, RFQs, POs, supplier portal, contract management, and GRN workflow." },
+      { module: "Inventory & Warehouse", desc: "Multi-warehouse stock control, serial/batch tracking, transfers, and cycle counting." },
+      { module: "HR & Payroll", desc: "Employee records, performance, recruitment, attendance, and WPS-compliant payroll." },
+      { module: "Manufacturing", desc: "Bill of materials, MRP, work orders, production scheduling, and quality inspection." },
+      { module: "CRM & Sales", desc: "Lead pipeline, customer management, quotations, contracts, and helpdesk ticketing." },
+      { module: "Fixed Assets", desc: "Asset registry, depreciation runs (multiple methods), maintenance schedules, and disposal." },
+      { module: "BI & Analytics", desc: "Drag-and-drop dashboards, KPI widgets, drill-down reports, and natural language queries." },
+      { module: "Multi-Entity & Multi-Currency", desc: "Consolidated financial reporting across legal entities, branches, and currencies in real time." },
+      { module: "eSign & Documents", desc: "Digital document workflow with e-signature, version control, and approval routing." },
+      { module: "Point of Sale", desc: "Retail checkout, shift management, cash-up reconciliation, and loyalty integration." },
+      { module: "Fleet Management", desc: "Vehicle registry, maintenance scheduling, driver assignment, and fuel cost tracking." },
+    ],
     subProducts: [
       { name: "CyCom Finance", slug: "cycom-finance", desc: "General ledger, budgeting, cash flow management" },
       { name: "CyCom Accounting", slug: "cycom-accounting", desc: "Accounts payable, accounts receivable, tax compliance" },
@@ -567,6 +663,21 @@ const PRODUCT_DATA: Record<string, {
       { name: "Grocery", slug: "cyshop-grocery", desc: "Weighted items, bulk pricing, supplier orders" },
       { name: "Supermarket", slug: "cyshop-supermarket", desc: "Self-checkout, multi-department, loyalty program" },
       { name: "Convenience Store", slug: "cyshop-convenience", desc: "Quick checkout, fuel management, kiosk mode" },
+    ],
+    aiFeatures: [
+      { title: "Demand Forecasting", desc: "Predicts daily and weekly demand per SKU with 91% accuracy, reducing overstock and stockouts across all locations." },
+      { title: "Waste Prevention", desc: "For F&B businesses: AI forecasts food prep quantities to minimize end-of-day waste and ingredient spoilage." },
+      { title: "Staff Optimization", desc: "Predicts peak hours and optimal shift coverage based on historical sales, weather, and seasonal patterns." },
+      { title: "Menu Engineering AI", desc: "Identifies high-margin, high-velocity items and surfaces menu optimization opportunities to managers." },
+      { title: "Customer Insights", desc: "Segments customers by spend, frequency, and preferences for targeted loyalty campaigns and promotions." },
+      { title: "Supplier Intelligence", desc: "Tracks supplier lead times and price trends, flagging optimal reorder windows to reduce procurement cost." },
+    ],
+    erpModules: [
+      { module: "Finance & Accounting", desc: "POS revenue recognition, GL integration, VAT posting, and daily cash-up reconciliation." },
+      { module: "Real-Time Inventory", desc: "Live stock levels across all locations, auto-replenishment alerts, and inter-branch transfer orders." },
+      { module: "Procurement & Purchasing", desc: "Supplier purchase orders, goods receiving, cost of goods tracking, and supplier portal." },
+      { module: "HR & Payroll", desc: "Staff scheduling, shift management, attendance, and WPS-compliant payroll for all outlets." },
+      { module: "Customer CRM & Loyalty", desc: "Customer profiles, loyalty point engine, spend analytics, and segmented campaign management." },
     ],
   },
   "cycitizen": {
@@ -1566,6 +1677,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 Documentation
                 <ExternalLink className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
               </a>
+              <Link
+                href={`/${l}/contact?interest=enterprise-sales&product=${slug}`}
+                className="inline-flex items-center gap-2 btn-ghost px-5 py-3 text-sm"
+              >
+                <Phone className="w-4 h-4" aria-hidden="true" />
+                Contact Sales
+              </Link>
             </div>
           </div>
         </div>
@@ -1621,6 +1739,31 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </section>
+
+      {/* AI Features */}
+      {product.aiFeatures && product.aiFeatures.length > 0 && (
+        <section className="py-20 bg-cy-dark/30" aria-labelledby="ai-heading">
+          <div className="section-container">
+            <div className="flex items-center gap-3 mb-8">
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${colors.icon}`}>
+                <Brain className={`w-5 h-5 ${colors.badge.split(" ")[0]}`} aria-hidden="true" />
+              </div>
+              <div>
+                <h2 id="ai-heading" className="text-2xl font-heading font-semibold text-white">AI-Powered Intelligence</h2>
+                <p className="text-sm text-cy-gray-400">Advisory-only — every AI output reviewed and confirmed by a qualified human</p>
+              </div>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {product.aiFeatures.map((ai) => (
+                <div key={ai.title} className="glass-card p-5 rounded-xl">
+                  <div className={`text-sm font-heading font-semibold mb-2 ${colors.badge.split(" ")[0]}`}>{ai.title}</div>
+                  <p className="text-xs text-cy-gray-400 leading-relaxed">{ai.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Workflows */}
       {workflows.length > 0 && (
@@ -1733,6 +1876,39 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </section>
 
+      {/* Integrated ERP */}
+      {product.erpModules && product.erpModules.length > 0 && (
+        <section className="py-20 bg-cy-dark/30" aria-labelledby="erp-heading">
+          <div className="section-container">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center border bg-blue-500/10 border-blue-500/20">
+                <Layers className="w-5 h-5 text-blue-400" aria-hidden="true" />
+              </div>
+              <div>
+                <h2 id="erp-heading" className="text-2xl font-heading font-semibold text-white">Integrated ERP Backbone</h2>
+                <p className="text-sm text-cy-gray-400">Every {product.name} deployment connects natively to CyCom ERP — no middleware, no data silos</p>
+              </div>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {product.erpModules.map((m) => (
+                <div key={m.module} className="glass-card p-5 rounded-xl border border-blue-500/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Check className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
+                    <span className="text-sm font-heading font-semibold text-white">{m.module}</span>
+                  </div>
+                  <p className="text-xs text-cy-gray-400 leading-relaxed">{m.desc}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-cy-gray-500 mt-6">
+              Powered by{" "}
+              <Link href={`/${l}/erp`} className="text-blue-400 hover:text-blue-300 transition-colors">CyCom ERP</Link>
+              {" "}— unified finance, HR, procurement, and operations across the CyberCom ecosystem.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Editions */}
       <section className="py-20 bg-cy-dark/30" aria-labelledby="editions-heading">
         <div className="section-container">
@@ -1816,6 +1992,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <BookOpen className="w-4 h-4" aria-hidden="true" />
                   Docs
                 </a>
+                <Link
+                  href={`/${l}/contact?interest=enterprise-sales&product=${slug}`}
+                  className="inline-flex items-center gap-2 btn-ghost px-5 py-2.5 text-sm"
+                >
+                  <Phone className="w-4 h-4" aria-hidden="true" />
+                  Contact Sales
+                </Link>
               </div>
             </div>
           </div>
