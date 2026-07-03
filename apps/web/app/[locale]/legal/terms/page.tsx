@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: LegalPageProps): Promise<Meta
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Terms of Service — CyberCom Revolution",
+    title: "Terms of Service",
     description: "Terms of service and usage conditions for CyberCom platforms.",
     path: "/legal/terms",
     locale,

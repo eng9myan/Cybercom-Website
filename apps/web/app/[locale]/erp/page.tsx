@@ -155,7 +155,7 @@ export default function ErpPage() {
   const params = useParams();
   const locale = (params?.locale as string) ?? "en";
   const l = locale;
-  const ERP_URL = process.env.NEXT_PUBLIC_CYCOM_URL ?? `https://www.cy-com.com/${locale}/demo?product=cycom`;
+  const ERP_URL = process.env.NEXT_PUBLIC_CYCOM_URL ?? "https://health.cy-com.com";
   const shouldReduce = useReducedMotion();
 
   const fadeUp = {

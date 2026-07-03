@@ -9,7 +9,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   return buildMetadata({
-    title: "CyShop — Retail & Commerce OS | CyberCom Revolution",
+    title: "CyShop — Retail & Commerce OS",
     description:
       "CyShop is the complete retail and commerce operating system for restaurants, grocery, bakeries, coffee shops, supermarkets, and convenience stores. AI-powered POS, inventory, loyalty, and multi-location management.",
     path: "/cyshop",

@@ -160,6 +160,9 @@
   },
   "footer": {
     "tagline": "Transforming Healthcare, Government and Enterprise through intelligent platforms.",
+    "productsHeading": "Products",
+    "companyHeading": "Company",
+    "newsletterDesc": "Product updates, healthcare tech insights, and platform news.",
     "newsletter": {
       "title": "Stay Updated",
       "placeholder": "Your work email",

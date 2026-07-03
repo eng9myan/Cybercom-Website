@@ -84,7 +84,7 @@ export function Footer({ locale }: FooterProps) {
 
           {/* Products */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Products</h3>
+            <h3 className="text-sm font-semibold text-white mb-4">{t("productsHeading")}</h3>
             <ul className="space-y-2.5">
               {PRODUCTS.map((p) => (
                 <li key={p.slug}>
@@ -107,7 +107,7 @@ export function Footer({ locale }: FooterProps) {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Company</h3>
+            <h3 className="text-sm font-semibold text-white mb-4">{t("companyHeading")}</h3>
             <ul className="space-y-2.5">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.key}>
@@ -135,7 +135,7 @@ export function Footer({ locale }: FooterProps) {
           {/* Newsletter */}
           <div>
             <h3 className="text-sm font-semibold text-white mb-1">{t("newsletter.title")}</h3>
-            <p className="text-xs text-cy-gray-400 mb-4">Product updates, healthcare tech insights, and platform news.</p>
+            <p className="text-xs text-cy-gray-400 mb-4">{t("newsletterDesc")}</p>
             <form onSubmit={handleSubscribe} noValidate aria-label="Newsletter subscription">
               <div className="relative">
                 <label htmlFor="footer-email" className="sr-only">

@@ -9,7 +9,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   return buildMetadata({
-    title: "Contact — CyberCom Revolution",
+    title: "Contact",
     description:
       "Get in touch with the CyberCom team. Sales inquiries, technical support, partnerships, and media requests — we're here to help.",
     path: "/contact",
