@@ -32,6 +32,11 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
 
   return {
     ...metadata,
+    title: {
+      absolute: isAr
+        ? "سايبر كوم — منصات الرعاية الصحية والحكومة والمؤسسات"
+        : "CyberCom Revolution — Healthcare, Government & Enterprise Platforms",
+    },
     keywords: homepageSeoKeywords[locale as Locale] ?? homepageSeoKeywords.en,
     other: {
       "schema:type": "Organization",

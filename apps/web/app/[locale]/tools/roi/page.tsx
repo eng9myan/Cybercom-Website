@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: ROIPageProps): Promise<Metada
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "ROI Calculator — CyberCom Platform",
+    title: "ROI Calculator",
     description:
       "Calculate the return on investment of deploying CyberCom across your organization. See projected savings on operational costs, staff efficiency, and compliance overhead.",
     path: "/tools/roi",

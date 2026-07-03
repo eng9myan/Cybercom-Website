@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: ProductsPageProps): Promise<M
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "All Products — CyberCom Platform Suite",
+    title: "All Products",
     description: "Explore all 9 CyberCom platforms: CyMed healthcare, CyCom ERP, CyGov government, CyAI, CyIdentity, CyIntegrationHub, CyData, CyConnect, CyCitizen.",
     path: "/products",
     locale,

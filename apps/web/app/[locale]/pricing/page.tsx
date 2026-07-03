@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PricingPageProps): Promise<Me
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Pricing — CyberCom Platform",
+    title: "Pricing",
     description:
       "Transparent, scalable pricing for healthcare, government, and enterprise. Modular licensing — pay for what you deploy. Start with one product and expand across the ecosystem.",
     path: "/pricing",

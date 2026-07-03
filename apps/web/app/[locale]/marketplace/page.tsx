@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: MarketplacePageProps): Promis
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Marketplace — CyberCom Platform",
+    title: "Marketplace",
     description:
       "Discover certified modules, extensions, connectors, and AI packages for the CyberCom ecosystem. Published by CyberCom, verified partners, and community developers.",
     path: "/marketplace",

@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Product Comparison — CyberCom Platform",
+    title: "Product Comparison",
     description:
       "Compare CyberCom product editions — Starter, Professional, Enterprise, and Government. See feature availability, deployment options, and SLA differences side by side.",
     path: "/tools/compare",

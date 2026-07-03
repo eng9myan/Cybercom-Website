@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PortalPageProps): Promise<Met
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Customer Portal — CyberCom Platform",
+    title: "Customer Portal",
     description:
       "Manage your CyberCom licenses, subscriptions, support tickets, and billing from one secure customer portal. Available 24/7 for all CyberCom customers.",
     path: "/portal",
