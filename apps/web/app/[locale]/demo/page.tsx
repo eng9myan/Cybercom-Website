@@ -22,5 +22,5 @@ export async function generateMetadata({ params }: DemoPageProps): Promise<Metad
 export default async function DemoPage({ params }: DemoPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <DemoSection locale={locale as Locale} />;
+  return <DemoSection locale={locale as Locale} asPageHero />;
 }

@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 interface DemoSectionProps {
   locale: Locale;
+  asPageHero?: boolean;
 }
 
 const PRODUCTS_LIST = [
@@ -61,7 +62,8 @@ const INITIAL_FORM: FormState = {
   gdpr_consent: false,
 };
 
-export function DemoSection({ locale }: DemoSectionProps) {
+export function DemoSection({ locale, asPageHero = false }: DemoSectionProps) {
+  const Heading = asPageHero ? "h1" : "h2";
   const t = useTranslations("demo");
   const shouldReduce = useReducedMotion();
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
@@ -131,9 +133,9 @@ export function DemoSection({ locale }: DemoSectionProps) {
             className="text-center mb-12"
           >
             <p className="text-sm font-medium text-cy-orange mb-3 uppercase tracking-wider">Request Demo</p>
-            <h2 id="demo-heading" className="text-4xl lg:text-5xl font-heading font-semibold text-white mb-4">
+            <Heading id="demo-heading" className="text-4xl lg:text-5xl font-heading font-semibold text-white mb-4">
               {t("title")}
-            </h2>
+            </Heading>
             <p className="text-lg text-cy-gray-400">{t("subtitle")}</p>
           </motion.div>
 
