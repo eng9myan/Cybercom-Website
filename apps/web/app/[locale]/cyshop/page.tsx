@@ -83,7 +83,7 @@ export default function CyShopPage() {
               <span className="text-xs font-medium text-cy-orange tracking-wider uppercase">CyShop · Intelligent Retail Platform</span>
             </motion.div>
             <motion.h1 id="cyshop-heading" variants={fadeUp} initial="hidden" animate="visible" custom={0.1} className="text-5xl sm:text-6xl lg:text-7xl font-heading font-semibold text-white mb-6 leading-tight">
-              The Smartest POS<br />
+              The Smartest POS{" "}<br />
               <span className="text-gradient-orange">for Every Business</span>
             </motion.h1>
             <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={0.2} className="text-xl text-cy-gray-400 leading-relaxed mb-4 max-w-2xl">
