@@ -17,9 +17,9 @@ const DEPARTMENTS: { value: Department; label: string }[] = [
 ];
 
 const OFFICE_LOCATIONS = [
-  { city: "Riyadh", country: "Saudi Arabia", address: "King Abdullah Financial District", phone: "+966 11 XXX XXXX" },
-  { city: "Dubai", country: "UAE", address: "Dubai International Financial Centre", phone: "+971 4 XXX XXXX" },
-  { city: "Amman", country: "Jordan", address: "Abdali Boulevard", phone: "+962 6 XXX XXXX" },
+  { city: "Riyadh", country: "Saudi Arabia", address: "King Abdullah Financial District", phone: "+962 79 644 4994" },
+  { city: "Dubai", country: "UAE", address: "Dubai International Financial Centre", phone: "+962 79 644 4994" },
+  { city: "Amman", country: "Jordan", address: "Abdali Boulevard", phone: "+962 79 644 4994" },
 ];
 
 type FormState = {
