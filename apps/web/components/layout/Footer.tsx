@@ -76,7 +76,7 @@ export function Footer({ locale }: FooterProps) {
               <a href="https://twitter.com/CyberComRev" target="_blank" rel="noreferrer" aria-label="Twitter / X" className="w-9 h-9 rounded-lg border border-cy-glass-border flex items-center justify-center text-cy-gray-400 hover:text-white hover:border-cy-glass-bg-hover transition-colors cursor-pointer">
                 <Twitter className="w-4 h-4" aria-hidden="true" />
               </a>
-              <a href="https://github.com/eng9myan" target="_blank" rel="noreferrer" aria-label="GitHub" className="w-9 h-9 rounded-lg border border-cy-glass-border flex items-center justify-center text-cy-gray-400 hover:text-white hover:border-cy-glass-bg-hover transition-colors cursor-pointer">
+              <a href="https://www.cy-com.com" target="_blank" rel="noreferrer" aria-label="GitHub" className="w-9 h-9 rounded-lg border border-cy-glass-border flex items-center justify-center text-cy-gray-400 hover:text-white hover:border-cy-glass-bg-hover transition-colors cursor-pointer">
                 <Github className="w-4 h-4" aria-hidden="true" />
               </a>
             </div>
