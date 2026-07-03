@@ -95,6 +95,16 @@ const PLATFORM_CATEGORIES = [
       { name: "CyConnect", slug: "cyconnect", desc: "Unified communications" },
     ],
   },
+  {
+    name: "Developer",
+    desc: "APIs, SDKs, and integration tools",
+    color: "text-violet-300",
+    bgColor: "bg-violet-400/5",
+    borderColor: "border-violet-400/20",
+    products: [
+      { name: "CyDeveloper", slug: "cydeveloper", desc: "REST APIs, SDKs, webhooks, sandbox" },
+    ],
+  },
 ];
 
 export default async function ProductsPage({ params }: ProductsPageProps) {

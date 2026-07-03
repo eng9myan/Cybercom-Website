@@ -1076,6 +1076,35 @@ const PRODUCT_DATA: Record<string, {
     color: "orange",
     accentClass: "text-cy-orange border-cy-orange/20 bg-cy-orange/5",
   },
+  "cydeveloper": {
+    name: "CyDeveloper",
+    tagline: "Developer Platform — APIs, SDKs & Integration Tools for the CyberCom Ecosystem",
+    category: "developer",
+    categoryLabel: "CyDeveloper Platform",
+    description:
+      "CyDeveloper is CyberCom's unified developer platform — giving engineering teams full programmatic access to every CyberCom product through REST APIs, FHIR R4/R5 endpoints, webhooks, and typed SDKs. Build custom integrations, extend clinical workflows, automate ERP operations, or embed CyberCom data into your own applications.",
+    features: [
+      "FHIR R4/R5 REST API across all CyMed modules",
+      "OpenAPI 3.1 specs with interactive sandbox",
+      "OAuth 2.1 / OIDC client app registration",
+      "Webhook subscriptions with HMAC-SHA256 signing",
+      "Typed SDKs: Python, TypeScript/JS, Java",
+      "CyIntegrationHub — low-code connector builder",
+      "Developer console with live request logs",
+      "Rate limit & quota dashboard per API key",
+      "CyAI API — advisory model endpoints",
+      "Staging sandbox with synthetic patient data",
+    ],
+    compliance: ["FHIR R4", "FHIR R5", "OAuth 2.1", "OpenID Connect", "SMART on FHIR", "OpenAPI 3.1"],
+    editions: [
+      { name: "Free Tier",   desc: "For individual developers & prototyping", features: ["Sandbox environment", "5,000 API calls/month", "Community support", "Public documentation"] },
+      { name: "Build",       desc: "For startups & ISVs building integrations", features: ["All Free features", "100K API calls/month", "Webhook subscriptions", "SDK access", "Email support"] },
+      { name: "Enterprise",  desc: "For enterprise integrators & OEMs",        features: ["All Build features", "Unlimited API calls", "Dedicated staging tenant", "SLA 99.9%", "Dedicated engineer"] },
+    ],
+    deployment: ["SaaS API", "Private API Gateway", "On-Premise"],
+    color: "violet",
+    accentClass: "text-violet-400 border-violet-500/20 bg-violet-500/5",
+  },
 };
 
 const WORKFLOW_DATA: Record<string, { step: number; title: string; desc: string }[]> = {
@@ -1386,6 +1415,7 @@ const LAUNCH_URLS: Record<string, string | undefined> = {
   "cyshop-grocery":           process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com/grocery",
   "cyshop-supermarket":       process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com/supermarket",
   "cyshop-convenience":       process.env.NEXT_PUBLIC_CYSHOP_URL ?? "https://cyshop.cy-com.com/convenience",
+  "cydeveloper":              process.env.NEXT_PUBLIC_CYDEVELOPER_URL ?? "https://developer.cy-com.com",
 };
 
 export async function generateStaticParams() {
