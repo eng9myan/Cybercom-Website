@@ -159,6 +159,7 @@ export function Navbar({ locale }: NavbarProps) {
           <Link href={`/${locale}/solutions`} className="btn-ghost">{t("solutions")}</Link>
           <Link href={`/${locale}/industries`} className="btn-ghost">{t("industries")}</Link>
           <Link href={`/${locale}/pricing`} className="btn-ghost">{t("pricing")}</Link>
+          <Link href={`/${locale}/demo-center`} className="btn-ghost text-cy-orange font-medium border border-cy-orange/20 bg-cy-orange/5 hover:bg-cy-orange/10 rounded-lg px-3 py-1.5 transition-all duration-200">{t("demoCenter")}</Link>
           <Link href={`/${locale}/partners`} className="btn-ghost">{t("partners")}</Link>
           <Link href={`/${locale}/marketplace`} className="btn-ghost">{t("marketplace")}</Link>
           <Link href={`/${locale}/documentation`} className="btn-ghost">{t("docs")}</Link>

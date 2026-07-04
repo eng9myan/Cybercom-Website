@@ -8,6 +8,8 @@ import { type Locale } from "@/lib/i18n";
 import { ArrowRight, Check, ExternalLink, Play, BookOpen, ChevronRight, Brain, Layers, Phone } from "lucide-react";
 import { ModuleExplorer, type ProductModule } from "@/components/products/ModuleExplorer";
 import { RoleWorkflowExplorer, type RoleWorkflow } from "@/components/products/RoleWorkflowExplorer";
+import { PermissionsMatrix, type PermissionRole } from "@/components/products/PermissionsMatrix";
+import { PRODUCT_MODULES_DATA } from "@/lib/product-modules-data";
 
 interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -31,6 +33,7 @@ const PRODUCT_DATA: Record<string, {
   erpModules?: { module: string; desc: string }[];
   modules?: ProductModule[];
   roleWorkflows?: RoleWorkflow[];
+  permissionRoles?: PermissionRole[];
 }> = {
   "cymed": {
     name: "CyMed",
@@ -1887,6 +1890,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const launchUrl = LAUNCH_URLS[slug] ?? `https://www.cy-com.com/${locale}/demo?product=${slug}`;
   const docsUrl = process.env.NEXT_PUBLIC_DOCS_URL ?? "https://docs.cy-com.com";
 
+  // Merge comprehensive module data from lib file (overrides inline data)
+  const richData = PRODUCT_MODULES_DATA[slug];
+  const modules = richData?.modules ?? product.modules;
+  const roleWorkflows = richData?.roleWorkflows ?? product.roleWorkflows;
+  const permissionRoles = richData?.permissionRoles ?? product.permissionRoles;
+
   return (
     <div className="min-h-dvh pt-16">
       {/* Hero */}
@@ -2011,7 +2020,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
 
       {/* All Modules — prominent, filterable */}
-      {product.modules && product.modules.length > 0 && (
+      {modules && modules.length > 0 && (
         <section className="py-20 bg-cy-dark/30" aria-labelledby="modules-heading">
           <div className="section-container">
             <div className="flex items-center gap-3 mb-4">
@@ -2023,13 +2032,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <p className="text-sm text-cy-gray-400">Complete module directory — clinical, ERP, and AI. Filter by category or user role below.</p>
               </div>
             </div>
-            <ModuleExplorer modules={product.modules} />
+            <ModuleExplorer modules={modules} />
           </div>
         </section>
       )}
 
       {/* Role-Based Workflows */}
-      {product.roleWorkflows && product.roleWorkflows.length > 0 && (
+      {roleWorkflows && roleWorkflows.length > 0 && (
         <section className="py-20" aria-labelledby="roles-heading">
           <div className="section-container">
             <div className="mb-8">
@@ -2041,7 +2050,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 Select a user role to see their exact step-by-step workflow inside the platform.
               </p>
             </div>
-            <RoleWorkflowExplorer roleWorkflows={product.roleWorkflows} />
+            <RoleWorkflowExplorer roleWorkflows={roleWorkflows} />
+          </div>
+        </section>
+      )}
+
+      {/* User Permissions — Odoo-style RBAC */}
+      {permissionRoles && permissionRoles.length > 0 && (
+        <section className="py-20 bg-cy-dark/30" aria-labelledby="permissions-heading">
+          <div className="section-container">
+            <div className="mb-8">
+              <p className="text-sm font-medium text-cy-orange mb-2 uppercase tracking-wider">Access Control</p>
+              <h2 id="permissions-heading" className="text-2xl font-heading font-semibold text-white mb-2">
+                User Permissions & Role-Based Access
+              </h2>
+              <p className="text-sm text-cy-gray-400 max-w-2xl">
+                When you purchase {product.name}, your System Admin can assign each user a role that controls exactly which modules and actions they can see and perform — similar to Odoo. Click a role below to explore its module access.
+              </p>
+            </div>
+            <PermissionsMatrix roles={permissionRoles} />
           </div>
         </section>
       )}
@@ -2169,7 +2196,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
 
       {/* Integrated ERP — shown only for products WITHOUT the full modules explorer */}
-      {product.erpModules && product.erpModules.length > 0 && !product.modules && (
+      {product.erpModules && product.erpModules.length > 0 && !modules && (
         <section className="py-20 bg-cy-dark/30" aria-labelledby="erp-heading">
           <div className="section-container">
             <div className="flex items-center gap-3 mb-8">

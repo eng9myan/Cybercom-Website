@@ -20,7 +20,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const resolved: Theme = stored ?? (preferLight ? "light" : "dark");
     applyTheme(resolved);
     // Sync React state to the theme already applied by the inline <head> script.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(resolved);
   }, []);
 

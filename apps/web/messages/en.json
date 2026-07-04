@@ -15,7 +15,8 @@
     "login": "Login",
     "portal": "Customer Portal",
     "marketplace": "Marketplace",
-    "partnerPortal": "Partner Portal"
+    "partnerPortal": "Partner Portal",
+    "demoCenter": "Demo Center"
   },
   "hero": {
     "eyebrow": "Enterprise Platform Suite — Three Products, One Ecosystem",
