@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: LegalPageProps): Promise<Meta
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Privacy Policy — CyberCom Revolution",
+    title: "Privacy Policy",
     description: "Privacy policy and health data protection guidelines for CyberCom platforms.",
     path: "/legal/privacy",
     locale,

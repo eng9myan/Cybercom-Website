@@ -110,9 +110,9 @@ export function IndustriesSection({ locale }: IndustriesSectionProps) {
     <section className="py-24 bg-cy-dark/30" aria-labelledby="industries-heading">
       <div className="section-container">
         <motion.div
-          initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+          initial={{ opacity: 0, y: shouldReduce ? 0 : 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
@@ -127,10 +127,10 @@ export function IndustriesSection({ locale }: IndustriesSectionProps) {
           {INDUSTRIES.map((industry, i) => (
             <motion.div
               key={industry.slug}
-              initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+              initial={{ opacity: 0, y: shouldReduce ? 0 : 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
             >
               <Link
                 href={`/${locale}/industries/${industry.slug}`}

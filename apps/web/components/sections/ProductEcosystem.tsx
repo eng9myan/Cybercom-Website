@@ -122,9 +122,9 @@ export function ProductEcosystem({ locale }: ProductEcosystemProps) {
   const shouldReduce = useReducedMotion();
 
   const fadeUp = (delay: number) => ({
-    initial: { opacity: 0, y: shouldReduce ? 0 : 32 },
+    initial: { opacity: 0, y: shouldReduce ? 0 : 20 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
+    viewport: { once: true, amount: 0.1 },
     transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
   });
 

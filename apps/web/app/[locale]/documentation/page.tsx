@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: DocumentationPageProps): Prom
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Documentation — CyberCom Revolution",
+    title: "Documentation",
     description: "Comprehensive documentation for CyMed, CyShop, CyCom ERP, and the CyberCom Platform. API references, integration guides, deployment runbooks, and clinical workflow documentation.",
     path: "/documentation",
     locale,
@@ -135,7 +135,7 @@ export default async function DocumentationPage({ params }: DocumentationPagePro
             <span className="text-xs font-medium text-violet-400 tracking-wider uppercase">Documentation</span>
           </div>
           <h1 id="docs-heading" className="text-4xl sm:text-5xl font-heading font-semibold text-white mb-6 leading-tight">
-            Everything You Need to<br />
+            Everything You Need to{" "}<br />
             <span className="text-gradient-orange">Build, Deploy & Scale</span>
           </h1>
           <p className="text-lg text-cy-gray-400 leading-relaxed mb-8">

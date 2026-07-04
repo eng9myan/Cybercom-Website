@@ -35,6 +35,14 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/products", destination: "/en/products", permanent: false },
+      { source: "/en/products/cymed-rcm", destination: "/en/products/cymed-revenue-cycle", permanent: true },
+      { source: "/ar/products/cymed-rcm", destination: "/ar/products/cymed-revenue-cycle", permanent: true },
+      { source: "/en/products/cymed-pp", destination: "/en/products/cymed-patient-portal", permanent: true },
+      { source: "/ar/products/cymed-pp", destination: "/ar/products/cymed-patient-portal", permanent: true },
+      { source: "/en/products/cyshop", destination: "/en/cyshop", permanent: false },
+      { source: "/ar/products/cyshop", destination: "/ar/cyshop", permanent: false },
+      { source: "/en/products/cycom", destination: "/en/erp", permanent: false },
+      { source: "/ar/products/cycom", destination: "/ar/erp", permanent: false },
     ];
   },
 };

@@ -155,7 +155,7 @@ export default function ErpPage() {
   const params = useParams();
   const locale = (params?.locale as string) ?? "en";
   const l = locale;
-  const ERP_URL = process.env.NEXT_PUBLIC_CYCOM_URL ?? `https://www.cy-com.com/${locale}/demo?product=cycom`;
+  const ERP_URL = process.env.NEXT_PUBLIC_CYCOM_URL ?? "https://health.cy-com.com";
   const shouldReduce = useReducedMotion();
 
   const fadeUp = {
@@ -182,8 +182,8 @@ export default function ErpPage() {
               <span className="text-xs font-medium text-blue-400 tracking-wider uppercase">CyCom ERP · Enterprise Resource Planning</span>
             </motion.div>
             <motion.h1 id="erp-heading" variants={fadeUp} initial="hidden" animate="visible" custom={0.1} className="text-5xl sm:text-6xl lg:text-7xl font-heading font-semibold text-white mb-6 leading-tight">
-              One ERP.<br />
-              <span className="text-blue-400">Every Module.</span><br />
+              One ERP.{" "}<br />
+              <span className="text-blue-400">Every Module.</span>{" "}<br />
               <span className="text-gradient-orange">One Truth.</span>
             </motion.h1>
             <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={0.2} className="text-xl text-cy-gray-400 leading-relaxed mb-4 max-w-2xl">

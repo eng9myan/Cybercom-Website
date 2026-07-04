@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: LegalPageProps): Promise<Meta
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Cookies Policy — CyberCom Revolution",
+    title: "Cookies Policy",
     description: "Cookies policy and tracking management for CyberCom platforms.",
     path: "/legal/cookies",
     locale,

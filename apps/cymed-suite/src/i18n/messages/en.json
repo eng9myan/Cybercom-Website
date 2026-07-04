@@ -1,0 +1,54 @@
+{
+  "app": {
+    "name": "CyberCom Suite",
+    "tagline": "Every module. One plane."
+  },
+  "nav": {
+    "clinical": "Clinical",
+    "operations": "Operations",
+    "erp": "ERP",
+    "ai": "AI",
+    "reports": "Reports",
+    "settings": "Settings",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "search": "Search…"
+  },
+  "topbar": {
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "signOut": "Sign out",
+    "language": "Language",
+    "role": "Active role"
+  },
+  "common": {
+    "new": "New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "export": "Export",
+    "search": "Search",
+    "filter": "Filter",
+    "view": "View",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close",
+    "confirm": "Confirm",
+    "loading": "Loading…"
+  },
+  "products": {
+    "hospital": "Hospital",
+    "clinic": "Clinic",
+    "pharmacy": "Pharmacy",
+    "laboratory": "Laboratory",
+    "imaging": "Imaging",
+    "cyshop": "CyShop",
+    "erp": "CyCom ERP"
+  },
+  "landing": {
+    "title": "CyberCom Suite",
+    "subtitle": "Seven products. One suite. Pick a workspace to enter.",
+    "openProduct": "Open"
+  }
+}

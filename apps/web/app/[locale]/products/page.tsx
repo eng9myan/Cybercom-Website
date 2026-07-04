@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: ProductsPageProps): Promise<M
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "All Products — CyberCom Platform Suite",
+    title: "All Products",
     description: "Explore all 9 CyberCom platforms: CyMed healthcare, CyCom ERP, CyGov government, CyAI, CyIdentity, CyIntegrationHub, CyData, CyConnect, CyCitizen.",
     path: "/products",
     locale,
@@ -93,6 +93,16 @@ const PLATFORM_CATEGORIES = [
       { name: "CyIdentity", slug: "cyidentity", desc: "OAuth 2.1, OIDC, Zero Trust" },
       { name: "CyIntegrationHub", slug: "cyintegrationhub", desc: "FHIR, HL7, REST, Kafka" },
       { name: "CyConnect", slug: "cyconnect", desc: "Unified communications" },
+    ],
+  },
+  {
+    name: "Developer",
+    desc: "APIs, SDKs, and integration tools",
+    color: "text-violet-300",
+    bgColor: "bg-violet-400/5",
+    borderColor: "border-violet-400/20",
+    products: [
+      { name: "CyDeveloper", slug: "cydeveloper", desc: "REST APIs, SDKs, webhooks, sandbox" },
     ],
   },
 ];

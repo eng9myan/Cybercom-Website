@@ -39,9 +39,9 @@ export function GlobalReach({ locale }: GlobalReachProps) {
       <div className="section-container relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+          initial={{ opacity: 0, y: shouldReduce ? 0 : 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -60,10 +60,10 @@ export function GlobalReach({ locale }: GlobalReachProps) {
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+              initial={{ opacity: 0, y: shouldReduce ? 0 : 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.07 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
               className="glass-card p-6 rounded-2xl"
             >
               <div className="text-2xl font-heading font-bold text-gradient mb-1">{stat.value}</div>
@@ -89,9 +89,10 @@ export function GlobalReach({ locale }: GlobalReachProps) {
 
         {/* CTA strip */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: shouldReduce ? 0 : 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
           className="bg-gradient-to-r from-cy-orange/10 via-cy-glass-bg to-cy-cyan/10 border border-cy-glass-border rounded-2xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6"
         >
           <div>

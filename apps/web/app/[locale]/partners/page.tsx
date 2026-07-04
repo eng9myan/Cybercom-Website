@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PartnersPageProps): Promise<M
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Partner Program — CyberCom Revolution",
+    title: "Partner Program",
     description: "Join the CyberCom Partner Program. Become an authorized implementation, reseller, or technology partner and access training, support, and co-selling resources.",
     path: "/partners",
     locale,

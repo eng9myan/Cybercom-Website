@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: CustomersPageProps): Promise<
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Customers — CyberCom Revolution",
+    title: "Customers",
     description: "CyberCom Revolution serves hospitals, clinics, laboratories, imaging centers, pharmacies, retail businesses, and enterprises across the Middle East. See how our platforms transform operations.",
     path: "/customers",
     locale,

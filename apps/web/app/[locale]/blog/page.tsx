@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Blog & News — CyberCom Revolution",
+    title: "Blog & News",
     description:
       "Healthcare technology insights, platform updates, clinical standards news, and digital transformation perspectives from the CyberCom Revolution team.",
     path: "/blog",

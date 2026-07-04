@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: CareersPageProps): Promise<Me
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Careers — Join CyberCom Revolution",
+    title: "Careers",
     description:
       "Build the intelligent platforms transforming healthcare, government, and enterprise across the Middle East and beyond. Join CyberCom Revolution.",
     path: "/careers",

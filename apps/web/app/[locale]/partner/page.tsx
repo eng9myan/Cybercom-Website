@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PartnerPortalPageProps): Prom
   const { locale } = await params;
   setRequestLocale(locale);
   return buildMetadata({
-    title: "Partner Portal — CyberCom Platform",
+    title: "Partner Portal",
     description:
       "CyberCom Partner Portal — manage opportunities, deal registrations, revenue share, partner assets, and certifications. For authorized CyberCom implementation, reseller, and technology partners.",
     path: "/partner",

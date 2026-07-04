@@ -15,22 +15,33 @@
     "login": "Login",
     "portal": "Customer Portal",
     "marketplace": "Marketplace",
-    "partnerPortal": "Partner Portal"
+    "partnerPortal": "Partner Portal",
+    "demoCenter": "Demo Center"
   },
   "hero": {
-    "tagline": "CyberCom Revolution",
-    "headline1": "Transforming Healthcare,",
-    "headline2": "Government and Enterprise",
-    "headline3": "Through Intelligent Platforms.",
-    "description": "Nine integrated platforms. One unified ecosystem. Purpose-built for the modern era of healthcare, government, and enterprise operations.",
+    "eyebrow": "Enterprise Platform Suite — Three Products, One Ecosystem",
+    "headlinePrefix": "Intelligent Software for",
+    "words": {
+      "healthcare": "Healthcare",
+      "retail": "Retail",
+      "enterprise": "Enterprise"
+    },
+    "description": "CyMed · CyShop · CyCom ERP — built on one identity layer, one API gateway, one audit trail. Deploy as SaaS, on-premise, or hybrid.",
     "cta": {
       "demo": "Request a Demo",
       "explore": "Explore Products"
     },
+    "highlights": {
+      "fhir": "FHIR-native EHR",
+      "ai": "AI-powered forecasting",
+      "inventory": "Real-time inventory",
+      "security": "Zero Trust security"
+    },
     "stats": {
-      "products": "9 Platforms",
-      "standards": "FHIR • ICD-11 • OIDC",
-      "deployment": "Cloud & On-Premise"
+      "platformsLabel": "Enterprise Platforms",
+      "erpLabel": "ERP Modules",
+      "clinicalLabel": "Clinical Solutions",
+      "uptimeLabel": "Uptime SLA"
     }
   },
   "products": {
@@ -150,6 +161,9 @@
   },
   "footer": {
     "tagline": "Transforming Healthcare, Government and Enterprise through intelligent platforms.",
+    "productsHeading": "Products",
+    "companyHeading": "Company",
+    "newsletterDesc": "Product updates, healthcare tech insights, and platform news.",
     "newsletter": {
       "title": "Stay Updated",
       "placeholder": "Your work email",
