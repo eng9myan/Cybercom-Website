@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  html {
+    background: hsl(220 20% 6%);
+    color: hsl(210 40% 96%);
+  }
+  html[dir="rtl"] {
+    font-family: theme("fontFamily.arabic");
+  }
+  body {
+    @apply antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  ::selection {
+    background: hsl(217 91% 60% / 0.4);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(220 18% 9%);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(220 14% 22%);
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(220 14% 30%);
+  }
+}
+
+@layer components {
+  .surface-card {
+    @apply bg-surface border border-border rounded-lg shadow-card;
+  }
+  .surface-raised {
+    @apply bg-surface-raised border border-border rounded-lg shadow-raised;
+  }
+  .grid-panels {
+    @apply grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+  }
+  .kbd {
+    @apply inline-flex items-center rounded border border-border bg-surface-overlay px-1.5 py-0.5 font-mono text-2xs text-muted-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .rtl-flip {
+    @apply rtl:scale-x-[-1];
+  }
+}
