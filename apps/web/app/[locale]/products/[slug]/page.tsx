@@ -6,6 +6,8 @@ import { getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/metadata";
 import { type Locale } from "@/lib/i18n";
 import { ArrowRight, Check, ExternalLink, Play, BookOpen, ChevronRight, Brain, Layers, Phone } from "lucide-react";
+import { ModuleExplorer, type ProductModule } from "@/components/products/ModuleExplorer";
+import { RoleWorkflowExplorer, type RoleWorkflow } from "@/components/products/RoleWorkflowExplorer";
 
 interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -27,6 +29,8 @@ const PRODUCT_DATA: Record<string, {
   aiFeatures?: { title: string; desc: string }[];
   workflows?: { step: string; title: string; desc: string }[];
   erpModules?: { module: string; desc: string }[];
+  modules?: ProductModule[];
+  roleWorkflows?: RoleWorkflow[];
 }> = {
   "cymed": {
     name: "CyMed",
@@ -110,6 +114,83 @@ const PRODUCT_DATA: Record<string, {
       { module: "Clinical Supply Inventory", desc: "Consumable stock management, reorder automation, and expiry tracking." },
       { module: "Payroll Integration", desc: "Provider compensation processing, WPS-ready salary run, and overtime calculation." },
     ],
+    modules: [
+      { name: "Patient Registration & Demographics", category: "clinical", desc: "Register new patients, capture demographics, insurance details, emergency contacts, and digital consent forms.", roles: ["Receptionist", "Nurse"] },
+      { name: "Appointment Scheduling", category: "clinical", desc: "Book, reschedule, cancel, and manage waitlists across providers, specialties, and branches.", roles: ["Receptionist", "Physician"] },
+      { name: "Patient Check-In & ADT", category: "clinical", desc: "Patient arrival check-in, demographic updates, copay collection, and encounter open event.", roles: ["Receptionist"] },
+      { name: "Insurance Verification", category: "clinical", desc: "Real-time eligibility check — coverage confirmed, copay displayed, pre-auth status visible.", roles: ["Receptionist", "Finance"] },
+      { name: "Electronic Medical Record (EMR)", category: "clinical", desc: "Full patient history, problem list, allergies, medications, vitals, and SOAP documentation.", roles: ["Physician", "Nurse"] },
+      { name: "E-Prescribing", category: "clinical", desc: "Electronic prescriptions with real-time drug-drug, allergy, food, and disease interaction checking.", roles: ["Physician"] },
+      { name: "Clinical Decision Support", category: "clinical", desc: "ICD-11 diagnosis suggestions and care gap alerts powered by CDS Hooks — advisory only.", roles: ["Physician"] },
+      { name: "Lab Orders & Results Viewer", category: "clinical", desc: "CPOE lab orders, FHIR-delivered results, and critical value alerts inside the patient EMR.", roles: ["Physician", "Nurse"] },
+      { name: "Referral Management", category: "clinical", desc: "Generate and track specialist referrals, view referral status, and receive back-referral notes.", roles: ["Physician", "Receptionist"] },
+      { name: "Telemedicine", category: "clinical", desc: "Video consultations, remote prescribing, and secure patient messaging for virtual care.", roles: ["Physician", "Patient"] },
+      { name: "Finance & Revenue Cycle", category: "erp", desc: "Copay collection, GL integration, insurance claim submission, and full revenue reconciliation.", roles: ["Finance", "Clinic Manager"] },
+      { name: "HR & Staff Management", category: "erp", desc: "Employee records, contracts, org hierarchy, job roles, and staff onboarding/offboarding.", roles: ["Clinic Manager", "HR"] },
+      { name: "Payroll (WPS-Ready)", category: "erp", desc: "Salary processing, WPS file generation, deductions, overtime, and payslip distribution.", roles: ["Finance", "HR"] },
+      { name: "Attendance & Leave", category: "erp", desc: "Shift-based attendance tracking, leave requests, approvals, overtime calculation, and time reports.", roles: ["Clinic Manager", "HR", "All Staff"] },
+      { name: "Clinical Supply Inventory", category: "erp", desc: "Consumable stock levels, FIFO dispensing, reorder automation, and expiry tracking.", roles: ["Clinic Manager", "Nurse"] },
+      { name: "Patient CRM & Engagement", category: "erp", desc: "Recall campaigns, satisfaction surveys, patient retention tracking, and engagement analytics.", roles: ["Clinic Manager", "Receptionist"] },
+      { name: "No-Show Prediction", category: "ai", desc: "Predicts appointment no-shows 48 h in advance with 87% accuracy — enables proactive waitlist fill.", roles: ["Receptionist", "Clinic Manager"] },
+      { name: "Chronic Risk Stratification", category: "ai", desc: "Flags high-risk patients for proactive outreach and care gap closure before clinical deterioration.", roles: ["Physician", "Clinic Manager"] },
+      { name: "Documentation AI", category: "ai", desc: "Auto-generates SOAP notes from consultation templates — physician reviews and confirms every entry.", roles: ["Physician"] },
+      { name: "Drug Interaction Alerts", category: "ai", desc: "Real-time 5-type interaction checking at point of e-prescribing — never autonomous.", roles: ["Physician"] },
+      { name: "ICD-11 Code Suggestions", category: "ai", desc: "CDS Hooks-powered diagnosis suggestion engine surfaced to clinician — advisory only, clinician confirms.", roles: ["Physician"] },
+    ],
+    roleWorkflows: [
+      {
+        role: "Receptionist",
+        description: "Front desk operations: patient registration, appointment scheduling, check-in, insurance verification, and copay collection.",
+        steps: [
+          { action: "Search or Register Patient", detail: "Search by name, MRN, or phone. New patient: capture demographics, insurance card, emergency contacts, and digital consent." },
+          { action: "Verify Insurance", detail: "Real-time eligibility check — coverage confirmed, copay amount shown, pre-authorization status visible instantly." },
+          { action: "Schedule Appointment", detail: "Select provider, specialty, appointment type, and available slot. Patient receives automatic SMS/email confirmation." },
+          { action: "Patient Check-In", detail: "Mark arrived, confirm demographics, collect and post copay, open encounter, and print visit summary if needed." },
+          { action: "Manage Waitlist & Flow", detail: "Auto-fill cancellations from waitlist, reschedule walk-ins, and track daily patient flow across all providers." },
+        ],
+      },
+      {
+        role: "Physician",
+        description: "Full clinical workflow: schedule review, EMR access, encounter documentation, orders, prescribing, and encounter closure.",
+        steps: [
+          { action: "Review Today's Schedule", detail: "See all booked patients, acuity flags, wait times, and notes from reception before entering the room." },
+          { action: "Open Patient EMR", detail: "Full history at a glance: past visits, problem list, allergies, current medications, lab results, and vital trends." },
+          { action: "Document Encounter", detail: "SOAP note via structured template or AI draft. ICD-11 diagnosis picker. Vitals auto-pulled from nurse entry." },
+          { action: "Order Labs or Imaging", detail: "CPOE orders route directly to CyMed Laboratory or Imaging. Results appear in patient EMR when available." },
+          { action: "E-Prescribe & Close", detail: "Medication search with drug interaction check → sign electronically → encounter closed → billing triggered automatically." },
+        ],
+      },
+      {
+        role: "Nurse",
+        description: "Triage, vitals recording, medication administration, and care coordination support.",
+        steps: [
+          { action: "Patient Triage & Vitals", detail: "Record blood pressure, weight, temperature, SpO2, and pain score directly into the EMR vitals panel." },
+          { action: "Medication Administration", detail: "Verify order, administer dose, scan barcode, and record Medication Administration Record (MAR) entry." },
+          { action: "Clinical Notes", detail: "Nursing assessment notes, wound care documentation, and patient education records in the EMR." },
+          { action: "Care Coordination", detail: "Lab specimen collection, referral follow-up, patient escort, and discharge instruction delivery." },
+        ],
+      },
+      {
+        role: "Clinic Manager",
+        description: "Operational oversight: staff scheduling, inventory, performance metrics, and daily reporting.",
+        steps: [
+          { action: "Staff Scheduling", detail: "Build provider and nurse schedules, manage shifts, approve leave requests, and view attendance compliance." },
+          { action: "Inventory Review", detail: "Check clinical supply stock levels, approve reorder requests, and reconcile supplier deliveries." },
+          { action: "Financial Dashboard", detail: "Daily revenue summary, collection rates, outstanding insurance claims, and top provider performance KPIs." },
+          { action: "Patient Experience", detail: "Satisfaction survey results, complaint tracking, waitlist analysis, and no-show rate trend review." },
+        ],
+      },
+      {
+        role: "Finance / Billing",
+        description: "Revenue cycle: claim preparation, submission, denial management, reconciliation, and payroll.",
+        steps: [
+          { action: "Claim Preparation", detail: "Auto-generated claims from closed encounters with ICD-11 and CPT codes. Pre-submission scrubbing to catch errors." },
+          { action: "Insurance Submission", detail: "Submit to payers electronically. Track claim status, ERA receipts, adjustment codes, and denial reasons." },
+          { action: "Denial Management", detail: "Appeal denied claims, correct coding errors, and re-submit with supporting clinical documentation." },
+          { action: "Payroll Processing", detail: "Run WPS-compliant payroll, approve payslips, and post salary journal entries to the general ledger." },
+        ],
+      },
+    ],
   },
   "cymed-hospital": {
     name: "CyMed Hospital",
@@ -154,6 +235,86 @@ const PRODUCT_DATA: Record<string, {
       { module: "Procurement", desc: "Medical equipment RFQs, supplier management, purchase order workflow, and GRN processing." },
       { module: "Fixed Asset Registry", desc: "Medical equipment lifecycle tracking, preventive maintenance schedules, and depreciation management." },
       { module: "Payroll", desc: "Clinical and administrative staff compensation with on-call differentials and WPS compliance." },
+    ],
+    modules: [
+      { name: "Patient Admission (ADT)", category: "clinical", desc: "Full Admission, Discharge, Transfer management with bed assignment, pre-admission planning, and insurance verification.", roles: ["Admissions", "Receptionist"] },
+      { name: "Bed Management & Census", category: "clinical", desc: "Real-time bed availability across all wards, housekeeping status, and discharge lounge management.", roles: ["Ward Manager", "Admissions"] },
+      { name: "Inpatient EMR & CPOE", category: "clinical", desc: "Complete inpatient record with physician orders, clinical notes, problem list, allergies, and medication orders.", roles: ["Physician", "Nurse"] },
+      { name: "Nursing Station", category: "clinical", desc: "Nursing assessment, medication administration record (MAR), vital signs, care plans, and handover notes.", roles: ["Nurse", "Head Nurse"] },
+      { name: "OR Scheduling & Management", category: "clinical", desc: "Surgical scheduling, pre-op checklist, anesthesia consent, intraoperative notes, and post-op recovery.", roles: ["OR Coordinator", "Surgeon", "Anesthesiologist"] },
+      { name: "ICU Monitoring Integration", category: "clinical", desc: "Vital sign device integration, SOFA/NEWS2 scoring, ventilator parameters, and critical care flowsheets.", roles: ["ICU Physician", "ICU Nurse"] },
+      { name: "Blood Bank Management", category: "clinical", desc: "Blood product inventory, crossmatch requests, transfusion records, and wastage tracking.", roles: ["Lab Technician", "Physician"] },
+      { name: "Pharmacy Dispensing", category: "clinical", desc: "Ward medication dispensing, narcotic tracking, unit-dose packaging, and drug interaction checking.", roles: ["Pharmacist", "Nurse"] },
+      { name: "Discharge Planning", category: "clinical", desc: "Discharge summary generation, follow-up scheduling, patient education, and readmission risk flagging.", roles: ["Physician", "Social Worker", "Nurse"] },
+      { name: "Finance & Revenue Cycle", category: "erp", desc: "DRG-based billing, insurance claim management, denial tracking, collections, and revenue reconciliation.", roles: ["Finance", "Billing"] },
+      { name: "HR & Workforce Management", category: "erp", desc: "Nursing rosters, clinical staff scheduling, shift rotation, on-call management, and workforce analytics.", roles: ["HR Manager", "Ward Manager"] },
+      { name: "Medical Supply Inventory", category: "erp", desc: "Surgical supplies, ward medications, and consumables tracked in real time across all floors and central stores.", roles: ["Storekeeper", "Ward Manager"] },
+      { name: "Procurement", category: "erp", desc: "Medical equipment RFQs, supplier management, purchase order workflow, goods receiving, and GRN processing.", roles: ["Procurement Manager"] },
+      { name: "Fixed Asset Registry", category: "erp", desc: "Medical equipment lifecycle, scheduled maintenance, warranty tracking, and depreciation management.", roles: ["Maintenance Manager", "Finance"] },
+      { name: "Payroll (WPS)", category: "erp", desc: "Clinical and admin staff compensation with on-call differentials, overtime, and WPS compliance.", roles: ["HR Manager", "Finance"] },
+      { name: "Attendance & Leave", category: "erp", desc: "Shift-based attendance for all clinical and support staff. Leave requests, approvals, and overtime tracking.", roles: ["HR Manager", "Ward Manager", "All Staff"] },
+      { name: "Sepsis Early Warning", category: "ai", desc: "SOFA/NEWS2 scoring with 6-hour sepsis prediction — alerts nursing station and attending physician immediately.", roles: ["Physician", "ICU Nurse"] },
+      { name: "ICU Deterioration Prediction", category: "ai", desc: "Continuous vital trend analysis predicts deterioration events 2–4 hours before clinical signs appear.", roles: ["ICU Physician", "ICU Nurse"] },
+      { name: "Bed Demand Forecasting", category: "ai", desc: "Predicts 24–72 h bed demand by ward type for proactive capacity planning and transfer coordination.", roles: ["Ward Manager", "Admissions"] },
+      { name: "Surgical Risk Scoring", category: "ai", desc: "Pre-operative AI risk scoring (ASA + custom model) surfaced in OR scheduling — surgeon confirms.", roles: ["Surgeon", "OR Coordinator"] },
+      { name: "30-Day Readmission Risk", category: "ai", desc: "Discharge-time readmission risk flag with care plan recommendations for high-risk patients.", roles: ["Physician", "Social Worker"] },
+      { name: "Documentation AI", category: "ai", desc: "CPOE auto-suggestion, discharge summary drafting, and nursing handover notes — clinician confirms all.", roles: ["Physician", "Nurse"] },
+    ],
+    roleWorkflows: [
+      {
+        role: "Admissions / Reception",
+        description: "Patient admission: registration, bed assignment, insurance verification, and ADT event management.",
+        steps: [
+          { action: "Pre-Admission Planning", detail: "Review pre-admission forms, confirm insurance pre-authorization, and prepare patient demographic record." },
+          { action: "Admit Patient (ADT)", detail: "Complete ADT admission — assign bed, ward, and attending physician. Insurance eligibility verified in real time." },
+          { action: "Bed Assignment", detail: "View real-time bed availability across all wards. Assign appropriate bed based on case type and isolation requirements." },
+          { action: "Wristband & Documentation", detail: "Print patient wristband with MRN barcode, distribute welcome pack, and collect consent forms." },
+          { action: "Track Transfers & Discharge", detail: "Manage bed transfers between wards, update ADT events, and prepare discharge paperwork when physician orders." },
+        ],
+      },
+      {
+        role: "Physician",
+        description: "Inpatient clinical workflow: rounding, CPOE orders, clinical documentation, and discharge.",
+        steps: [
+          { action: "Patient Rounding List", detail: "Review assigned inpatients with overnight notes, pending results, and AI-flagged deterioration alerts." },
+          { action: "CPOE Orders", detail: "Enter medication, lab, imaging, and consult orders. Drug interaction checks run automatically at order entry." },
+          { action: "Clinical Documentation", detail: "Progress notes, operative reports, and consult notes structured by template — AI drafts available for review." },
+          { action: "Results Review", detail: "Lab and imaging results appear in patient EMR. Critical values auto-flagged. Radiology reports with AI pre-reads." },
+          { action: "Discharge & Summary", detail: "Order discharge, select follow-up plan, AI drafts discharge summary — physician edits and signs electronically." },
+        ],
+      },
+      {
+        role: "Nurse",
+        description: "Nursing station: medication administration, vitals monitoring, care plans, and shift handover.",
+        steps: [
+          { action: "Shift Handover", detail: "Review handover notes from prior shift. Acknowledge pending orders, critical values, and patient alerts." },
+          { action: "Vital Signs & Monitoring", detail: "Record vitals from bedside devices or manual entry. SOFA/NEWS2 scores calculated automatically." },
+          { action: "Medication Administration", detail: "Verify CPOE order, scan patient wristband and medication barcode, administer, and record MAR electronically." },
+          { action: "Care Plan Execution", detail: "Document wound care, mobility assessments, nutrition records, fall risk, and pressure ulcer prevention." },
+          { action: "Escalation & Handover", detail: "Escalate deteriorating patients using AI early warning. Complete electronic handover notes for next shift." },
+        ],
+      },
+      {
+        role: "OR Coordinator",
+        description: "Surgical suite management: scheduling, pre-op checklist, equipment, and post-op recovery.",
+        steps: [
+          { action: "Surgical Scheduling", detail: "Book OR time based on surgeon availability, case duration, equipment needs, and room requirements." },
+          { action: "Pre-Op Checklist", detail: "Verify pre-op labs, imaging, consent forms, anesthesia review, and NPO status before case starts." },
+          { action: "Intraoperative Management", detail: "Track case start/end, anesthesia events, implant lot numbers, and intraoperative complications." },
+          { action: "Post-Op Recovery", detail: "Transfer patient to PACU, record recovery vitals, and manage discharge criteria from recovery room." },
+        ],
+      },
+      {
+        role: "Finance / Billing",
+        description: "Hospital billing: DRG coding, insurance claims, denial management, and revenue reconciliation.",
+        steps: [
+          { action: "Charge Capture", detail: "All clinical orders and procedures auto-generate charges. Review and approve before claim generation." },
+          { action: "DRG & Coding", detail: "ICD-11 principal diagnosis and procedure codes auto-suggested from clinical documentation — coder reviews." },
+          { action: "Insurance Submission", detail: "Submit clean claims electronically. Track status, ERA posting, and adjustment codes from payers." },
+          { action: "Denial & Appeals", detail: "Work denied claims, correct errors, attach clinical documentation, and re-submit with full audit trail." },
+          { action: "Revenue Reconciliation", detail: "Daily cash posting, GL journal entries, outstanding AR aging report, and financial close reporting." },
+        ],
+      },
     ],
   },
   "cymed-laboratory": {
@@ -710,6 +871,83 @@ const PRODUCT_DATA: Record<string, {
       { module: "HR & Payroll", desc: "Staff scheduling, shift management, attendance, and WPS-compliant payroll for all outlets." },
       { module: "Customer CRM & Loyalty", desc: "Customer profiles, loyalty point engine, spend analytics, and segmented campaign management." },
       { module: "Delivery Operations", desc: "Driver management, zone configuration, delivery cost tracking, and third-party courier reconciliation." },
+    ],
+    modules: [
+      { name: "Point of Sale (POS)", category: "operations", desc: "Cloud-based POS with offline resilience — process sales, split payments, print receipts, and manage returns.", roles: ["Cashier", "Supervisor"] },
+      { name: "Kitchen Display System (KDS)", category: "operations", desc: "Real-time order routing to kitchen stations with prep timers, bump bar, and station-level completion tracking.", roles: ["Kitchen Staff", "Chef"] },
+      { name: "Table Management & Reservations", category: "operations", desc: "Interactive floor plan, table status, cover count, waitlist management, and reservation confirmation.", roles: ["Host", "Waiter", "Manager"] },
+      { name: "Self-Service Kiosk", category: "operations", desc: "Customer-facing order and payment kiosk with product images, customizations, and upsell prompts.", roles: ["Customer"] },
+      { name: "Online Ordering", category: "operations", desc: "QR menu, web store, and mobile app ordering with aggregator integration (Talabat, Careem, Jahez).", roles: ["Customer", "Manager"] },
+      { name: "Delivery Management", category: "operations", desc: "Driver dispatch, live GPS tracking, zone pricing, estimated delivery time, and delivery proof of completion.", roles: ["Driver", "Delivery Manager"] },
+      { name: "Customer Loyalty & Rewards", category: "operations", desc: "Points engine, digital wallet, reward redemption, tier management, and targeted promotions.", roles: ["Customer", "Manager"] },
+      { name: "Finance & Accounting", category: "erp", desc: "POS revenue recognition, GL posting, ZATCA e-Invoice, VAT calculation, and daily cash-up reconciliation.", roles: ["Finance Manager", "Store Manager"] },
+      { name: "Real-Time Inventory", category: "erp", desc: "Live stock levels across all locations, auto-replenishment alerts, wastage tracking, and inter-branch transfers.", roles: ["Inventory Manager", "Store Manager"] },
+      { name: "Procurement & Purchasing", category: "erp", desc: "Supplier POs, goods receiving, cost of goods tracking, three-way matching, and supplier portal.", roles: ["Procurement Manager", "Store Manager"] },
+      { name: "HR & Staff Management", category: "erp", desc: "Employee records, contracts, org hierarchy, onboarding workflows, and performance tracking.", roles: ["HR Manager", "Store Manager"] },
+      { name: "Payroll (WPS)", category: "erp", desc: "Shift-based payroll, tip distribution, WPS file generation, overtime, and payslip distribution.", roles: ["Finance Manager", "HR Manager"] },
+      { name: "Attendance & Shift Scheduling", category: "erp", desc: "Clock-in/out tracking, shift scheduling, leave requests, and overtime calculation for all outlet staff.", roles: ["Store Manager", "HR Manager", "All Staff"] },
+      { name: "Customer CRM & Engagement", category: "erp", desc: "Customer profiles, spend analytics, loyalty segmentation, and campaign management.", roles: ["Marketing Manager", "Store Manager"] },
+      { name: "Demand Forecasting", category: "ai", desc: "Predicts daily and weekly demand per SKU with 91% accuracy — reduces overstock and stockouts.", roles: ["Inventory Manager", "Store Manager"] },
+      { name: "Waste Prevention AI", category: "ai", desc: "Forecasts F&B prep quantities to minimize end-of-day waste and ingredient spoilage.", roles: ["Chef", "Kitchen Manager"] },
+      { name: "KDS Smart Routing", category: "ai", desc: "Learns prep times per item and station, rebalancing kitchen load during rush hours to hit SLA targets.", roles: ["Kitchen Manager", "Chef"] },
+      { name: "Delivery ETA Prediction", category: "ai", desc: "Predicts accurate delivery times using driver location, traffic, and historical route data.", roles: ["Delivery Manager", "Customer"] },
+      { name: "Menu Engineering AI", category: "ai", desc: "Identifies high-margin, high-velocity items and surfaces menu optimization opportunities to management.", roles: ["Store Manager", "Operations Manager"] },
+      { name: "Customer Insights", category: "ai", desc: "Segments customers by spend, frequency, and preferences for targeted loyalty campaigns.", roles: ["Marketing Manager", "Store Manager"] },
+    ],
+    roleWorkflows: [
+      {
+        role: "Cashier",
+        description: "Front-line POS operations: order entry, payment processing, receipt, and loyalty redemption.",
+        steps: [
+          { action: "Open or Recall Order", detail: "Start a new transaction or recall a table/kiosk order. Products scanned by barcode or selected from menu grid." },
+          { action: "Customize & Add Items", detail: "Add modifiers, size options, special instructions, and combo items. KDS order auto-sent to kitchen on confirm." },
+          { action: "Apply Discount or Loyalty", detail: "Apply manager discount, scan loyalty card, or redeem points. System validates reward eligibility automatically." },
+          { action: "Process Payment", detail: "Accept MADA, Visa, Apple Pay, STC Pay, cash, or split payment across methods. Change calculated automatically." },
+          { action: "Receipt & Close", detail: "Print or send digital receipt. VAT breakdown shown. Transaction synced to Finance GL in real time." },
+        ],
+      },
+      {
+        role: "Kitchen Staff",
+        description: "KDS workflow: receiving orders, managing prep, bumping completion, and alerting delays.",
+        steps: [
+          { action: "View Incoming Orders", detail: "Orders appear on KDS screen in real time as Cashier confirms. Color coding shows channel (dine-in/delivery/pickup)." },
+          { action: "Accept & Start Prep", detail: "Tap order to start prep timer. Each station sees only its items — station-level routing prevents confusion." },
+          { action: "Coordinate Across Stations", detail: "Grill, fryer, assembly stations work in parallel. KDS synchronizes completion for simultaneous plating." },
+          { action: "Bump & Complete", detail: "Bump bar confirms item complete. Order status updates on dine-in runner screen and delivery app automatically." },
+          { action: "Delay Alert", detail: "If prep time exceeds SLA, KDS flashes alert to kitchen supervisor for immediate intervention." },
+        ],
+      },
+      {
+        role: "Delivery Driver",
+        description: "Order pickup, navigation, delivery confirmation, and cash/card reconciliation.",
+        steps: [
+          { action: "Accept Delivery Assignment", detail: "Driver app shows new order with pickup location, customer address, and estimated delivery time." },
+          { action: "Pickup from Kitchen", detail: "Scan order barcode at pickup. System confirms items packaged, driver assigned, and ETA communicated to customer." },
+          { action: "Navigate to Customer", detail: "Built-in navigation with live traffic. Delivery zone restrictions enforced. Customer notified when driver is near." },
+          { action: "Confirm Delivery", detail: "Capture customer signature or OTP, take photo proof. Mark delivered in app. Cash collected and logged if applicable." },
+        ],
+      },
+      {
+        role: "Store Manager",
+        description: "Daily operations: inventory, staff, performance dashboards, and end-of-day close.",
+        steps: [
+          { action: "Morning Briefing Dashboard", detail: "Yesterday's revenue, top-selling items, low-stock alerts, pending supplier orders, and staff schedule overview." },
+          { action: "Inventory Management", detail: "Confirm opening stock counts, approve reorder requests, receive supplier deliveries, and update wastage logs." },
+          { action: "Staff & Shift Management", detail: "View today's roster, approve shift swaps, record attendance, and manage break schedules for all staff." },
+          { action: "Live Sales Monitoring", detail: "Real-time POS sales, payment method breakdown, table occupancy, KDS performance, and delivery status." },
+          { action: "End-of-Day Close", detail: "Cash drawer reconciliation, Z-report generation, ZATCA e-invoice summary, and daily revenue sync to Finance." },
+        ],
+      },
+      {
+        role: "Franchise / Chain Manager",
+        description: "Multi-branch oversight: cross-location performance, menu management, and consolidated reporting.",
+        steps: [
+          { action: "Multi-Branch Dashboard", detail: "Consolidated revenue, top-performing locations, underperformers, and inventory health across all outlets." },
+          { action: "Central Menu Management", detail: "Push menu updates, price changes, new items, and promotions to all branches simultaneously." },
+          { action: "Inventory & Procurement", detail: "Approve inter-branch transfers, manage central kitchen supply, and review supplier costs across the chain." },
+          { action: "HR & Payroll Overview", detail: "Review staffing levels per branch, approve bulk payroll runs, and compare labor cost ratios across locations." },
+        ],
+      },
     ],
   },
   "cycitizen": {
@@ -1772,6 +2010,42 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </section>
 
+      {/* All Modules — prominent, filterable */}
+      {product.modules && product.modules.length > 0 && (
+        <section className="py-20 bg-cy-dark/30" aria-labelledby="modules-heading">
+          <div className="section-container">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${colors.icon}`}>
+                <Layers className={`w-5 h-5 ${colors.badge.split(" ")[0]}`} aria-hidden="true" />
+              </div>
+              <div>
+                <h2 id="modules-heading" className="text-2xl font-heading font-semibold text-white">All Modules</h2>
+                <p className="text-sm text-cy-gray-400">Complete module directory — clinical, ERP, and AI. Filter by category or user role below.</p>
+              </div>
+            </div>
+            <ModuleExplorer modules={product.modules} />
+          </div>
+        </section>
+      )}
+
+      {/* Role-Based Workflows */}
+      {product.roleWorkflows && product.roleWorkflows.length > 0 && (
+        <section className="py-20" aria-labelledby="roles-heading">
+          <div className="section-container">
+            <div className="mb-8">
+              <p className="text-sm font-medium text-cy-orange mb-2 uppercase tracking-wider">By User Role</p>
+              <h2 id="roles-heading" className="text-2xl font-heading font-semibold text-white mb-2">
+                How Each Role Uses {product.name}
+              </h2>
+              <p className="text-sm text-cy-gray-400">
+                Select a user role to see their exact step-by-step workflow inside the platform.
+              </p>
+            </div>
+            <RoleWorkflowExplorer roleWorkflows={product.roleWorkflows} />
+          </div>
+        </section>
+      )}
+
       {/* AI Features */}
       {product.aiFeatures && product.aiFeatures.length > 0 && (
         <section className="py-20 bg-cy-dark/30" aria-labelledby="ai-heading">
@@ -1894,8 +2168,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </section>
 
-      {/* Integrated ERP */}
-      {product.erpModules && product.erpModules.length > 0 && (
+      {/* Integrated ERP — shown only for products WITHOUT the full modules explorer */}
+      {product.erpModules && product.erpModules.length > 0 && !product.modules && (
         <section className="py-20 bg-cy-dark/30" aria-labelledby="erp-heading">
           <div className="section-container">
             <div className="flex items-center gap-3 mb-8">
