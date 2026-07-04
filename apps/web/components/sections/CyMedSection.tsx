@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { type Locale } from "@/lib/i18n";

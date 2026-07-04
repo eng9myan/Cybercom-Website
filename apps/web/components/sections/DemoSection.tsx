@@ -62,7 +62,7 @@ const INITIAL_FORM: FormState = {
   gdpr_consent: false,
 };
 
-export function DemoSection({ locale, asPageHero = false }: DemoSectionProps) {
+export function DemoSection({ locale: _locale, asPageHero = false }: DemoSectionProps) {
   const Heading = asPageHero ? "h1" : "h2";
   const t = useTranslations("demo");
   const shouldReduce = useReducedMotion();

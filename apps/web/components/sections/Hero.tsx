@@ -86,9 +86,10 @@ export function Hero({ locale }: HeroProps) {
 
   useEffect(() => {
     if (shouldReduce) return;
-    const id = setInterval(() => setWordIdx(i => (i + 1) % CYCLING_WORDS.length), 2800);
+    const len = CYCLING_WORDS.length;
+    const id = setInterval(() => setWordIdx(i => (i + 1) % len), 2800);
     return () => clearInterval(id);
-  }, [shouldReduce]);
+  }, [shouldReduce, CYCLING_WORDS.length]);
 
   useEffect(() => {
     const el = statsRef.current;
