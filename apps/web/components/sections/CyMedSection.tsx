@@ -48,9 +48,9 @@ export function CyMedSection({ locale }: CyMedSectionProps) {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: Content */}
           <motion.div
-            initial={{ opacity: 1, x: shouldReduce ? 0 : -20 }}
+            initial={{ opacity: 0, x: shouldReduce ? 0 : -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 mb-6">
@@ -95,18 +95,18 @@ export function CyMedSection({ locale }: CyMedSectionProps) {
 
           {/* Right: Product grid */}
           <motion.div
-            initial={{ opacity: 1, x: shouldReduce ? 0 : 20 }}
+            initial={{ opacity: 0, x: shouldReduce ? 0 : 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {CYMED_PRODUCTS.map((product, i) => (
                 <motion.div
                   key={product.slug}
-                  initial={{ opacity: 1, y: shouldReduce ? 0 : 10 }}
+                  initial={{ opacity: 0, y: shouldReduce ? 0 : 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.35, delay: 0.1 + i * 0.04 }}
                 >
                   <Link
