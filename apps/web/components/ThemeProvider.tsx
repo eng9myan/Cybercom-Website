@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useLayoutEffect, useState, useCallback } from "react";
 
 type Theme = "dark" | "light";
 
@@ -14,12 +14,11 @@ const ThemeContext = createContext<ThemeContextValue>({ theme: "dark", toggle: (
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stored = localStorage.getItem("cy-theme") as Theme | null;
     const preferLight = window.matchMedia("(prefers-color-scheme: light)").matches;
     const resolved: Theme = stored ?? (preferLight ? "light" : "dark");
     applyTheme(resolved);
-    // Sync React state to the theme already applied by the inline <head> script.
     setTheme(resolved);
   }, []);
 
