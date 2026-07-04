@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronDown, Globe } from "lucide-react";
+import { Menu, X, ChevronDown, Globe, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface NavbarProps {
   locale: Locale;
@@ -57,10 +58,10 @@ const PRODUCTS_MEGA_MENU = [
 
 export function Navbar({ locale }: NavbarProps) {
   const t = useTranslations("nav");
+  const { theme, toggle: toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
-  const isRtl = locale === "ar";
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -166,6 +167,19 @@ export function Navbar({ locale }: NavbarProps) {
 
         {/* Actions */}
         <div className="hidden lg:flex items-center gap-2">
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="btn-ghost p-2 rounded-lg"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? (
+              <Sun className="w-4 h-4 text-white/60 hover:text-cy-orange transition-colors" aria-hidden="true" />
+            ) : (
+              <Moon className="w-4 h-4 text-slate-500 hover:text-cy-orange transition-colors" aria-hidden="true" />
+            )}
+          </button>
+
           {/* Locale switcher */}
           <Link
             href={`/${altLocale}`}

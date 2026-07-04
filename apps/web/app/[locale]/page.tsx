@@ -2,7 +2,9 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
+import { StatsBand } from "@/components/sections/StatsBand";
 import { ProductEcosystem } from "@/components/sections/ProductEcosystem";
+import { SocialProof } from "@/components/sections/SocialProof";
 import { IndustriesSection } from "@/components/sections/IndustriesSection";
 import { CyMedSection } from "@/components/sections/CyMedSection";
 import { GlobalReach } from "@/components/sections/GlobalReach";
@@ -105,7 +107,9 @@ export default async function HomePage({ params }: HomePageProps) {
       />
 
       <Hero locale={l} />
+      <StatsBand />
       <ProductEcosystem locale={l} />
+      <SocialProof />
       <IndustriesSection locale={l} />
       <CyMedSection locale={l} />
       <GlobalReach locale={l} />

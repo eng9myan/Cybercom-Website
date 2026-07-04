@@ -1793,85 +1793,71 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </section>
       )}
 
-      {/* Platform Preview */}
+      {/* Platform Preview — live iframe */}
       <section className="py-20" aria-labelledby="preview-heading">
         <div className="section-container">
-          <h2 id="preview-heading" className="text-2xl font-heading font-semibold text-white mb-4">
-            Platform Preview
-          </h2>
-          <p className="text-cy-gray-400 mb-8">
-            A modern, dark-first clinical interface designed for precision and efficiency.
-          </p>
-          <div className="rounded-2xl border border-cy-glass-border bg-cy-dark/40 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-cy-glass-border bg-cy-dark/60">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+              <h2 id="preview-heading" className="text-2xl font-heading font-semibold text-white mb-2">
+                Platform Preview
+              </h2>
+              <p className="text-cy-gray-400 text-sm">
+                Live interface — interact directly or open in a new tab.
+              </p>
+            </div>
+            <a
+              href={launchUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-secondary text-sm py-2 px-4 flex-shrink-0 inline-flex items-center gap-2"
+            >
+              <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+              Open Full Screen
+            </a>
+          </div>
+
+          {/* Browser chrome wrapper */}
+          <div className="rounded-2xl border border-cy-glass-border bg-cy-dark/40 overflow-hidden shadow-2xl">
+            {/* Title bar */}
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-cy-glass-border bg-cy-dark/70">
               <div className="flex gap-1.5" aria-hidden="true">
                 <div className="w-3 h-3 rounded-full bg-red-500/60" />
                 <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
               </div>
-              <div className="flex-1 mx-4">
-                <div className="h-5 rounded-md bg-cy-glass-bg border border-cy-glass-border w-48" aria-hidden="true" />
+              <div className="flex-1 mx-2">
+                <div
+                  className="h-6 rounded-lg bg-cy-glass-bg border border-cy-glass-border flex items-center px-3 gap-2 max-w-sm mx-auto"
+                >
+                  <span className="text-xs text-cy-gray-500 truncate">{launchUrl.replace("https://", "")}</span>
+                </div>
               </div>
-              <div className={`text-xs px-2.5 py-1 rounded-lg font-medium ${colors.badge}`}>{product.name}</div>
+              <div className={`text-xs px-2.5 py-1 rounded-lg font-medium flex-shrink-0 ${colors.badge}`}>
+                Live
+              </div>
             </div>
-            <div className="flex min-h-[300px]">
-              <div className="w-44 border-r border-cy-glass-border p-3 space-y-1.5 hidden md:block" aria-hidden="true">
-                {product.features.slice(0, 6).map((_, i) => (
-                  <div key={i} className={`h-7 rounded-lg px-2.5 flex items-center ${i === 0 ? `${colors.icon} border` : ""}`}>
-                    <div className={`h-2 rounded-full ${i === 0 ? (colors.badge.split(" ")[0] ?? "").replace("text-", "bg-") : "bg-cy-glass-border"}`} style={{ width: `${40 + i * 9}%` }} />
-                  </div>
-                ))}
-              </div>
-              <div className="flex-1 p-5" aria-hidden="true">
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="glass-card rounded-xl p-3">
-                      <div className="h-2 w-16 rounded bg-cy-glass-border mb-2" />
-                      <div className={`h-5 w-10 rounded ${(colors.badge.split(" ")[0] ?? "").replace("text-", "bg-")} opacity-60`} />
-                    </div>
-                  ))}
-                </div>
-                <div className="glass-card rounded-xl p-4 mb-3">
-                  <div className="h-2 w-32 rounded bg-cy-glass-border mb-3" />
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="flex gap-3 items-center mb-2">
-                      <div className="h-7 w-7 rounded-lg bg-cy-glass-bg border border-cy-glass-border flex-shrink-0" />
-                      <div className="flex-1 space-y-1">
-                        <div className="h-2 rounded bg-cy-glass-border" style={{ width: `${50 + i * 12}%` }} />
-                        <div className="h-1.5 rounded bg-cy-glass-border opacity-50" style={{ width: `${30 + i * 8}%` }} />
-                      </div>
-                      <div className={`h-5 w-12 rounded-full ${i === 0 ? `${colors.icon} border` : "bg-cy-glass-bg border border-cy-glass-border"}`} />
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="glass-card rounded-xl p-3 h-20">
-                    <div className="h-2 w-20 rounded bg-cy-glass-border mb-2" />
-                    <div className="flex items-end gap-1 h-10">
-                      {[60, 80, 55, 90, 70, 85, 65].map((h, i) => (
-                        <div key={i} className={`flex-1 rounded-t ${i === 3 ? `${colors.icon} border` : "bg-cy-glass-bg border border-cy-glass-border"}`} style={{ height: `${h}%` }} />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="glass-card rounded-xl p-3 h-20">
-                    <div className="h-2 w-16 rounded bg-cy-glass-border mb-2" />
-                    {[80, 60, 90].map((w, i) => (
-                      <div key={i} className="flex items-center gap-2 mb-1">
-                        <div className={`h-2 rounded-full ${colors.icon} border`} style={{ width: `${w}%` }} />
-                        <div className="h-2 w-6 rounded bg-cy-glass-border" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+
+            {/* iframe */}
+            <div className="relative" style={{ height: "580px" }}>
+              <iframe
+                src={launchUrl}
+                title={`${product.name} — Live Platform Preview`}
+                className="w-full h-full border-0"
+                loading="lazy"
+                allow="fullscreen"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              />
+              {/* Overlay gradient at bottom to fade into section */}
+              <div
+                className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
+                style={{ background: "linear-gradient(to top, rgba(15,15,26,0.6), transparent)" }}
+                aria-hidden="true"
+              />
             </div>
           </div>
+
           <p className="text-xs text-cy-gray-500 mt-3 text-center">
-            Illustrative UI preview.{" "}
-            <a href={launchUrl} target="_blank" rel="noreferrer" className="text-cy-orange hover:text-cy-orange-light transition-colors cursor-pointer">
-              Launch the live product
-            </a>{" "}
-            to explore the full interface.
+            Live demo environment · Read-only mode · Data is illustrative
           </p>
         </div>
       </section>

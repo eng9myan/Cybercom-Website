@@ -196,7 +196,7 @@ export default function AdminRevenuePage() {
       <div className="grid sm:grid-cols-3 gap-4 mt-6">
         {[
           { label: "View all customers", href: "/en/admin/customers", icon: UserCheck },
-          { label: "Manage subscriptions", href: "/en/admin/subscriptions", icon: ShoppingBag },
+          { label: "Manage subscriptions", href: "/en/admin/subscriptions", icon: ShoppingCart },
           { label: "Product catalog", href: "/en/admin/products", icon: BarChart3 },
         ].map(({ label, href, icon: Icon }) => (
           <Link key={href} href={href} className="glass-card p-4 rounded-xl flex items-center gap-3 hover:border-cy-orange/30 border border-cy-glass-border transition-colors">
