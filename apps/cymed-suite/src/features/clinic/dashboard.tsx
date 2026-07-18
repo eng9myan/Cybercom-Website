@@ -102,7 +102,7 @@ export function ClinicDashboard() {
           </CardHeader>
           <CardContent>
             <DonutSplit
-              data={specialtyMix}
+              data={specialtyMix.map((s) => ({ name: s.specialty, value: s.visits }))}
               height={280}
               centerLabel="Specialties"
               centerValue={specialtyMix.length}

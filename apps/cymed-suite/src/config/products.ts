@@ -75,7 +75,7 @@ export interface ModuleDef {
   icon: LucideIcon;
   description?: string;
   /** Roles allowed to see this module in the sidebar. */
-  roles?: string[];
+  roles?: readonly string[];
   /** Optional badge indicator on nav item. */
   badge?: "new" | "beta" | "pro" | number;
   /** If true, render with the generic module scaffold (data table + KPIs). */
