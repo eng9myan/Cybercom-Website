@@ -16,6 +16,7 @@ const PRODUCTS_MEGA_MENU = [
   {
     category: "Healthcare · CyMed",
     items: [
+      { name: "CyMed", slug: "cymed", desc: "Complete healthcare platform" },
       { name: "CyMed Clinic", slug: "cymed-clinic", desc: "Outpatient clinical management" },
       { name: "CyMed Hospital", slug: "cymed-hospital", desc: "Complete hospital operations" },
       { name: "CyMed Laboratory", slug: "cymed-laboratory", desc: "LIS with auto-verification" },
@@ -120,7 +121,7 @@ export function Navbar({ locale }: NavbarProps) {
 
             {productsOpen && (
               <div
-                className="absolute top-full mt-1 left-0 w-[900px] p-6 glass-card rounded-2xl grid grid-cols-4 gap-5"
+                className="absolute top-full mt-1 left-0 w-[min(900px,calc(100vw-2rem))] p-6 glass-card rounded-2xl grid grid-cols-2 xl:grid-cols-4 gap-5"
                 onMouseEnter={() => setProductsOpen(true)}
                 onMouseLeave={() => setProductsOpen(false)}
                 role="menu"
@@ -139,6 +140,8 @@ export function Navbar({ locale }: NavbarProps) {
                                 ? `/${locale}/cyshop`
                                 : item.slug === "cycom"
                                 ? `/${locale}/erp`
+                                : item.slug === "cymed"
+                                ? `/${locale}/cymed`
                                 : `/${locale}/products/${item.slug}`
                             }
                             className="block px-2 py-1.5 rounded-lg text-sm text-cy-gray-200 hover:text-white hover:bg-cy-glass-bg transition-colors duration-150 focus-visible:ring-1 focus-visible:ring-cy-orange"
@@ -205,7 +208,7 @@ export function Navbar({ locale }: NavbarProps) {
 
         {/* Mobile hamburger */}
         <button
-          className="lg:hidden btn-ghost p-2"
+          className="lg:hidden btn-ghost p-3"
           onClick={() => setMobileOpen((v) => !v)}
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
